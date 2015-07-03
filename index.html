@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" media="screen" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+
+        <script src="//code.jquery.com/jquery.js"></script>
+        <script src="//cdn.rawgit.com/jquery/jquery-mousewheel/master/jquery.mousewheel.min.js"></script>
+        <script src="//ricostacruz.com/jquery.transit/jquery.transit.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
+        
+        <script src="lib/dom.jsPlumb-1.7.5-min.js"></script>
+        <script src="//cdn.rawgit.com/wout/svg.js/master/dist/svg.js"></script>
+        <script src="//cdn.rawgit.com/rdfriedl/svg.filter.js/master/svg.filter.js"></script>
+        
+        <script src="js/main.js"></script>
+        <script src="js/effects.js"></script>
+        <script src="js/inputs.js"></script>
+        <script src="js/outputs.js"></script>
+        <script src="js/page.js"></script>
+    </head>
+    
+    <body>
+        <div class="row">
+            <div class="col-xs-8 full-height" style="position: static;">
+                <div class="panel panel-default full-height no-margin">
+                    <div class="panel-body full-height editor-controls">
+                        <div class="editor full-height" id="editor">
+                            <!-- effects -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Preview
+                    </div>
+                    <div class="panel-body">
+                        Basic panel example
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Filters
+                    </div>
+                    <div class="panel-body" data-bind="foreach: effects.effectsTypes">
+                        <button type="button" class="btn btn-default" data-bind="text: title, click: $root.effects.createEffect"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="temp" style="display: none;">
+            <div class="effect">
+                <button type="button" class="btn btn-xs btn-default dropdown-toggle options" data-toggle="dropdown">Options</button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                </ul>
+                <form>
+                    <legend class="effect-title">Effect title</legend>
+
+                    <!-- inputs / outputs go here -->
+                    <div class="effect-inputs">
+                        
+                    </div>
+                    <div class="effect-outputs">
+                        
+                    </div>
+                </form>
+            </div>
+            <div class="form-group effect-input">
+                <span>Input</span>
+            </div>
+            <div class="form-group effect-output">
+                <span>Output</span>
+            </div>
+            <div class="form-group color-input">
+                <input type="color" class="form-control">
+            </div>
+            <div class="form-group number-input">
+                <input type="number" value="1" class="form-control">
+            </div>
+            <div class="form-group select-input">
+                <select class="form-control"></select>
+            </div>
+        </div>
+     </body>
+</html>

@@ -23,7 +23,7 @@ EffectOutput.prototype = {
         this.endpoint.anchor.y = this.element.offsetTop + bbox.height/2;
 
         this.endpoint.anchor.x /= this.effect.element.offsetWidth;
-        this.endpoint.anchor.y /= 66;
+        this.endpoint.anchor.y /= 50;
 
         this.endpoint.repaint();
     },
@@ -32,7 +32,7 @@ EffectOutput.prototype = {
         return this.element;
     },
     updateElement: function(){
-        $(this.element).find('span').text(this.options.title);
+        $(this.element).find('.effect-title').text(this.options.title);
     },
     arange: function(){
         if(!this.effect) return;

@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Filterd</title>
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" media="screen" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <link rel="stylesheet" media="screen" href="//bootswatch.com/superhero/bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">
 
         <script src="//code.jquery.com/jquery.js"></script>
@@ -24,13 +26,36 @@
     
     <body>
         <div class="row">
-            <div class="col-xs-8 full-height" style="position: static;">
-                <div class="panel panel-default full-height no-margin">
-                    <div class="panel-body full-height editor-controls">
-                        <div class="editor full-height" id="editor">
-                            <!-- effects -->
-                        </div>
+            <div class="col-xs-8 full-height editor-controls">
+                <nav class="navbar navbar-default" role="navigation">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">Filtered</a>
                     </div>
+                
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse navbar-ex1-collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add <b class="caret"></b></a>
+                                <ul class="dropdown-menu" data-bind="foreach: effects.effectsTypes">
+                                    <li><a href="#" data-bind="click: create, text: title"></a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#"><i class="fa fa-check"></i> Export</a></li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </nav>
+                <div class="editor full-height" id="editor">
+                    <!-- effects -->
                 </div>
             </div>
             <div class="col-xs-4">
@@ -42,49 +67,47 @@
                         <svg id="preview"></svg>
                     </div>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Filters
-                    </div>
-                    <div class="panel-body" data-bind="foreach: effects.effectsTypes">
-                        <button type="button" class="btn btn-default" data-bind="text: title, click: $root.effects.createEffect"></button>
-                    </div>
-                </div>
             </div>
         </div>
 
         <div id="temp" style="display: none;">
-            <div class="effect">
-                <button type="button" class="btn btn-xs btn-default dropdown-toggle options" data-toggle="dropdown">Options</button>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                </ul>
-                <form>
-                    <legend class="effect-title">Effect title</legend>
-
-                    <!-- inputs / outputs go here -->
-                    <div class="effect-inputs">
-                        
-                    </div>
-                    <div class="effect-outputs">
-                        
-                    </div>
-                </form>
+            <div class="effect panel panel-default">
+                <div class="panel-heading">
+                    <button type="button" class="btn btn-xs btn-default dropdown-toggle options pull-right" data-toggle="dropdown"><i class="fa fa-bars"></i></button>
+                    <button type="button" class="btn btn-xs btn-default toggle pull-right"><i class="fa fa-chevron-down"></i></button>
+                    <ul class="dropdown-menu"></ul>
+                    <span class="effect-title"></span>
+                </div>
+                <div class="panel-body">
+                    <form>
+                        <!-- inputs / outputs go here -->
+                        <div class="effect-inputs"></div>
+                        <div class="effect-outputs"></div>
+                    </form>
+                </div>
             </div>
             <div class="form-group effect-input">
-                <span>Input</span>
+                <span class="effect-title">Input</span>
             </div>
             <div class="form-group effect-output">
-                <span>Output</span>
+                <span class="effect-title">Output</span>
             </div>
-            <input type="color" class="form-control color-input">
-            <input type="number" value="1" class="form-control number-input">
-            <input type="text" class="form-control text-input">
-            <select class="form-control select-input"></select>
+            <div class="form-group color-input">
+                <span class="effect-title"></span>
+                <input type="color" class="form-control effect-input-control">
+            </div>
+            <div class="form-group number-input">
+                <span class="effect-title"></span>
+                <input type="number" class="form-control effect-input-control">
+            </div>
+            <div class="form-group text-input">
+                <span class="effect-title"></span>
+                <input type="text" class="form-control effect-input-control">
+            </div>
+            <div class="form-group select-input">
+                <span class="effect-title"></span>
+                <select class="form-control effect-input-control"></select>
+            </div>
         </div>
      </body>
 </html>

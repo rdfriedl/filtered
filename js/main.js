@@ -4,21 +4,21 @@ var filter = undefined;
 var text = undefined;
 var connectorPaintStyle = {
         lineWidth: 4,
-        strokeStyle: "#61B7CF",
+        strokeStyle: "#485563",
         joinstyle: "round",
-        outlineColor: "white",
-        outlineWidth: 2
+        outlineColor: "#2b3e50",
+        outlineWidth: 3
     },
 // .. and this is the hover style.
     connectorHoverStyle = {
         lineWidth: 4,
-        strokeStyle: "#216477",
+        strokeStyle: "#528705",
         outlineWidth: 2,
-        outlineColor: "white"
+        outlineColor: "#2b3e50"
     },
     endpointHoverStyle = {
-        fillStyle: "#216477",
-        strokeStyle: "#216477"
+        fillStyle: "#7AB02C",
+        strokeStyle: "#7AB02C"
     },
 // the definition of source endpoints (the small blue ones)
 // the definition of target endpoints (will appear when the user drags a connection)
@@ -26,7 +26,7 @@ var connectorPaintStyle = {
         endpoint: "Dot",
         anchor: [0, 0],
         paintStyle: {
-            strokeStyle: "#7AB02C",
+            strokeStyle: "#528705",
             fillStyle: "transparent",
             radius: 7,
             lineWidth: 3
@@ -42,7 +42,7 @@ var connectorPaintStyle = {
     inputEndPoint = {
         endpoint: "Dot",
         anchor: [0, 0],
-        paintStyle: { fillStyle: "#7AB02C", radius: 11 },
+        paintStyle: { fillStyle: "#528705", radius: 11 },
         hoverPaintStyle: endpointHoverStyle,
         maxConnections: -1,
         dropOptions: { hoverClass: "hover", activeClass: "active" },
@@ -72,71 +72,17 @@ function initEditor(){
         ],
         Container: "editor"
     });
-
-    editor.registerConnectionType("error", {
-        connector: "StateMachine",
-        paintStyle: { strokeStyle: "red", lineWidth: 4 },
-        hoverPaintStyle: { strokeStyle: "darkred" }
-    });
 }
 
 $(document).ready(function(){
 
     initEditor();
 
-    var _addEndpoints = function (toId, sourceAnchors, targetAnchors) {
-        for (var i = 0; i < sourceAnchors.length; i++) {
-            var sourceUUID = toId + sourceAnchors[i];
-            editor.addEndpoint("flowchart" + toId, inputEndPoint, {
-                anchor: sourceAnchors[i], 
-                uuid: sourceUUID
-            });
-        }
-        for (var j = 0; j < targetAnchors.length; j++) {
-            var targetUUID = toId + targetAnchors[j];
-            editor.addEndpoint("flowchart" + toId, outputEndPoint, { 
-                anchor: targetAnchors[j], 
-                uuid: targetUUID 
-            });
-        }
-    };
-
     // suspend drawing and initialise.
     editor.batch(function () {
 
-        // _addEndpoints("Effect4", ["BottomCenter"], ["LeftMiddle", "RightMiddle"]);
-        // _addEndpoints("Effect2", ["LeftMiddle", "BottomCenter"], ["RightMiddle"]);
-        // _addEndpoints("Effect3", ["RightMiddle", "BottomCenter"], ["LeftMiddle"]);
-        // _addEndpoints("Effect1", ["LeftMiddle", "RightMiddle"], ["BottomCenter"]);
-
-        // listen for new connections; initialise them the same way we initialise the connections at startup.
-        // editor.bind("connection", function (connInfo, originalEvent) {
-        //     init(connInfo.connection);
-        // });
-
         // make all the effect divs draggable
         editor.draggable(jsPlumb.getSelector("#editor .effect"));
-        // THIS DEMO ONLY USES getSelector FOR CONVENIENCE. Use your library's appropriate selector
-        // method, or document.querySelectorAll:
-        //jsPlumb.draggable(document.querySelectorAll(".effect"), { grid: [20, 20] });
-
-        // connect a few up
-        // editor.connect({uuids: ["Effect2BottomCenter", "Effect3TopCenter"], editable: true});
-        // editor.connect({uuids: ["Effect2LeftMiddle", "Effect4LeftMiddle"], editable: true});
-        // editor.connect({uuids: ["Effect4TopCenter", "Effect4RightMiddle"], editable: true});
-        // editor.connect({uuids: ["Effect3RightMiddle", "Effect2RightMiddle"], editable: true});
-        // editor.connect({uuids: ["Effect4BottomCenter", "Effect1TopCenter"], editable: true});
-        // editor.connect({uuids: ["Effect3BottomCenter", "Effect1BottomCenter"], editable: true});
-        //
-
-        //
-        // listen for clicks on connections, and offer to delete connections on click.
-        //
-        editor.bind("click", function (conn, originalEvent) {
-           // if (confirm("Delete connection from " + conn.sourceId + " to " + conn.targetId + "?"))
-             //   editor.detach(conn);
-            conn.toggleType("error");
-        });
 
         editor.bind('connection',function(info){
             if(info.targetEndpoint.getParameter('this') instanceof EffectInput){
@@ -147,22 +93,20 @@ $(document).ready(function(){
 
         editor.bind('connectionDetached',function(info){
             if(info.targetEndpoint.getParameter('this') instanceof EffectInput){
-                info.targetEndpoint.getParameter('this').connectionDetachedEvent(info.sourceEndpoint.getParameter('this'));
+                info.targetEndpoint.getParameter('this').connectionDetachedEvent();
             }
             page.editor.arange();
         })
 
-        // editor.bind("connectionDrag", function (connection) {
-        //     console.log("connection " + connection.id + " is being dragged. suspendedElement is ", connection.suspendedElement, " of type ", connection.suspendedElementType);
-        // });
-
-        // editor.bind("connectionDragStop", function (connection) {
-        //     console.log("connection " + connection.id + " was dragged");
-        // });
-
-        // editor.bind("connectionMoved", function (params) {
-        //     console.log("connection " + params.connection.id + " was moved");
-        // });
+        editor.bind('connectionMoved',function(info){
+            if(info.originalTargetEndpoint.getParameter('this') instanceof EffectInput){
+                info.originalTargetEndpoint.getParameter('this').connectionDetachedEvent();
+            }
+            if(info.newTargetEndpoint.getParameter('this') instanceof EffectInput){
+                info.newTargetEndpoint.getParameter('this').connectionDetachedEvent(info.newSourceEndpoint.getParameter('this'));
+            }
+            // page.editor.arange(); dont need to arange
+        })
     });
 
     jsPlumb.fire("jsPlumbDemoLoaded", editor);
@@ -205,7 +149,7 @@ function Effect(opts){
     this.initPlumb();
 
     this.updateElement();
-    this.render();
+    this.updateMenu();
 }
 Effect.prototype = {
     id: '',
@@ -216,12 +160,28 @@ Effect.prototype = {
     options: {
         title: ''
     },
+    menu: [
+        {
+            type: 'item',
+            icon: 'trash-o',
+            title: 'Delete',
+            action: function(){
+                this.remove();
+            }
+        }
+    ],
+    toggleButton: true,
     plumb: undefined,
 
     initElement: function(){
         this.element = $('#temp .effect').clone(true,true).attr('id',this.id).get(0);
 
         $('#editor').append(this.element);
+
+        $(this.element).find('button.toggle').click(function(){
+            $(this.element).toggleClass('collapsed');
+            this.updateEndpoints();
+        }.bind(this))
     },
     initPlumb: function(){
         this.plumb = editor.draggable(this.element);
@@ -229,16 +189,22 @@ Effect.prototype = {
 
     addInput: function(name,input){
         this.inputs[name] = input;
+        input.options.title = input.options.title || name;
+        this.render();
     },
     addOutput: function(name,output){
         this.outputs[name] = output;
-    },
-    removeAllInputs: function(){
-        this.inputs = {};
+        output.options.title = output.options.title || name;
         this.render();
     },
-    removeAllOutputs: function(){
-        this.outputs = {};
+    removeInput: function(name){
+        this.inputs[name]._remove();
+        delete this.inputs[name];
+        this.render();
+    },
+    removeOutput: function(name){
+        this.outputs[name]._remove();
+        delete this.outputs[name];
         this.render();
     },
 
@@ -249,7 +215,14 @@ Effect.prototype = {
 
     show: function(){
         if(!this.filter) return;
-        this.filter.addTo(filter);
+        filter.add(this.filter);
+    },
+
+    remove: function(){
+        //remove myself
+        jsPlumb.detachAllConnections(this.element);
+        this.plumb.removeAllEndpoints(this.element);
+        jsPlumb.remove(this.element);
     },
 
     update: function(){ //updates its own filter element
@@ -302,6 +275,53 @@ Effect.prototype = {
     updateElement: function(){
         var $el = $(this.element);
         $el.find('.effect-title').text(this.options.title);
+    },
+    updateEndpoints: function(){
+        for (var i in this.inputs) {
+            if(this.inputs[i] instanceof EffectInput || this.inputs[i] instanceof EffectOutput) this.inputs[i].updateEndpointPosition();
+        };
+
+        for (var i in this.outputs) {
+            if(this.outputs[i] instanceof EffectInput || this.outputs[i] instanceof EffectOutput) this.outputs[i].updateEndpointPosition();
+        };
+        this.plumb.repaint(this.element);
+    },
+    updateMenu: function(){
+        var $item = $('<li><a href="#"><i class="fa"></i> <span></span></a></li>');
+        var $separator = $('<li role="separator" class="divider"></li>');
+        var $el = $(this.element);
+        var $menu = $el.find('.dropdown-menu');
+
+        //clear
+        $menu.children().remove();
+
+        if(this.menu.length == 0)
+            $el.find('button.options').hide();
+        else 
+            $el.find('button.options').show();
+
+        for (var i = 0; i < this.menu.length; i++) {
+            var item = this.menu[i];
+
+            switch(item.type){
+                case 'item':
+                   var a = $item.clone();
+                   a.find('span').text(item.title);
+                   a.click(item.action.bind(this));
+                   if(item.icon) a.find('i').addClass('fa-' + item.icon);
+
+                   $menu.append(a);
+                    break;
+                case 'separator':
+                    $menu.append($separator.clone());
+                    break;
+            }
+        };
+
+        if(this.toggleButton){
+            $el.find('button.toggle').show();
+        }
+        else $el.find('button.toggle').hide();
     }
 }
 Effect.prototype.constructor = Effect;
@@ -321,6 +341,9 @@ function Input(effect,opts,data){
 }
 Input.prototype = {
     effect: undefined,
+    element: undefined,
+    titleElement: undefined,
+    inputElement: undefined,
     value: '',
     options: {
         title: 'input'
@@ -345,7 +368,13 @@ Input.prototype = {
         // return $('#temp .effect-input').clone().get(0);
     },
     updateElement: function(){
-
+        if(this.options.title){
+            $(this.titleElement).show().text(this.options.title);
+        }
+        else $(this.titleElement).hide();
+    },
+    _remove: function(){
+        this.effect.plumb.deleteEndpoint(this.endpoint)
     }
 }
 Input.prototype.constructor = Input;
@@ -387,6 +416,9 @@ Output.prototype = {
     },
     updateElement: function(){
 
+    },
+    _remove: function(){
+        this.effect.plumb.deleteEndpoint(this.endpoint)
     }
 }
 Output.prototype.constructor = Output;

@@ -19,8 +19,20 @@ page = {
 				effect: OffsetEffect
 			},
 			{
-				title: 'GaussianBlur',
+				title: 'Blur',
 				effect: GaussianBlurEffect
+			},
+			{
+				title: 'Morphology',
+				effect: MorphologyEffect
+			},
+			{
+				title: 'DisplacementMap',
+				effect: DisplacementMapEffect
+			},
+			{
+				title: 'Turbulence',
+				effect: TurbulenceEffect
 			},
 			{
 				title: 'Merge',
@@ -44,6 +56,10 @@ page = {
 		start: function(){
 			page.inputEffect = new InputEffect();
 			page.outputEffect = new OutputEffect();
+
+			for (var i = 0; i < page.effects.effectsTypes().length; i++) {
+				page.effects.effectsTypes()[i].create = page.effects.createEffect.bind(page.effects.effectsTypes()[i]);
+			};
 		},
 		zoom: {
 			zoomLevel: observable(1,function(val){
@@ -68,6 +84,12 @@ page = {
 			};
 			page.outputEffect.arange();
 		}
+	},
+	saveFilter: function(){ //save filter to url
+
+	},
+	loadFilter: function(){ //load filter to url
+
 	}
 }
 

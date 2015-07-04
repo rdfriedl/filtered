@@ -85,7 +85,7 @@ function GaussianBlurEffect(){
 }
 GaussianBlurEffect.prototype = {
 	options: {
-		title: 'GaussianBlur'
+		title: 'Blur'
 	},
 	update: function(){
 		var blur = '0';
@@ -107,15 +107,147 @@ GaussianBlurEffect.prototype = {
 GaussianBlurEffect.prototype.constructor = GaussianBlurEffect;
 GaussianBlurEffect.prototype.__proto__ = Effect.prototype;
 
+//Morphology
+function MorphologyEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('in',new EffectInput(this,{
+		title: "in"
+	}));
+	this.addInput('operator',new SelectInput(this,{
+		options: [
+			{
+				title: 'out',
+				value: 'dilate'
+			},
+			{
+				title: 'in',
+				value: 'erode'
+			}
+		]
+	}));
+	this.addInput('radius',new NumberInput(this,{
+		min: 0,
+		value: 0
+	}));
+	this.addOutput('result',new EffectOutput(this));
+
+	this.render();
+
+	this.filter = new SVG.MorphologyEffect();
+	this.update();
+}
+MorphologyEffect.prototype = {
+	options: {
+		title: 'Morphology'
+	},
+	update: function(){
+		this.filter.attr({
+			in: this.inputs.in.getValue(),
+			operator: this.inputs.operator.getValue(),
+			radius: this.inputs.radius.getValue()
+		});
+	}
+}
+MorphologyEffect.prototype.constructor = MorphologyEffect;
+MorphologyEffect.prototype.__proto__ = Effect.prototype;
+
+//DisplacementMap
+function DisplacementMapEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('in',new EffectInput(this,{
+		title: "in"
+	}));
+	this.addInput('in2',new EffectInput(this,{
+		title: "in 2"
+	}));
+	this.addInput('scale',new NumberInput(this,{
+		min: 0,
+		step: 0.1,
+		value: 1
+	}));
+	this.addInput('xChannelSelector',new SelectInput(this,{
+		options: ['R','G','B','A']
+	}));
+	this.addInput('yChannelSelector',new SelectInput(this,{
+		options: ['R','G','B','A']
+	}));
+
+	this.addOutput('result',new EffectOutput(this));
+
+	this.render();
+
+	this.filter = new SVG.DisplacementMapEffect();
+	this.update();
+}
+DisplacementMapEffect.prototype = {
+	options: {
+		title: 'DisplacementMap'
+	},
+	update: function(){
+		this.filter.attr({
+			in: this.inputs.in.getValue(),
+			in2: this.inputs.in2.getValue(),
+			scale: this.inputs.scale.getValue(),
+			xChannelSelector: this.inputs.xChannelSelector.getValue(),
+			yChannelSelector: this.inputs.yChannelSelector.getValue()
+		});
+	}
+}
+DisplacementMapEffect.prototype.constructor = DisplacementMapEffect;
+DisplacementMapEffect.prototype.__proto__ = Effect.prototype;
+
+//Turbulence
+function TurbulenceEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('baseFrequency',new NumberInput(this));
+	this.addInput('numOctaves',new NumberInput(this,{
+		min: 0,
+		value: 1
+	}));
+	this.addInput('seed',new NumberInput(this,{
+		min: 0,
+		value: 1
+	}));
+	this.addInput('stitchTiles',new SelectInput(this,{
+		options: ['stitch','noStitch']
+	}));
+	this.addInput('type',new SelectInput(this,{
+		options: ['turbulence','fractalNoise']
+	}));
+
+	this.addOutput('result',new EffectOutput(this));
+
+	this.render();
+
+	this.filter = new SVG.TurbulenceEffect();
+	this.update();
+}
+TurbulenceEffect.prototype = {
+	options: {
+		title: 'Turbulence'
+	},
+	update: function(){
+		this.filter.attr({
+			baseFrequency: this.inputs.baseFrequency.getValue(),
+			numOctaves: this.inputs.numOctaves.getValue(),
+			seed: this.inputs.seed.getValue(),
+			stitchTiles: this.inputs.stitchTiles.getValue(),
+			type: this.inputs.type.getValue()
+		});
+	}
+}
+TurbulenceEffect.prototype.constructor = TurbulenceEffect;
+TurbulenceEffect.prototype.__proto__ = Effect.prototype;
+
 //merge
 function MergeEffect(){
 	Effect.apply(this,arguments);
 
-	this.addInput('in',new EffectInput(this,{
+	this.addInput('in 1',new EffectInput(this,{
 		title: "in 1"
-	}));
-	this.addInput('in2',new EffectInput(this,{
-		title: "in 2"
 	}));
 	this.addOutput('result',new EffectOutput(this));
 
@@ -128,10 +260,43 @@ MergeEffect.prototype = {
 	options: {
 		title: 'Merge'
 	},
+    menu: [
+        {
+            type: 'item',
+            icon: 'plus',
+            title: 'Add Input',
+            action: function(){
+            	var a = Object.keys(this.inputs);
+                this.addInput('in'+(a.length+1), new EffectInput(this,{
+                	title: 'in '+(a.length+1)
+                }));
+            }
+        },
+        {
+            type: 'item',
+            icon: 'minus',
+            title: 'Remove Input',
+            action: function(){
+            	var a = Object.keys(this.inputs);
+                if(a.length > 0) this.removeInput(a[a.length-1]);
+            }
+        },
+        {
+            type: 'separator'
+        },
+        {
+            type: 'item',
+            icon: 'trash-o',
+            title: 'Delete',
+            action: function(){
+                this.remove();
+            }
+        }
+    ],
 	update: function(){
 		this.filter.clear();
 		for(var i in this.inputs){
-			this.filter.add(new SVG.MergeNode(this.inputs[i].getValue()));
+			if(this.inputs[i].getValue()) this.filter.add(new SVG.MergeNode(this.inputs[i].getValue()));
 		}
 	}
 }
@@ -142,14 +307,14 @@ MergeEffect.prototype.__proto__ = Effect.prototype;
 function CompositeEffect(){
 	Effect.apply(this,arguments);
 
-	this.addInput('operator',new SelectInput(this,{
-		options: ['over','in','out','atop','xor','arithmetic']
-	}));
 	this.addInput('in',new EffectInput(this,{
 		title: "in 1"
 	}));
 	this.addInput('in2',new EffectInput(this,{
 		title: "in 2"
+	}));
+	this.addInput('operator',new SelectInput(this,{
+		options: ['over','in','out','atop','xor','arithmetic']
 	}));
 	this.addOutput('result',new EffectOutput(this));
 
@@ -248,7 +413,9 @@ function InputEffect(){
 InputEffect.prototype = {
 	options: {
 		title: 'Input'
-	}
+	},
+	menu: [],
+	toggleButton: false
 }
 InputEffect.prototype.constructor = InputEffect;
 InputEffect.prototype.__proto__ = Effect.prototype;
@@ -270,6 +437,8 @@ OutputEffect.prototype = {
 	options: {
 		title: 'Output'
 	},
+	menu: [],
+	toggleButton: false,
 	value: function(){
 		return this.inputs.in.getValue();
 	},

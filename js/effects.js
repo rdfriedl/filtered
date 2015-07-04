@@ -13,7 +13,7 @@ function FloodEffect(){
 
 	this.render();
 
-	this.filter = filter.flood();
+	this.filter = new SVG.FloodEffect();
 	this.update();
 }
 FloodEffect.prototype = {
@@ -43,7 +43,7 @@ function OffsetEffect(){
 
 	this.render();
 
-	this.filter = filter.offset();
+	this.filter = new SVG.OffsetEffect();
 	this.update();
 }
 OffsetEffect.prototype = {
@@ -80,7 +80,7 @@ function GaussianBlurEffect(){
 
 	this.render();
 
-	this.filter = filter.gaussianBlur(0);
+	this.filter = new SVG.GaussianBlurEffect(0);
 	this.update();
 }
 GaussianBlurEffect.prototype = {
@@ -121,7 +121,7 @@ function MergeEffect(){
 
 	this.render();
 
-	this.filter = filter.merge();
+	this.filter = new SVG.MergeEffect();
 	this.update();
 }
 MergeEffect.prototype = {
@@ -155,7 +155,7 @@ function CompositeEffect(){
 
 	this.render();
 
-	this.filter = filter.composite();
+	this.filter = new SVG.CompositeEffect();
 	this.update();
 }
 CompositeEffect.prototype = {
@@ -190,7 +190,7 @@ function BlendEffect(){
 
 	this.render();
 
-	this.filter = filter.blend();
+	this.filter = new SVG.BlendEffect();
 	this.update();
 }
 BlendEffect.prototype = {
@@ -263,7 +263,7 @@ function OutputEffect(){
 
 	this.render();
 
-	this.filter = filter.offset()
+	this.filter = new SVG.OffsetEffect()
 	this.update();
 }
 OutputEffect.prototype = {

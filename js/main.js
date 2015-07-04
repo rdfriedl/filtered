@@ -142,12 +142,14 @@ $(document).ready(function(){
             if(info.targetEndpoint.getParameter('this') instanceof EffectInput){
                 info.targetEndpoint.getParameter('this').connectionEvent(info.sourceEndpoint.getParameter('this'));
             }
+            page.editor.arange();
         })
 
         editor.bind('connectionDetached',function(info){
             if(info.targetEndpoint.getParameter('this') instanceof EffectInput){
                 info.targetEndpoint.getParameter('this').connectionDetachedEvent(info.sourceEndpoint.getParameter('this'));
             }
+            page.editor.arange();
         })
 
         // editor.bind("connectionDrag", function (connection) {
@@ -242,12 +244,12 @@ Effect.prototype = {
 
     hide: function(){
         if(!this.filter) return;
-        this.filter.hide();
+        this.filter.remove();
     },
 
     show: function(){
         if(!this.filter) return;
-        this.filter.show();
+        this.filter.addTo(filter);
     },
 
     update: function(){ //updates its own filter element

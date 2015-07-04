@@ -13,6 +13,18 @@ page = {
 			{
 				title: 'Shadow',
 				effect: ShadowEffect
+			},
+			{
+				title: 'Stroke',
+				effect: StrokeEffect
+			},
+			{
+				title: 'Recolor',
+				effect: RecolorEffect
+			},
+			{
+				title: 'Blur',
+				effect: GaussianBlurEffect
 			}
 		]),
 		baseEffects: ko.observableArray([
@@ -25,7 +37,7 @@ page = {
 				effect: OffsetEffect
 			},
 			{
-				title: 'Blur',
+				title: 'GaussianBlur',
 				effect: GaussianBlurEffect
 			},
 			{
@@ -96,6 +108,27 @@ page = {
 		exproted: ko.observable(''),
 		exportFilter: function(){
 			page.editor.exproted(filter.node.outerHTML.replace(/</g,'\r\n<'));
+		},
+		preview: {
+			text: {
+				text: observable('Text',function(val){
+					text.text(val);
+        			updateTextPostion();
+				}),
+				fontWeights: ['normal','lighter','bold','bolder'],
+				fontWeight: observable(false,function(val){
+					text.font({
+						'font-weight': val
+					})
+        			updateTextPostion();
+				}),
+				fontSize: observable(120,function(val){
+					text.font({
+						'font-size': val+'px'
+					})
+        			updateTextPostion();
+				})
+			}
 		}
 	},
 	saveFilter: function(){ //save filter to url

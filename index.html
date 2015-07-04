@@ -77,6 +77,22 @@
                     </div>
                     <div class="panel-body">
                         <svg id="preview"></svg>
+                        <form data-bind="with: editor.preview.text">
+                            <div class="form-group">
+                                <label>Text</label>
+                                <input type="text" class="form-control" data-bind="value: text, valueUpdate: 'input'">
+                            </div>
+                            <div class="form-group">
+                                <label>Font Weight</label>
+                                <select class="form-control" data-bind="foreach: fontWeights, value: fontWeight">
+                                    <option data-bind="value: $data, text: $data"></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Font Size</label>
+                                <input type="number" class="form-control" data-bind="value: fontSize, valueUpdate: 'input'">
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

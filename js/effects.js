@@ -6,7 +6,7 @@ MultiEffect.prototype = {
 	options: {
 		title: 'Multi'
 	},
-	value: function(){
+	getValue: function(){
 		var a = Object.keys(this.filter);
 		return this.filter[a[a.length-1]];
 	},
@@ -17,7 +17,7 @@ MultiEffect.prototype = {
 	},
 	show: function(){
 		for(var i in this.filter){
-			filter.add(this.filter[i]);
+			filter.put(this.filter[i]);
 		}
 	},
 	arange: function(){
@@ -89,7 +89,7 @@ ShadowEffect.prototype = {
 
 		this.filter.merge.clear();
 		this.filter.merge.add(new SVG.MergeNode({
-			id: this.filter.blur
+			in: this.filter.blur
 		}));
 		this.filter.merge.add(new SVG.MergeNode({
 			in:this.inputs.in.getValue()
@@ -110,3 +110,113 @@ ShadowEffect.prototype = {
 }
 ShadowEffect.prototype.constructor = ShadowEffect;
 ShadowEffect.prototype.__proto__ = MultiEffect.prototype;
+
+//Stroke
+function StrokeEffect(){
+	MultiEffect.apply(this,arguments);
+
+	this.addInput('in', new EffectInput(this))
+	this.addInput('color',new ColorInput(this));
+	this.addInput('opacity',new NumberInput(this,{
+		min: 0,
+		max: 1,
+		step: .1,
+		value: 1
+	}));
+	this.addInput('size',new NumberInput(this,{
+		min: 0,
+		value: 2
+	}));
+	this.addOutput('result',new EffectOutput(this));
+
+	this.render();
+
+	this.filter = {};
+	this.filter.color = new SVG.FloodEffect();
+	this.filter.composite = new SVG.CompositeEffect({
+		in: this.filter.color,
+		operator: 'in'
+	})
+	this.filter.stroke = new SVG.MorphologyEffect('dilate',{
+		in: this.filter.composite
+	});
+	this.filter.merge = new SVG.MergeEffect();
+
+	this.update();
+}
+StrokeEffect.prototype = {
+	options: {
+		title: 'Stroke'
+	},
+	update: function(){
+		this.filter.composite.attr('in2',this.inputs.in.getValue());
+
+		this.filter.merge.clear();
+		this.filter.merge.add(new SVG.MergeNode({
+			in: this.filter.stroke
+		}));
+		this.filter.merge.add(new SVG.MergeNode({
+			in:this.inputs.in.getValue()
+		}));
+
+		this.filter.color.attr({
+			'flood-color': this.inputs.color.getValue(),
+			'flood-opacity': this.inputs.opacity.getValue()
+		})
+		this.filter.stroke.attr({
+			radius: this.inputs.size.getValue()
+		})
+	}
+}
+StrokeEffect.prototype.constructor = StrokeEffect;
+StrokeEffect.prototype.__proto__ = MultiEffect.prototype;
+
+//Recolor
+function RecolorEffect(){
+	MultiEffect.apply(this,arguments);
+
+	this.addInput('in', new EffectInput(this))
+	this.addInput('color',new ColorInput(this));
+	this.addInput('opacity',new NumberInput(this,{
+		min: 0,
+		max: 1,
+		step: .1,
+		value: 1
+	}));
+	this.addOutput('result',new EffectOutput(this));
+
+	this.render();
+
+	this.filter = {};
+	this.filter.color = new SVG.FloodEffect();
+	this.filter.composite = new SVG.CompositeEffect({
+		in: this.filter.color,
+		operator: 'in'
+	})
+	this.filter.merge = new SVG.MergeEffect();
+
+	this.update();
+}
+RecolorEffect.prototype = {
+	options: {
+		title: 'Recolor'
+	},
+	update: function(){
+		this.filter.composite.attr('in2',this.inputs.in.getValue());
+
+		this.filter.merge.clear();
+		this.filter.merge.add(new SVG.MergeNode({
+			in:this.inputs.in.getValue()
+		}));
+		this.filter.merge.add(new SVG.MergeNode({
+			in: this.filter.composite
+		}));
+
+		this.filter.color.attr({
+			'flood-color': this.inputs.color.getValue(),
+			'flood-opacity': this.inputs.opacity.getValue()
+		})
+	}
+}
+RecolorEffect.prototype.constructor = RecolorEffect;
+RecolorEffect.prototype.__proto__ = MultiEffect.prototype;

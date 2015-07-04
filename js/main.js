@@ -74,6 +74,10 @@ function initEditor(){
     });
 }
 
+function updateTextPostion(){
+    text.center($('#preview').width()/2,$('#preview').height()/2);
+}
+
 $(document).ready(function(){
 
     initEditor();
@@ -129,10 +133,20 @@ $(document).ready(function(){
     })
 
     $(window).resize(function(){
-        text.center($('#preview').width()/2,$('#preview').height()/2);
+        updateTextPostion();
     })
     $(window).trigger('resize');
 });
+
+SVG.Filter.prototype.put = function(element, i) {
+    this.add(element, i)
+    
+    if(!element.attr('result')){
+        element.attr('result',element);
+    }
+    
+    return element;
+}
 
 //effect
 function Effect(opts){
@@ -187,6 +201,10 @@ Effect.prototype = {
         this.plumb = editor.draggable(this.element);
     },
 
+    getValue: function(){
+        return this.filter;
+    },
+
     addInput: function(name,input){
         this.inputs[name] = input;
         input.options.title = input.options.title || name;
@@ -217,7 +235,7 @@ Effect.prototype = {
 
     show: function(){
         if(!this.filter) return;
-        filter.add(this.filter);
+        filter.put(this.filter);
     },
 
     remove: function(){

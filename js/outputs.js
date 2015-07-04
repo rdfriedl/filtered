@@ -9,7 +9,7 @@ function EffectOutput(){
 EffectOutput.prototype = {
     endpoint: undefined,
     value: function(){
-        return this.effect.filter;
+        return this.effect.getValue();
     },
 
     initEndpoint: function(){

@@ -8,8 +8,14 @@ page = {
 	inputEffect: undefined,
 	outputEffect: undefined,
 	effects: {
-		effects: [],
-		effectsTypes: ko.observableArray([
+		_effects: [],
+		effects: ko.observableArray([
+			{
+				title: 'Shadow',
+				effect: ShadowEffect
+			}
+		]),
+		baseEffects: ko.observableArray([
 			{
 				title: 'Flood',
 				effect: FloodEffect
@@ -48,7 +54,7 @@ page = {
 			},
 		]),
 		createEffect: function(){
-			page.effects.effects.push(new this.effect());
+			page.effects._effects.push(new this.effect());
 			page.editor.arange();
 		}
 	},
@@ -57,8 +63,11 @@ page = {
 			page.inputEffect = new InputEffect();
 			page.outputEffect = new OutputEffect();
 
-			for (var i = 0; i < page.effects.effectsTypes().length; i++) {
-				page.effects.effectsTypes()[i].create = page.effects.createEffect.bind(page.effects.effectsTypes()[i]);
+			for (var i = 0; i < page.effects.effects().length; i++) {
+				page.effects.effects()[i].create = page.effects.createEffect.bind(page.effects.effects()[i]);
+			};
+			for (var i = 0; i < page.effects.baseEffects().length; i++) {
+				page.effects.baseEffects()[i].create = page.effects.createEffect.bind(page.effects.baseEffects()[i]);
 			};
 		},
 		zoom: {
@@ -79,10 +88,14 @@ page = {
 
 		},
 		arange: function(){
-			for (var i = 0; i < page.effects.effects.length; i++) {
-				page.effects.effects[i].hide();
+			for (var i = 0; i < page.effects._effects.length; i++) {
+				page.effects._effects[i].hide();
 			};
 			page.outputEffect.arange();
+		},
+		exproted: ko.observable(''),
+		exportFilter: function(){
+			page.editor.exproted(filter.node.outerHTML.replace(/</g,'\r\n<'));
 		}
 	},
 	saveFilter: function(){ //save filter to url

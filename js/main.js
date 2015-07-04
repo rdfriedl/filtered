@@ -191,11 +191,13 @@ Effect.prototype = {
         this.inputs[name] = input;
         input.options.title = input.options.title || name;
         this.render();
+        return input;
     },
     addOutput: function(name,output){
         this.outputs[name] = output;
         output.options.title = output.options.title || name;
         this.render();
+        return output;
     },
     removeInput: function(name){
         this.inputs[name]._remove();
@@ -241,15 +243,8 @@ Effect.prototype = {
             }
         };
 
-        if(this.filter instanceof SVG.Effect || this.filter instanceof SVG.ParentEffect){
+        if(this.filter){
             this.filter.front();
-        }
-        else if(typeof this.filter == 'object'){
-            for(var i in this.filter){
-                if(this.filter[i] instanceof SVG.Effect){
-                    this.filter[i].front();
-                }
-            }
         }
     },
 
@@ -363,6 +358,12 @@ Input.prototype = {
     toString: function(){
         return this.getValue();
     },
+    show: function(){
+        $(this.element).show();
+    },
+    hide: function(){
+        $(this.element).hide();
+    },
     render: function(){
         if(!this.effect) return;
         // return $('#temp .effect-input').clone().get(0);
@@ -409,6 +410,12 @@ Output.prototype = {
     },
     toString: function(){
         return this.getValue();
+    },
+    show: function(){
+        $(this.element).show();
+    },
+    hide: function(){
+        $(this.element).hide();
     },
     render: function(){
         if(!this.effect) return;

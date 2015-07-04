@@ -9,7 +9,7 @@ function EffectOutput(){
 EffectOutput.prototype = {
     endpoint: undefined,
     value: function(){
-        return this.effect.getValue();
+        return this.effect.filter;
     },
 
     initEndpoint: function(){
@@ -33,6 +33,10 @@ EffectOutput.prototype = {
     },
     updateElement: function(){
         $(this.element).find('span').text(this.options.title);
+    },
+    arange: function(){
+        if(!this.effect) return;
+        this.effect.arange();
     }
 }
 EffectOutput.prototype.constructor = EffectOutput;

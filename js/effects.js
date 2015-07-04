@@ -9,21 +9,22 @@ function FloodEffect(){
 		step: .1,
 		value: 1
 	}));
-	this.addOutput('out',new EffectOutput(this));
+	this.addOutput('result',new EffectOutput(this));
 
 	this.render();
+
+	this.filter = filter.flood();
+	this.update();
 }
 FloodEffect.prototype = {
 	options: {
 		title: 'Flood'
 	},
-	value: function(){
-		var f = new SVG.FloodEffect({
+	update: function(){
+		this.filter.attr({
 			'flood-color': this.inputs.color.getValue(),
 			'flood-opacity': this.inputs.opacity.getValue(),
 		});
-		filter.put(f);
-		return f;
 	}
 }
 FloodEffect.prototype.constructor = FloodEffect;
@@ -38,26 +39,73 @@ function OffsetEffect(){
 	}));
 	this.addInput('x',new NumberInput(this));
 	this.addInput('y',new NumberInput(this));
-	this.addOutput('out',new EffectOutput(this));
+	this.addOutput('result',new EffectOutput(this));
 
 	this.render();
+
+	this.filter = filter.offset();
+	this.update();
 }
 OffsetEffect.prototype = {
 	options: {
 		title: 'Offset'
 	},
-	value: function(){
-		var f = new SVG.OffsetEffect({
+	update: function(){
+		this.filter.attr({
 			in: this.inputs.in.getValue(),
 			dx: this.inputs.x.getValue(),
 			dy: this.inputs.y.getValue(),
 		})
-		filter.put(f);
-		return f;
 	}
 }
 OffsetEffect.prototype.constructor = OffsetEffect;
 OffsetEffect.prototype.__proto__ = Effect.prototype;
+
+//GaussianBlur
+function GaussianBlurEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('in',new EffectInput(this,{
+		title: "in"
+	}));
+	this.addInput('x',new NumberInput(this,{
+		min: 0,
+		value: undefined
+	}));
+	this.addInput('y',new NumberInput(this,{
+		min: 0,
+		value: undefined
+	}));
+	this.addOutput('result',new EffectOutput(this));
+
+	this.render();
+
+	this.filter = filter.gaussianBlur(0);
+	this.update();
+}
+GaussianBlurEffect.prototype = {
+	options: {
+		title: 'GaussianBlur'
+	},
+	update: function(){
+		var blur = '0';
+
+		if(!isNaN(this.inputs.x.getValue())){
+			blur = this.inputs.x.getValue();
+		}
+
+		if(!isNaN(this.inputs.y.getValue())){
+			blur += ' ' + this.inputs.y.getValue();
+		}
+
+		this.filter.attr({
+			in: this.inputs.in.getValue(),
+			'stdDeviation': blur
+		});
+	}
+}
+GaussianBlurEffect.prototype.constructor = GaussianBlurEffect;
+GaussianBlurEffect.prototype.__proto__ = Effect.prototype;
 
 //merge
 function MergeEffect(){
@@ -69,27 +117,28 @@ function MergeEffect(){
 	this.addInput('in2',new EffectInput(this,{
 		title: "in 2"
 	}));
-	this.addOutput('out',new EffectOutput(this));
+	this.addOutput('result',new EffectOutput(this));
 
 	this.render();
+
+	this.filter = filter.merge();
+	this.update();
 }
 MergeEffect.prototype = {
 	options: {
 		title: 'Merge'
 	},
-	value: function(inputs){
-		var f = new SVG.MergeEffect();
+	update: function(){
+		this.filter.clear();
 		for(var i in this.inputs){
-			f.add(new SVG.MergeNode(this.inputs[i].getValue()));
+			this.filter.add(new SVG.MergeNode(this.inputs[i].getValue()));
 		}
-		filter.put(f);
-		return f;
 	}
 }
 MergeEffect.prototype.constructor = MergeEffect;
 MergeEffect.prototype.__proto__ = Effect.prototype;
 
-//merge
+//composite
 function CompositeEffect(){
 	Effect.apply(this,arguments);
 
@@ -102,44 +151,64 @@ function CompositeEffect(){
 	this.addInput('in2',new EffectInput(this,{
 		title: "in 2"
 	}));
-	this.addOutput('out',new EffectOutput(this));
+	this.addOutput('result',new EffectOutput(this));
 
 	this.render();
+
+	this.filter = filter.composite();
+	this.update();
 }
 CompositeEffect.prototype = {
 	options: {
 		title: 'Composite'
 	},
 	value: function(inputs){
-		// var f = new SVG.CompositeEffect('testing','out');
-		// return f;
+		this.filter.attr({
+			in: this.inputs.in.getValue(),
+			in2: this.inputs.in2.getValue(),
+			operator: this.inputs.operator.getValue()
+		});
 	}
 }
 CompositeEffect.prototype.constructor = CompositeEffect;
 CompositeEffect.prototype.__proto__ = Effect.prototype;
 
-//output
-function OutputEffect(){
+//blend
+function BlendEffect(){
 	Effect.apply(this,arguments);
 
-	this.addInput('in',new EffectInput(this,{
-		title: "out"
+	this.addInput('mode',new SelectInput(this,{
+		options: ['normal','multiply','screen','darken','lighten']
 	}));
+	this.addInput('in',new EffectInput(this,{
+		title: "in 1"
+	}));
+	this.addInput('in2',new EffectInput(this,{
+		title: "in 2"
+	}));
+	this.addOutput('result',new EffectOutput(this));
 
 	this.render();
+
+	this.filter = filter.blend();
+	this.update();
 }
-OutputEffect.prototype = {
+BlendEffect.prototype = {
 	options: {
-		title: 'Output'
+		title: 'Blend'
 	},
-	value: function(){
-		return this.inputs.in.getValue();
+	value: function(inputs){
+		this.filter.attr({
+			in: this.inputs.in.getValue(),
+			in2: this.inputs.in2.getValue(),
+			mode: this.inputs.mode.getValue()
+		});
 	}
 }
-OutputEffect.prototype.constructor = OutputEffect;
-OutputEffect.prototype.__proto__ = Effect.prototype;
+BlendEffect.prototype.constructor = BlendEffect;
+BlendEffect.prototype.__proto__ = Effect.prototype;
 
-//output
+//inputs
 function InputEffect(){
 	Effect.apply(this,arguments);
 
@@ -179,10 +248,39 @@ function InputEffect(){
 InputEffect.prototype = {
 	options: {
 		title: 'Input'
-	},
-	value: function(){
-		//return effect
 	}
 }
 InputEffect.prototype.constructor = InputEffect;
 InputEffect.prototype.__proto__ = Effect.prototype;
+
+//output
+function OutputEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('in',new EffectInput(this,{
+		title: "out"
+	}));
+
+	this.render();
+
+	this.filter = filter.offset()
+	this.update();
+}
+OutputEffect.prototype = {
+	options: {
+		title: 'Output'
+	},
+	value: function(){
+		return this.inputs.in.getValue();
+	},
+	update: function(){
+		this.filter.attr({
+			in: this.inputs.in.getValue() || 'SourceGraphic',
+			result: 'output'
+		});
+
+		this.arange();
+	}
+}
+OutputEffect.prototype.constructor = OutputEffect;
+OutputEffect.prototype.__proto__ = Effect.prototype;

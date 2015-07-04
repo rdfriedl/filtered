@@ -1,5 +1,7 @@
 var editor;
-var filter = new SVG.Filter();
+var svg = undefined;
+var filter = undefined;
+var text = undefined;
 var connectorPaintStyle = {
         lineWidth: 4,
         strokeStyle: "#61B7CF",
@@ -49,6 +51,17 @@ var connectorPaintStyle = {
     };
 
 function initEditor(){
+    svg = new SVG('preview');
+    filter = svg.filter();
+
+    var bbox = svg.bbox();
+    text = svg.text('Text');
+    text.font({
+        size: '120px',
+        'font-family': "'Ultra', serif"
+    })
+    text.filter(filter);
+
     editor = jsPlumb.getInstance({
         // default drag options
         DragOptions: { cursor: 'pointer', zIndex: 2000 },
@@ -127,13 +140,13 @@ $(document).ready(function(){
 
         editor.bind('connection',function(info){
             if(info.targetEndpoint.getParameter('this') instanceof EffectInput){
-                info.targetEndpoint.getParameter('this').connectionEvent(info);
+                info.targetEndpoint.getParameter('this').connectionEvent(info.sourceEndpoint.getParameter('this'));
             }
         })
 
         editor.bind('connectionDetached',function(info){
             if(info.targetEndpoint.getParameter('this') instanceof EffectInput){
-                info.targetEndpoint.getParameter('this').connectionDetachedEvent(info);
+                info.targetEndpoint.getParameter('this').connectionDetachedEvent(info.sourceEndpoint.getParameter('this'));
             }
         })
 
@@ -168,6 +181,11 @@ $(document).ready(function(){
             page.editor.zoom.zoomOut();
         }
     })
+
+    $(window).resize(function(){
+        text.center($('#preview').width()/2,$('#preview').height()/2);
+    })
+    $(window).trigger('resize');
 });
 
 //effect
@@ -190,6 +208,7 @@ function Effect(opts){
 Effect.prototype = {
     id: '',
     element: undefined,
+    filter: undefined,
     inputs: {}, //array of inputs
     outputs: {}, //array of outputs
     options: {
@@ -221,13 +240,41 @@ Effect.prototype = {
         this.render();
     },
 
-    value: '',
-    getValue: function(){
-        if(typeof this.value == 'function'){
-            return this.value(this.inputs);
+    hide: function(){
+        if(!this.filter) return;
+        this.filter.hide();
+    },
+
+    show: function(){
+        if(!this.filter) return;
+        this.filter.show();
+    },
+
+    update: function(){ //updates its own filter element
+        if(!this.filter) return;
+
+        for(var i in this.inputs){
+            this.filter.attr(i,this.inputs[i].getValue());
         }
-        else{
-            return this.value;
+    },
+    arange: function(){
+        this.show();
+        
+        for (var i in this.inputs) {
+            if(this.inputs[i] instanceof EffectInput){
+                this.inputs[i].arange();
+            }
+        };
+
+        if(this.filter instanceof SVG.Effect || this.filter instanceof SVG.ParentEffect){
+            this.filter.front();
+        }
+        else if(typeof this.filter == 'object'){
+            for(var i in this.filter){
+                if(this.filter[i] instanceof SVG.Effect){
+                    this.filter[i].front();
+                }
+            }
         }
     },
 
@@ -285,6 +332,9 @@ Input.prototype = {
             return this.value;
         }
     },
+    change: function(){ //fires when input changes
+        this.effect.update();
+    },
     toString: function(){
         return this.getValue();
     },
@@ -338,18 +388,3 @@ Output.prototype = {
     }
 }
 Output.prototype.constructor = Output;
-
-// jsPlumb._Anchor = jsPlumb.Anchor;
-// jsPlumb.Anchor = function(a) {
-//     jsPlumb._Anchor.apply(this,arguments);
-//     this.compute = function(a) {
-//         var b = a.xy
-//           , c = a.wh
-//           , d = a.timestamp;
-//         return a.clearUserDefinedLocation && (this.userDefinedLocation = null ),
-//         d && d === self.timestamp ? this.lastReturnValue : (this.lastReturnValue = null  != this.userDefinedLocation ? this.userDefinedLocation : [b[0] + this.x + this.offsets[0], b[1] + this.y + this.offsets[1]],
-//         this.timestamp = d,
-//         this.lastReturnValue)
-//     }
-//     this.__proto__ = jsPlumb._Anchor.prototype;
-// }

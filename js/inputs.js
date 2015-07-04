@@ -17,11 +17,13 @@ EffectInput.prototype = {
         this.endpoint = editor.addEndpoint(this.effect.id,inputEndPoint);
         this.endpoint.setParameter('this',this);
     },
-    connectionEvent: function(info){
-        this.connection = info.sourceEndpoint.getParameter('this');
+    connectionEvent: function(output){
+        this.connection = output;
+        this.change();
     },
-    connectionDetachedEvent: function(info){
+    connectionDetachedEvent: function(){
         this.connection = undefined;
+        this.change();
     },
     updateEndpointPosition: function(){
         var bbox = this.element.getBoundingClientRect();
@@ -39,7 +41,11 @@ EffectInput.prototype = {
         return this.element;
     },
     updateElement: function(){
-        $(this.element).find('span').text(this.options.title);
+        $(this.element).text(this.options.title);
+    },
+    arange: function(){
+        if(!this.connection) return;
+        this.connection.arange();
     }
 }
 EffectInput.prototype.constructor = EffectInput;
@@ -47,17 +53,20 @@ EffectInput.prototype.__proto__ = Input.prototype;
 
 //ColorInput
 function ColorInput(){
-    Input.apply(this,arguments)
+    Input.apply(this,arguments);
 
-    this.element = $('#temp .color-input').clone().get(0);
+    $el = $('#temp .color-input').clone();
+    this.element = $el.get(0);
+
+    //events
+    $el.on('input',this.change.bind(this));
 }
 ColorInput.prototype = {
-    endpoint: undefined,
     options: {
         value: '#000000'
     },
     value: function(){
-        return $(this.element).find('input').val();
+        return $(this.element).val();
     },
 
     render: function(){
@@ -65,7 +74,7 @@ ColorInput.prototype = {
         return this.element;
     },
     updateElement: function(){
-        $(this.element).find('input').val(this.options.value);
+        $(this.element).val(this.options.value);
     }
 }
 ColorInput.prototype.constructor = ColorInput;
@@ -75,16 +84,19 @@ ColorInput.prototype.__proto__ = Input.prototype;
 function SelectInput(){
     Input.apply(this,arguments)
 
-    this.element = $('#temp .select-input').clone().get(0);
+    $el = $('#temp .select-input').clone();
+    this.element = $el.get(0);
+
+    //events
+    $el.on('change',this.change.bind(this));
 }
 SelectInput.prototype = {
-    endpoint: undefined,
     options: {
         options: [],
         value: ''
     },
     value: function(){
-        return $(this.element).find('select').val();
+        return $(this.element).val();
     },
 
     render: function(){
@@ -95,9 +107,9 @@ SelectInput.prototype = {
         var $el = $(this.element);
         for (var i = 0; i < this.options.options.length; i++) {
             var val = this.options.options[i];
-            $('<option>').text(val.title || val).attr('value',val.value || val).appendTo($el.find('select'));
+            $('<option>').text(val.title || val).attr('value',val.value || val).appendTo($el);
         };
-        $el.find('select').val(this.options.value);
+        $el.val(this.options.value);
     }
 }
 SelectInput.prototype.constructor = SelectInput;
@@ -107,18 +119,21 @@ SelectInput.prototype.__proto__ = Input.prototype;
 function NumberInput(){
     Input.apply(this,arguments)
 
-    this.element = $('#temp .number-input').clone().get(0);
+    $el = $('#temp .number-input').clone();
+    this.element = $el.get(0);
+
+    //events
+    $el.on('input',this.change.bind(this));
 }
 NumberInput.prototype = {
-    endpoint: undefined,
     options: {
-        min: 0,
-        max: 0,
-        step: 1,
+        min: undefined,
+        max: undefined,
+        step: undefined,
         value: 0
     },
     value: function(){
-        return parseInt($(this.element).find('input').val());
+        return parseFloat($(this.element).val());
     },
 
     render: function(){
@@ -126,7 +141,7 @@ NumberInput.prototype = {
         return this.element;
     },
     updateElement: function(){
-        $(this.element).find('input').attr({
+        $(this.element).attr({
             min: this.options.min,
             max: this.options.max,
             step: this.options.step,
@@ -135,3 +150,32 @@ NumberInput.prototype = {
 }
 NumberInput.prototype.constructor = NumberInput;
 NumberInput.prototype.__proto__ = Input.prototype;
+
+//TextInput
+function TextInput(){
+    Input.apply(this,arguments)
+
+    $el = $('#temp .text-input').clone();
+    this.element = $el.get(0);
+
+    //events
+    $el.on('input',this.change.bind(this));
+}
+TextInput.prototype = {
+    options: {
+        value: ''
+    },
+    value: function(){
+        return $(this.element).val();
+    },
+
+    render: function(){
+        if(!this.effect) return;
+        return this.element;
+    },
+    updateElement: function(){
+        $(this.element).val(this.options.value);
+    }
+}
+TextInput.prototype.constructor = TextInput;
+TextInput.prototype.__proto__ = Input.prototype;

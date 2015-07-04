@@ -19,6 +19,10 @@ page = {
 				effect: OffsetEffect
 			},
 			{
+				title: 'GaussianBlur',
+				effect: GaussianBlurEffect
+			},
+			{
 				title: 'Merge',
 				effect: MergeEffect
 			},
@@ -26,9 +30,14 @@ page = {
 				title: 'Composite',
 				effect: CompositeEffect
 			},
+			{
+				title: 'Blend',
+				effect: BlendEffect
+			},
 		]),
 		createEffect: function(){
 			page.effects.effects.push(new this.effect());
+			page.editor.arange();
 		}
 	},
 	editor: {
@@ -53,12 +62,11 @@ page = {
 		pan: {
 
 		},
-		preview: {
-			update: function(){
-				filter.clear();
-				page.outputEffect.getValue();
-				console.log(filter.node);
-			}
+		arange: function(){
+			for (var i = 0; i < page.effects.effects.length; i++) {
+				page.effects.effects[i].hide();
+			};
+			page.outputEffect.arange();
 		}
 	}
 }

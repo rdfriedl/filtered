@@ -45,6 +45,10 @@ page = {
 				effect: MorphologyEffect
 			},
 			{
+				title: 'ColorMatrix',
+				effect: ColorMatrixEffect
+			},
+			{
 				title: 'DisplacementMap',
 				effect: DisplacementMapEffect
 			},
@@ -107,7 +111,7 @@ page = {
 		},
 		exproted: ko.observable(''),
 		exportFilter: function(){
-			page.editor.exproted(filter.node.outerHTML.replace(/</g,'\r\n<'));
+			page.editor.exproted(filter.node.outerHTML.replace(/</g,'\n<'));
 		},
 		preview: {
 			text: {

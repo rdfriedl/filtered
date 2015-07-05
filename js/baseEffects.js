@@ -70,10 +70,10 @@ function TileEffect(){
 	}));
 	this.addOutput('result',new EffectOutput(this));
 
+	this.render();
+
 	this.filter = new SVG.TileEffect();
 	this.update();
-
-	this.render();
 }
 TileEffect.prototype = {
 	options: {
@@ -297,6 +297,7 @@ MergeEffect.prototype = {
                 this.addInput('in'+(a.length+1), new EffectInput(this,{
                 	title: 'in '+(a.length+1)
                 }));
+                this.render();
             }
         },
         {
@@ -305,7 +306,10 @@ MergeEffect.prototype = {
             title: 'Remove Input',
             action: function(){
             	var a = Object.keys(this.inputs);
-                if(a.length > 0) this.removeInput(a[a.length-1]);
+                if(a.length > 0){
+                	this.removeInput(a[a.length-1]);
+                	this.render();
+                }
             }
         },
         {
@@ -403,6 +407,75 @@ CompositeEffect.prototype = {
 }
 CompositeEffect.prototype.constructor = CompositeEffect;
 CompositeEffect.prototype.__proto__ = Effect.prototype;
+
+//ColorMatrix
+function ColorMatrixEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('in',new EffectInput(this,{
+		title: "in 1"
+	}));
+	this.addInput('type',new SelectInput(this,{
+		options: ["matrix",'saturate','hueRotate','luminanceToAlpha']
+	}));
+	this.addInput('matrix',new MatrixSizeInput(this,{
+		width: 5,
+		height: 4
+	}));
+	this.addInput('saturate',new NumberInput(this,{
+		min: 0,
+		max: 1,
+		step: .1,
+		value: 0
+	}));
+	this.addInput('hueRotate',new NumberInput(this,{
+		min: 0,
+		max: 360,
+		step: 10,
+		value: 0
+	}));
+
+	this.addOutput('result',new EffectOutput(this));
+
+	this.render();
+
+	this.filter = new SVG.ColorMatrixEffect();
+	this.update();
+}
+ColorMatrixEffect.prototype = {
+	options: {
+		title: 'ColorMatrix'
+	},
+	update: function(inputs){
+		this.inputs.matrix.hide();
+		this.inputs.saturate.hide();
+		this.inputs.hueRotate.hide();
+
+		this.filter.attr('values',null);
+		switch(this.inputs.type.getValue()){
+			case 'matrix':
+				this.inputs.matrix.show();
+				this.filter.attr('values',this.inputs.matrix.getValue());
+				break;
+			case 'saturate':
+				this.inputs.saturate.show();
+				this.filter.attr('values',this.inputs.saturate.getValue());
+				break;
+			case 'hueRotate':
+				this.inputs.hueRotate.show();
+				this.filter.attr('values',this.inputs.hueRotate.getValue());
+				break;
+		}
+		this.updateEndpoints();
+
+		this.filter.attr({
+			in: this.inputs.in.getValue(),
+			type: this.inputs.type.getValue(),
+		});
+	}
+}
+ColorMatrixEffect.prototype.constructor = ColorMatrixEffect;
+ColorMatrixEffect.prototype.__proto__ = Effect.prototype;
 
 //blend
 function BlendEffect(){

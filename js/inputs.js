@@ -65,6 +65,8 @@ function ColorInput(){
     this.titleElement = $el.find('.effect-title')[0];
     this.inputElement = $el.find('.effect-input-control')[0];
     this.inputElement.addEventListener('input',this.change.bind(this));
+
+    $(this.inputElement).val(this.options.value);
 }
 ColorInput.prototype = {
     options: {
@@ -80,7 +82,6 @@ ColorInput.prototype = {
     },
     updateElement: function(){
         Input.prototype.updateElement.call(this);
-        $(this.inputElement).val(this.options.value);
     }
 }
 ColorInput.prototype.constructor = ColorInput;
@@ -92,7 +93,7 @@ function SelectInput(){
 
     $el = $('#temp .select-input').clone();
 
-    this.element = $el.get(0);
+    this.element = $el[0];
     this.titleElement = $el.find('.effect-title')[0];
     this.inputElement = $el.find('.effect-input-control')[0];
     this.inputElement.addEventListener('change',this.change.bind(this));
@@ -131,7 +132,7 @@ function NumberInput(){
 
     $el = $('#temp .number-input').clone();
 
-    this.element = $el.get(0);
+    this.element = $el[0];
     this.titleElement = $el.find('.effect-title')[0];
     this.inputElement = $el.find('.effect-input-control')[0];
     this.inputElement.addEventListener('input',this.change.bind(this));
@@ -168,11 +169,16 @@ NumberInput.prototype.__proto__ = Input.prototype;
 function TextInput(){
     Input.apply(this,arguments)
 
+    $el = $('#temp .text-input').clone();
+
     //events
+    this.element = $el[0];
     $el.on('input',this.change.bind(this));
     this.titleElement = $el.find('.effect-title')[0];
     this.inputElement = $el.find('.effect-input-control')[0];
     this.inputElement.addEventListener('input',this.change.bind(this));
+        
+    $(this.inputElement).val(this.options.value);
 }
 TextInput.prototype = {
     options: {
@@ -188,9 +194,142 @@ TextInput.prototype = {
     },
     updateElement: function(){
         Input.prototype.updateElement.call(this);
-        
-        $(this.inputElement).val(this.options.value);
     }
 }
 TextInput.prototype.constructor = TextInput;
 TextInput.prototype.__proto__ = Input.prototype;
+
+//MatrixInput
+function MatrixInput(){
+    Input.apply(this,arguments)
+
+    $el = $('#temp .matrix-input').clone();
+
+    //events
+    this.element = $el[0];
+    $el.on('input',this.change.bind(this));
+    this.titleElement = $el.find('.effect-title')[0];
+    this.inputElement = $el.find('.effect-input-control')[0];
+    this.inputElement.addEventListener('input',this.change.bind(this));
+        
+    $(this.inputElement).val(this.options.value);
+}
+MatrixInput.prototype = {
+    matrix: [],
+    options: {
+        value: ''
+    },
+    value: function(){
+        return this.matrix.join(' ');
+    },
+
+    render: function(){
+        if(!this.effect) return;
+        return this.element;
+    },
+    change: function(){
+        var rows = $(this.inputElement).val().split('\n');
+        for (var i = 0; i < rows.length; i++) {
+            rows[i] = rows[i].split(' ');
+        };
+
+        this.matrix = [];
+        for (var i = 0; i < rows.length; i++) {
+            for (var k = 0; k < rows[i].length; k++) {
+                if(!isNaN(parseFloat(rows[i][k]))){
+                    this.matrix.push(parseFloat(rows[i][k]));
+                }
+            };
+        };
+
+        this.effect.update();
+    },
+    updateElement: function(){
+        Input.prototype.updateElement.call(this);
+    }
+}
+MatrixInput.prototype.constructor = MatrixInput;
+MatrixInput.prototype.__proto__ = Input.prototype;
+
+//MatrixSizeInput
+function MatrixSizeInput(){
+    Input.apply(this,arguments)
+
+    $el = $('#temp .matrix-size-input').clone();
+
+    //events
+    this.element = $el[0];
+    $el.on('input',this.change.bind(this));
+    this.titleElement = $el.find('.effect-title')[0];
+    this.inputElement = $el.find('.effect-input-control')[0];
+    // this.inputElement.addEventListener('input',this.change.bind(this));
+
+    $(this.inputElement).val(this.options.value);
+
+    for (var i = 0; i < this.options.width*this.options.height; i++) {
+        this.matrix.push(this.options.value);
+    };
+}
+MatrixSizeInput.prototype = {
+    matrix: [],
+    options: {
+        width: 3,
+        height: 3,
+        value: 0
+    },
+    value: function(){
+        return this.matrix.join(' ');
+    },
+
+    render: function(){
+        if(!this.effect) return;
+        return this.element;
+    },
+    change: function(){
+        var $rows = $(this.inputElement).find('tr');
+
+        this.matrix = [];
+        $rows.each(function(i,el){
+            $row = $(el);
+            $row.find('td').each(function(i,el){
+                var val = parseFloat($(el).find('input').val());
+                if(!isNaN(val)){
+                    this.matrix.push(val);
+                }
+                else{
+                    this.matrix.push(0);
+                }
+            }.bind(this))
+        }.bind(this))
+
+        this.effect.update();
+    },
+    updateElement: function(){
+        Input.prototype.updateElement.call(this);
+
+        $(this.inputElement).children().remove();
+        for (var row = 0; row < this.options.height; row++) {
+            var $tr = $('<tr>');
+
+            for (var col = 0; col < this.options.width; col++) {
+                var $td = $('<td>');
+                var $input = $('<input>').val(this.options.value).on('change, input',function(event){
+                    this.change();
+                }.bind(this)).on('focus, mouseup',function(event){
+                    event.target.setSelectionRange(0,event.target.value.length)
+                }).change(function(){
+                    if(isNaN(parseFloat($(this).val()))){
+                        $(this).val(0);
+                    }
+                });
+                
+                $td.append($input);
+                $tr.append($td);
+            };
+
+            $(this.inputElement).append($tr);
+        };
+    }
+}
+MatrixSizeInput.prototype.constructor = MatrixSizeInput;
+MatrixSizeInput.prototype.__proto__ = Input.prototype;

@@ -100,38 +100,23 @@ path, ._jsPlumb_endpoint {
     word-wrap: normal;
 }
 
+#editor .effect:nth-child(1){
+    top: 20%;
+    left: 10%;
+}
 
-.dropdown-submenu {
-    position: relative;
+#editor .effect:nth-child(8){
+    top: 25%;
+    left: 75%;
 }
-.dropdown-submenu>.dropdown-menu {
-    top: 0;
-    left: 100%;
-    margin-top: -6px;
+
+.matrix-size-input .matrix{
+    margin: auto;
+    margin-top: 10px;
 }
-.dropdown-submenu:hover>.dropdown-menu {
-    display: block;
-}
-.dropdown-submenu>a:after {
-    display: block;
-    content: " ";
-    float: right;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
-    border-width: 5px 0 5px 5px;
-    border-left-color: #ccc;
-    margin-top: 5px;
-    margin-right: -10px;
-}
-.dropdown-submenu:hover>a:after {
-    border-left-color: #fff;
-}
-.dropdown-submenu.pull-left {
-    float: none;
-}
-.dropdown-submenu.pull-left>.dropdown-menu {
-    left: -100%;
-    margin-left: 10px;
+.matrix-size-input .matrix input{
+    width: 2em;
+    text-align: center;
+    padding: 0px;
+    font-weight: bold;
 }

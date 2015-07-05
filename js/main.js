@@ -208,24 +208,24 @@ Effect.prototype = {
     addInput: function(name,input){
         this.inputs[name] = input;
         input.options.title = input.options.title || name;
-        this.render();
+        // this.render();
         return input;
     },
     addOutput: function(name,output){
         this.outputs[name] = output;
         output.options.title = output.options.title || name;
-        this.render();
+        // this.render();
         return output;
     },
     removeInput: function(name){
         this.inputs[name]._remove();
         delete this.inputs[name];
-        this.render();
+        // this.render();
     },
     removeOutput: function(name){
         this.outputs[name]._remove();
         delete this.outputs[name];
-        this.render();
+        // this.render();
     },
 
     hide: function(){

@@ -95,13 +95,9 @@ function GaussianBlurEffect(){
 	this.addInput('in',new EffectInput(this,{
 		title: "in"
 	}));
-	this.addInput('x',new NumberInput(this,{
+	this.addInput('blur',new XYInput(this,{
 		min: 0,
-		value: undefined
-	}));
-	this.addInput('y',new NumberInput(this,{
-		min: 0,
-		value: undefined
+		value: 0
 	}));
 	this.addOutput('result',new EffectOutput(this));
 
@@ -115,19 +111,10 @@ GaussianBlurEffect.prototype = {
 		title: 'Blur'
 	},
 	update: function(){
-		var blur = '0';
-
-		if(!isNaN(this.inputs.x.getValue())){
-			blur = this.inputs.x.getValue();
-		}
-
-		if(!isNaN(this.inputs.y.getValue())){
-			blur += ' ' + this.inputs.y.getValue();
-		}
 
 		this.filter.attr({
 			in: this.inputs.in.getValue(),
-			'stdDeviation': blur
+			'stdDeviation': this.inputs.blur.getValue()
 		});
 	}
 }
@@ -153,7 +140,7 @@ function MorphologyEffect(){
 			}
 		]
 	}));
-	this.addInput('radius',new NumberInput(this,{
+	this.addInput('radius',new XYInput(this,{
 		min: 0,
 		value: 0
 	}));
@@ -229,7 +216,7 @@ DisplacementMapEffect.prototype.__proto__ = Effect.prototype;
 function TurbulenceEffect(){
 	Effect.apply(this,arguments);
 
-	this.addInput('baseFrequency',new NumberInput(this));
+	this.addInput('baseFrequency',new XYInput(this));
 	this.addInput('numOctaves',new NumberInput(this,{
 		min: 0,
 		value: 1
@@ -476,6 +463,70 @@ ColorMatrixEffect.prototype = {
 }
 ColorMatrixEffect.prototype.constructor = ColorMatrixEffect;
 ColorMatrixEffect.prototype.__proto__ = Effect.prototype;
+
+//ConvolveMatrix
+function ConvolveMatrixEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('in',new EffectInput(this,{
+		title: "in 1"
+	}));
+	this.addInput('order',new XYInput(this,{
+		min: 1,
+		value: 3
+	}));
+	this.addInput('matrix',new MatrixSizeInput(this,{
+		width: 3,
+		height: 3
+	}));
+	this.addInput('divisor',new NumberInput(this,{
+		min: 0,
+		value: 1
+	}));
+	this.addInput('bias',new NumberInput(this,{
+		min: 0,
+		value: 0
+	}));
+	this.addInput('edgeMode',new SelectInput(this,{
+		options: ['duplicate','wrap','none']
+	}));
+	this.addInput('preserveAlpha',new SelectInput(this,{
+		options: ['false','true']
+	}));
+
+	this.addOutput('result',new EffectOutput(this));
+
+	this.render();
+
+	this.filter = new SVG.ConvolveMatrixEffect('');
+	this.update();
+}
+ConvolveMatrixEffect.prototype = {
+	styles: {
+		width: '300px'
+	},
+	options: {
+		title: 'ConvolveMatrix'
+	},
+	update: function(inputs){
+		if(this.inputs.order.getX() !== this.inputs.matrix.getSize().width || this.inputs.order.getY() !== this.inputs.matrix.getSize().height){
+			this.inputs.matrix.setSize(this.inputs.order.getX(),this.inputs.order.getY());
+			this.updateEndpoints();
+		}
+
+		this.filter.attr({
+			in: this.inputs.in.getValue(),
+			order: this.inputs.order.getValue(),
+			kernelMatrix: this.inputs.matrix.getValue(),
+			divisor: this.inputs.divisor.getValue(),
+			bias: this.inputs.bias.getValue(),
+			edgeMode: this.inputs.edgeMode.getValue(),
+			preserveAlpha: this.inputs.preserveAlpha.getValue()
+		});
+	}
+}
+ConvolveMatrixEffect.prototype.constructor = ConvolveMatrixEffect;
+ConvolveMatrixEffect.prototype.__proto__ = Effect.prototype;
 
 //blend
 function BlendEffect(){

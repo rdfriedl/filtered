@@ -171,6 +171,7 @@ Effect.prototype = {
     filter: undefined,
     inputs: {}, //array of inputs
     outputs: {}, //array of outputs
+    styles: {},
     options: {
         title: ''
     },
@@ -189,6 +190,9 @@ Effect.prototype = {
 
     initElement: function(){
         this.element = $('#temp .effect').clone(true,true).attr('id',this.id).get(0);
+
+        //apply styles
+        $(this.element).css(this.styles);
 
         $('#editor').append(this.element);
 

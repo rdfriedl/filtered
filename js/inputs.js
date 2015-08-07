@@ -280,6 +280,19 @@ MatrixSizeInput.prototype = {
     value: function(){
         return this.matrix.join(' ');
     },
+    setSize: function(x,y){
+        x = isNaN(x)? 0 : x;
+        y = isNaN(y)? x : y;
+        this.options.width = x;
+        this.options.height = y;
+        this.updateElement();
+    },
+    getSize: function(){
+        return {
+            width: this.options.width,
+            height: this.options.height
+        }
+    },
 
     render: function(){
         if(!this.effect) return;
@@ -333,3 +346,58 @@ MatrixSizeInput.prototype = {
 }
 MatrixSizeInput.prototype.constructor = MatrixSizeInput;
 MatrixSizeInput.prototype.__proto__ = Input.prototype;
+
+//XYInput
+function XYInput(){
+    Input.apply(this,arguments)
+
+    $el = $('#temp .xy-input').clone();
+
+    this.element = $el[0];
+    this.titleElement = $el.find('.effect-title')[0];
+    this.XinputElement = $el.find('.x-input.effect-input-control')[0];
+    this.XinputElement.addEventListener('input',this.change.bind(this));
+    this.YinputElement = $el.find('.y-input.effect-input-control')[0];
+    this.YinputElement.addEventListener('input',this.change.bind(this));
+}
+XYInput.prototype = {
+    options: {
+        min: undefined,
+        max: undefined,
+        step: undefined,
+        value: 0
+    },
+    value: function(){
+        return this.getX() + ' ' + this.getY();
+    },
+    getX: function(){
+        var v = parseFloat($(this.XinputElement).val());
+        return !isNaN(v)? v : 0;
+    },
+    getY: function(){
+        var v = parseFloat($(this.YinputElement).val());
+        return !isNaN(v)? v : this.getX();
+    },
+
+    render: function(){
+        if(!this.effect) return;
+        return this.element;
+    },
+    updateElement: function(){
+        Input.prototype.updateElement.call(this);
+
+        $(this.XinputElement).attr({
+            min: this.options.min,
+            max: this.options.max,
+            step: this.options.step,
+        }).val(this.options.value);
+
+        $(this.YinputElement).attr({
+            min: this.options.min,
+            max: this.options.max,
+            step: this.options.step,
+        });//.val(this.options.value); dont set the value since this one can be blank
+    }
+}
+XYInput.prototype.constructor = XYInput;
+XYInput.prototype.__proto__ = Input.prototype;

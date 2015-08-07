@@ -29,6 +29,9 @@ html,body,body>.row,.full-height{
 textarea{
     resize: vertical;
 }
+.modal-xl{
+    width: 90%;
+}
 
 #editor {
     /* for IE10+ touch devices */

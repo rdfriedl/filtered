@@ -49,6 +49,10 @@ page = {
 				effect: ColorMatrixEffect
 			},
 			{
+				title: 'ConvolveMatrix',
+				effect: ConvolveMatrixEffect
+			},
+			{
 				title: 'DisplacementMap',
 				effect: DisplacementMapEffect
 			},
@@ -118,6 +122,27 @@ page = {
 				text: observable('Text',function(val){
 					text.text(val);
         			updateTextPostion();
+				}),
+				fonts: ko.observableArray([
+					"Georgia, serif",
+					'"Palatino Linotype", "Book Antiqua", Palatino, serif',
+					'"Times New Roman", Times, serif',
+					'Arial, Helvetica, sans-serif',
+					'"Arial Black", Gadget, sans-serif',
+					'"Comic Sans MS", cursive, sans-serif',
+					'Impact, Charcoal, sans-serif',
+					'"Lucida Sans Unicode", "Lucida Grande", sans-serif',
+					'Tahoma, Geneva, sans-serif',
+					'"Trebuchet MS", Helvetica, sans-serif',
+					'Verdana, Geneva, sans-serif',
+					'"Courier New", Courier, monospace',
+					'"Lucida Console", Monaco, monospace'
+				]),
+				font: observable("'Ultra', serif",function(val){
+					text.font({
+						'font-family': val
+					});
+					updateTextPostion();
 				}),
 				fontWeights: ['normal','lighter','bold','bolder'],
 				fontWeight: observable(false,function(val){

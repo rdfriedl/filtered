@@ -1,7 +1,7 @@
 # Filtered
 Simple Svg Filter builder
 
-![screenshot](https://raw.githubusercontent.com/rdfriedl/filtered/master/screenshot.jpg)
+![screenshot](https://raw.githubusercontent.com/rdfriedl/filtered/master/screenshot.png)
 
 ### Browser Support
 - Chrome

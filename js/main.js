@@ -132,6 +132,9 @@ $(document).ready(function(){
         }
     })
 
+    //copy
+    new ZeroClipboard($("#copy")[0]);
+
     $(window).resize(function(){
         updateTextPostion();
     })

@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/prettify.css">
         <link rel="stylesheet" href="css/style.css">
 
         <script src="lib/jquery.js"></script>
@@ -17,6 +18,10 @@
         <script src="lib/svg.js"></script>
         <script src="lib/svg.filter.js"></script>
         
+        <script src="lib/prettify.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.Core.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
+
         <script src="js/main.js"></script>
         <script src="js/effects.js"></script>
         <script src="js/baseEffects.js"></script>
@@ -118,11 +123,12 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
+                        <a id="copy" class="btn btn-info btn-sm pull-right" data-bind="attr: {'data-clipboard-text': editor.exproted}">Copy to clipboard</a>
                         <h4 class="modal-title">Export</h4>
                     </div>
                     <div class="modal-body">
-                        <pre class="form-control" data-bind="text: editor.exproted"></pre>
+                        <pre class="form-control prettyprint lang-html" data-bind="text: editor.exproted"></pre>
                     </div>
                 </div>
             </div>

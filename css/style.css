@@ -1,4 +1,4 @@
-*{
+*: not(#preview *){
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -32,6 +32,9 @@ textarea{
 .modal-xl{
     width: 90%;
 }
+.btn.zeroclipboard-is-hover{
+    background-color: #31b0d5;
+}
 
 #editor {
     /* for IE10+ touch devices */
@@ -45,6 +48,7 @@ textarea{
     z-index: 20;
     position: absolute;
     opacity: .8;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.48);
 }
 
 #editor .effect .panel-body{

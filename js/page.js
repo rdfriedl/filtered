@@ -115,7 +115,9 @@ page = {
 		},
 		exproted: ko.observable(''),
 		exportFilter: function(){
-			page.editor.exproted(filter.node.outerHTML.replace(/</g,'\n<'));
+			page.editor.exproted(filter.node.outerHTML.replace(/></g,'>\n<'));
+			$('.prettyprinted').removeClass('prettyprinted');
+			prettyPrint();
 		},
 		preview: {
 			text: {

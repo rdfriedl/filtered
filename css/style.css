@@ -105,6 +105,8 @@ path, ._jsPlumb_endpoint {
     user-select: all;
     height: auto;
     word-wrap: normal;
+    background-color: white;
+    border: none;
 }
 
 #editor .effect:nth-child(1){

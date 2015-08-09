@@ -33,7 +33,12 @@ MultiEffect.prototype = {
         for (var i = 0; i < a.length; i++) {
             this.filter[a[i]].front();
         }
-	}
+	},
+    select: function(){
+    	var a = Object.keys(this.filter);
+    	var filter = this.filter[a[a.length-1]];
+        page.outputEffect.filter.attr('in',filter);
+    }
 }
 MultiEffect.prototype.constructor = MultiEffect;
 MultiEffect.prototype.__proto__ = Effect.prototype;

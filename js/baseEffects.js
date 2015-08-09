@@ -605,6 +605,7 @@ InputEffect.prototype = {
 		title: 'Input'
 	},
 	menu: [],
+	canSelect: false,
 	toggleButton: false
 }
 InputEffect.prototype.constructor = InputEffect;
@@ -628,6 +629,7 @@ OutputEffect.prototype = {
 		title: 'Output'
 	},
 	menu: [],
+	canSelect: false,
 	toggleButton: false,
 	update: function(){
 		return this.inputs.in.getValue();

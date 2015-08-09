@@ -135,6 +135,13 @@ $(document).ready(function(){
     //copy
     new ZeroClipboard($("#copy")[0]);
 
+    $('#editor').click(function(event){
+        if($('.effect, .effect *').find(event.target).length > 0) return;
+
+        $('.effect').removeClass('selected');
+        page.outputEffect.update();
+    });
+
     $(window).resize(function(){
         updateTextPostion();
     })
@@ -188,6 +195,7 @@ Effect.prototype = {
             }
         }
     ],
+    canSelect: true,
     toggleButton: true,
     plumb: undefined,
 
@@ -203,6 +211,14 @@ Effect.prototype = {
             $(this.element).toggleClass('collapsed');
             this.updateEndpoints();
         }.bind(this))
+
+        //select this element
+        this.canSelect && $(this.element).mousedown(function(event){
+            $('.effect').removeClass('selected');
+            $(event.currentTarget).addClass('selected');
+
+            this.select();
+        }.bind(this));
     },
     initPlumb: function(){
         this.plumb = editor.draggable(this.element);
@@ -271,6 +287,9 @@ Effect.prototype = {
         if(this.filter){
             this.filter.front();
         }
+    },
+    select: function(){
+        page.outputEffect.filter.attr('in',this.filter);
     },
 
     render: function(){

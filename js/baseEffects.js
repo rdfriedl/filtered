@@ -216,7 +216,11 @@ DisplacementMapEffect.prototype.__proto__ = Effect.prototype;
 function TurbulenceEffect(){
 	Effect.apply(this,arguments);
 
-	this.addInput('baseFrequency',new XYInput(this));
+	this.addInput('baseFrequency',new XYInput(this,{
+		min: 0,
+		step: 0.05,
+		value: 0
+	}));
 	this.addInput('numOctaves',new NumberInput(this,{
 		min: 0,
 		value: 1
@@ -256,7 +260,7 @@ TurbulenceEffect.prototype = {
 TurbulenceEffect.prototype.constructor = TurbulenceEffect;
 TurbulenceEffect.prototype.__proto__ = Effect.prototype;
 
-//merge
+//Merge
 function MergeEffect(){
 	Effect.apply(this,arguments);
 
@@ -307,7 +311,15 @@ MergeEffect.prototype = {
             icon: 'eye',
             title: 'Preview',
             action: function(){
-                this.select();
+                this.selectk();
+            }
+        },
+        {
+            type: 'item',
+            icon: 'object-ungroup',
+            title: 'Position',
+            action: function(){
+                this.editPosition();
             }
         },
         {

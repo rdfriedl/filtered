@@ -35,9 +35,20 @@ MultiEffect.prototype = {
         }
 	},
     select: function(){
+        $('.effect').removeClass('selected');
+        $(this.element).addClass('selected');
+
     	var a = Object.keys(this.filter);
     	var filter = this.filter[a[a.length-1]];
         page.outputEffect.filter.attr('in',filter);
+    },
+    updatePostion: function(){
+    	for(var i in this.filter){
+	        this.filter[i].width(this.position.width + '%');
+	        this.filter[i].height(this.position.height + '%');
+	        this.filter[i].x(this.position.x + '%');
+	        this.filter[i].y(this.position.y + '%');
+    	}
     }
 }
 MultiEffect.prototype.constructor = MultiEffect;
@@ -225,3 +236,61 @@ RecolorEffect.prototype = {
 }
 RecolorEffect.prototype.constructor = RecolorEffect;
 RecolorEffect.prototype.__proto__ = MultiEffect.prototype;
+
+//Sepiatone
+function SepiatoneEffect(){
+	MultiEffect.apply(this,arguments);
+
+	this.addInput('in', new EffectInput(this))
+	this.addOutput('result',new EffectOutput(this));
+
+	this.render();
+
+	this.filter = {};
+	this.filter.matrix = new SVG.ColorMatrixEffect('matrix', 
+		[ .343, .669, .119, 0, 0 
+        , .249, .626, .130, 0, 0
+        , .172, .334, .111, 0, 0
+        , .000, .000, .000, 1, 0 ]);
+
+	this.update();
+}
+SepiatoneEffect.prototype = {
+	options: {
+		title: 'Sepiatone'
+	},
+	update: function(){
+
+	}
+}
+SepiatoneEffect.prototype.constructor = SepiatoneEffect;
+SepiatoneEffect.prototype.__proto__ = MultiEffect.prototype;
+
+//GreyScale
+function GreyScaleEffect(){
+	MultiEffect.apply(this,arguments);
+
+	this.addInput('in', new EffectInput(this))
+	this.addOutput('result',new EffectOutput(this));
+
+	this.render();
+
+	this.filter = {};
+	this.filter.matrix = new SVG.ColorMatrixEffect('matrix', 
+		[ .333, .333, .333, 0, 0 
+        , .333, .333, .333, 0, 0
+        , .333, .333, .333, 0, 0
+        , .000, .000, .000, 1, 0 ]);
+
+	this.update();
+}
+GreyScaleEffect.prototype = {
+	options: {
+		title: 'GreyScale'
+	},
+	update: function(){
+
+	}
+}
+GreyScaleEffect.prototype.constructor = GreyScaleEffect;
+GreyScaleEffect.prototype.__proto__ = MultiEffect.prototype;

@@ -25,6 +25,14 @@ page = {
 			{
 				title: 'Blur',
 				effect: GaussianBlurEffect
+			},
+			{
+				title: 'Sepiatone',
+				effect: SepiatoneEffect
+			},
+			{
+				title: 'GreyScale',
+				effect: GreyScaleEffect
 			}
 		]),
 		baseEffects: ko.observableArray([
@@ -129,40 +137,53 @@ page = {
 					text.text(val);
         			updateTextPostion();
 				}),
-				fonts: ko.observableArray([
-					"Georgia, serif",
-					'"Palatino Linotype", "Book Antiqua", Palatino, serif',
-					'"Times New Roman", Times, serif',
-					'Arial, Helvetica, sans-serif',
-					'"Arial Black", Gadget, sans-serif',
-					'"Comic Sans MS", cursive, sans-serif',
-					'Impact, Charcoal, sans-serif',
-					'"Lucida Sans Unicode", "Lucida Grande", sans-serif',
-					'Tahoma, Geneva, sans-serif',
-					'"Trebuchet MS", Helvetica, sans-serif',
-					'Verdana, Geneva, sans-serif',
-					'"Courier New", Courier, monospace',
-					'"Lucida Console", Monaco, monospace'
-				]),
-				font: observable("'Ultra', serif",function(val){
-					text.font({
-						'font-family': val
-					});
-					updateTextPostion();
+				color: observable('#000000',function(val){
+					text.attr('fill',val);
 				}),
-				fontWeights: ['normal','lighter','bold','bolder'],
-				fontWeight: observable(false,function(val){
-					text.font({
-						'font-weight': val
+				font: {
+					fonts: ko.observableArray([
+						"Georgia, serif",
+						'"Palatino Linotype", "Book Antiqua", Palatino, serif',
+						'"Times New Roman", Times, serif',
+						'Arial, Helvetica, sans-serif',
+						'"Arial Black", Gadget, sans-serif',
+						'"Comic Sans MS", cursive, sans-serif',
+						'Impact, Charcoal, sans-serif',
+						'"Lucida Sans Unicode", "Lucida Grande", sans-serif',
+						'Tahoma, Geneva, sans-serif',
+						'"Trebuchet MS", Helvetica, sans-serif',
+						'Verdana, Geneva, sans-serif',
+						'"Courier New", Courier, monospace',
+						'"Lucida Console", Monaco, monospace'
+					]),
+					font: observable("'Ultra', serif",function(val){
+						text.font({
+							'font-family': val
+						});
+						updateTextPostion();
+					}),
+					weights: ['normal','lighter','bold','bolder'],
+					weight: observable(false,function(val){
+						text.font({
+							'font-weight': val
+						})
+	        			updateTextPostion();
+					}),
+					size: observable(120,function(val){
+						text.font({
+							'font-size': val+'px'
+						})
+	        			updateTextPostion();
+					}),
+				},
+				stroke: {
+					color: observable('#000000',function(val){
+						text.attr('stroke',val);
+					}),
+					size: observable(0,function(val){
+						text.attr('stroke-width',val);
 					})
-        			updateTextPostion();
-				}),
-				fontSize: observable(120,function(val){
-					text.font({
-						'font-size': val+'px'
-					})
-        			updateTextPostion();
-				})
+				}
 			}
 		}
 	},

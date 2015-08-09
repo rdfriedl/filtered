@@ -9,12 +9,14 @@ Simple Svg Filter builder
 - FireFox 
 
 ### To-Do
- - Add [filter primitive attributes](http://www.w3.org/TR/SVG/intro.html#TermFilterPrimitiveElement) options for effects
  - Add [SpecularLighting](http://www.w3.org/TR/SVG/filters.html#feSpecularLightingElement) Effect
  - Add [DiffuseLighting](http://www.w3.org/TR/SVG/filters.html#feDiffuseLightingElement) Effect
+ - Add [ComponentTransfer](http://www.w3.org/TR/SVG/filters.html#feComponentTransferElement) Effect
+ - Add [Tile](http://www.w3.org/TR/SVG/filters.html#feTileElement) Effect
+ - Add [Image](http://www.w3.org/TR/SVG/filters.html#feImageElement) Effect
  - Image preview (to allow users to build image filters)
- - Stroke option on preview
- - URL based saving, something like: <url to editor>/index.html?effects=\<json data\>
+ - URL based saving, something like: \<url to editor\>/index.html?effects=\<json data\>
+ - Improve position editor, allow for "PX" and "EM" not just "%"
 
 ### Contributing
 Try to keep your code clean.

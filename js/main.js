@@ -51,7 +51,7 @@ var connectorPaintStyle = {
     };
 
 function initEditor(){
-    svg = new SVG('preview');
+    svg = new SVG('preview-svg');
     filter = svg.filter();
 
     var bbox = svg.bbox();
@@ -75,12 +75,13 @@ function initEditor(){
 }
 
 function updateTextPostion(){
-    text.center($('#preview').width()/2,$('#preview').height()/2);
+    text.center($('#preview-svg').width()/2,$('#preview-svg').height()/2);
 }
 
 $(document).ready(function(){
 
     initEditor();
+    editPosition.init();
 
     // suspend drawing and initialise.
     editor.batch(function () {
@@ -121,6 +122,10 @@ $(document).ready(function(){
         event.preventDefault();
     })
 
+    $('.panel-heading a[data-toggle="collapse"]').parent().parent().click(function(){
+        $($(this).find('a').attr('href')).collapse('toggle');
+    });
+
     //zoom
     var editorScale = 1;
     $('.editor-controls').mousewheel(function(event){
@@ -156,6 +161,7 @@ function Effect(opts){
     this.id = 'Effect-' + Math.round(Math.random() * 10000);
     this.inputs = {};
     this.outputs = {};
+    this.position = Object.create(this.position);
 
     this.options = Object.create(this.options);
     for(var i in opts){
@@ -185,6 +191,14 @@ Effect.prototype = {
             title: 'Preivew',
             action: function(){
                 this.select();
+            }
+        },
+        {
+            type: 'item',
+            icon: 'object-ungroup',
+            title: 'Position',
+            action: function(){
+                this.editPosition();
             }
         },
         {
@@ -284,6 +298,7 @@ Effect.prototype = {
             this.filter.front();
         }
     },
+
     select: function(){
         $('.effect').removeClass('selected');
         $(this.element).addClass('selected');
@@ -294,6 +309,34 @@ Effect.prototype = {
         $('.effect').removeClass('selected');
 
         page.outputEffect.update();
+    },
+
+    position: {
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100
+    },
+    editPosition: function(){
+        editPosition.editEffect(this);
+    },
+    setPosition: function(data){
+        data = data || {};
+
+        this.position.width = data.width || this.position.width;
+        this.position.height = data.height || this.position.height;
+        this.position.x = data.x || this.position.x;
+        this.position.y = data.y || this.position.y;
+        this.updatePostion();
+    },
+    getPosition: function(){
+        return this.position;
+    },
+    updatePostion: function(){
+        this.filter.width(this.position.width + '%');
+        this.filter.height(this.position.height + '%');
+        this.filter.x(this.position.x + '%');
+        this.filter.y(this.position.y + '%');
     },
 
     render: function(){

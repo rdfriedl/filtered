@@ -1,4 +1,4 @@
-*: not(#preview *){
+*{
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -34,6 +34,9 @@ textarea{
 }
 .btn.zeroclipboard-is-hover{
     background-color: #31b0d5;
+}
+.svg_select_points_rot{
+    display: none;
 }
 
 #editor {
@@ -152,4 +155,14 @@ path, ._jsPlumb_endpoint {
     text-align: center;
     padding: 0px;
     font-weight: bold;
+}
+
+#preview a[data-toggle="collapse"]:hover, #preview a[data-toggle="collapse"]:focus{
+    text-decoration: none;
+}
+#preview .panel-heading{
+    cursor: pointer;
+}
+#preview .panel {
+    margin: 0px 0px 5px 0px;
 }

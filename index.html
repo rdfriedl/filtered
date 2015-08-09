@@ -2,27 +2,32 @@
 <html>
     <head>
         <title>Filterd</title>
-        <link rel="stylesheet" href="css/font-awesome.min.css">
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/prettify.css">
+        <link rel="stylesheet" href="css/svg.select.min.css">
         <link rel="stylesheet" href="css/style.css">
 
         <script src="lib/jquery.js"></script>
         <script src="lib/jquery.mousewheel.min.js"></script>
         <script src="lib/jquery.transit.min.js"></script>
-        <script src="lib/bootstrap.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script src="lib/knockout-min.js"></script>
         
         <script src="lib/dom.jsPlumb-1.7.5-min.js"></script>
         <script src="lib/svg.js"></script>
-        <script src="lib/svg.filter.js"></script>
+        <script src="lib/svg.filter.min.js"></script>
+        <script src="lib/svg.select.min.js"></script>
+        <script src="lib/svg.resize.min.js"></script>
+        <script src="lib/svg.draggable.min.js"></script>
         
         <script src="lib/prettify.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.Core.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
 
         <script src="js/main.js"></script>
+        <script src="js/editPosition.js"></script>
         <script src="js/effects.js"></script>
         <script src="js/baseEffects.js"></script>
         <script src="js/inputs.js"></script>
@@ -86,34 +91,71 @@
                 </div>
             </div>
             <div class="col-xs-4">
-                <div class="panel panel-default">
+                <div id="preview" class="panel panel-default" data-bind="with: editor.preview.text">
                     <div class="panel-heading">
                         Preview
                     </div>
                     <div class="panel-body">
-                        <svg id="preview"></svg>
-                        <form data-bind="with: editor.preview.text">
-                            <div class="form-group">
-                                <label>Text</label>
-                                <input type="text" class="form-control" data-bind="value: text, valueUpdate: 'input'">
+                        <svg id="preview-svg"></svg>
+
+                        <div class="form-group">
+                            <label>Text</label>
+                            <input type="text" class="form-control" data-bind="value: text, valueUpdate: 'input'">
+                        </div>
+                        <div class="form-group">
+                            <label>Color</label>
+                            <input type="color" class="form-control" data-bind="value: color, valueUpdate: 'input'">
+                        </div>
+
+                        <!-- font -->
+                        <div class="panel panel-default" data-bind="with: font">
+                            <div class="panel-heading" id="headingOne">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#font-collapse">Font</a>
+                                </h4>
                             </div>
-                            <div class="form-group">
-                                <label>Font</label>
-                                <select class="form-control" data-bind="foreach: fonts, value: font">
-                                    <option data-bind="value: $data, text: $data"></option>
-                                </select>
+                            <div id="font-collapse" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label>Font</label>
+                                        <select class="form-control" data-bind="foreach: fonts, value: font">
+                                            <option data-bind="value: $data, text: $data"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Weight</label>
+                                        <select class="form-control" data-bind="foreach: weights, value: weight">
+                                            <option data-bind="value: $data, text: $data"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Size</label>
+                                        <input type="number" class="form-control" data-bind="value: size, valueUpdate: 'input'">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Font Weight</label>
-                                <select class="form-control" data-bind="foreach: fontWeights, value: fontWeight">
-                                    <option data-bind="value: $data, text: $data"></option>
-                                </select>
+                        </div>
+                        
+                        <!-- stroke -->
+                        <div class="panel panel-default" data-bind="with: stroke">
+                            <div class="panel-heading" id="headingOne">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#stroke-collapse">Stroke</a>
+                                </h4>
                             </div>
-                            <div class="form-group">
-                                <label>Font Size</label>
-                                <input type="number" class="form-control" data-bind="value: fontSize, valueUpdate: 'input'">
+                            <div id="stroke-collapse" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label>Color</label>
+                                        <input type="color" class="form-control" data-bind="value: color, valueUpdate: 'input'">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Size</label>
+                                        <input type="number" class="form-control" data-bind="value: size, valueUpdate: 'input'">
+                                    </div>
+                                </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -144,6 +186,21 @@
                     </div>
                     <div class="modal-body">
                         <iframe src="http://www.w3.org/TR/SVG/filters.html" width="100%" height="800" seamless style="border:none;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="edit-position" data-backdrop="static">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
+                        <a href="#" class="btn btn-success btn-sm pull-right save">Save</a>
+                        <h4 class="modal-title">Edit Position</h4>
+                    </div>
+                    <div class="modal-body">
+                        <svg id="edit-position-svg" style="width: 100%;height: auto;"></svg>
                     </div>
                 </div>
             </div>

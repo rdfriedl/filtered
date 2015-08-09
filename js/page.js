@@ -115,6 +115,10 @@ page = {
 		},
 		exproted: ko.observable(''),
 		exportFilter: function(){
+			//if theres something selected deselect it
+			$('.effect').removeClass('selected');
+			page.outputEffect.update();
+			
 			page.editor.exproted(filter.node.outerHTML.replace(/></g,'>\n<'));
 			$('.prettyprinted').removeClass('prettyprinted');
 			prettyPrint();

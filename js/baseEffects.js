@@ -304,6 +304,14 @@ MergeEffect.prototype = {
         },
         {
             type: 'item',
+            icon: 'eye',
+            title: 'Preview',
+            action: function(){
+                this.select();
+            }
+        },
+        {
+            type: 'item',
             icon: 'trash-o',
             title: 'Delete',
             action: function(){
@@ -605,7 +613,6 @@ InputEffect.prototype = {
 		title: 'Input'
 	},
 	menu: [],
-	canSelect: false,
 	toggleButton: false
 }
 InputEffect.prototype.constructor = InputEffect;
@@ -629,7 +636,6 @@ OutputEffect.prototype = {
 		title: 'Output'
 	},
 	menu: [],
-	canSelect: false,
 	toggleButton: false,
 	update: function(){
 		return this.inputs.in.getValue();

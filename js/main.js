@@ -135,13 +135,6 @@ $(document).ready(function(){
     //copy
     new ZeroClipboard($("#copy")[0]);
 
-    $('#editor').click(function(event){
-        if($('.effect, .effect *').find(event.target).length > 0) return;
-
-        $('.effect').removeClass('selected');
-        page.outputEffect.update();
-    });
-
     $(window).resize(function(){
         updateTextPostion();
     })
@@ -188,6 +181,14 @@ Effect.prototype = {
     menu: [
         {
             type: 'item',
+            icon: 'eye',
+            title: 'Preivew',
+            action: function(){
+                this.select();
+            }
+        },
+        {
+            type: 'item',
             icon: 'trash-o',
             title: 'Delete',
             action: function(){
@@ -195,7 +196,6 @@ Effect.prototype = {
             }
         }
     ],
-    canSelect: true,
     toggleButton: true,
     plumb: undefined,
 
@@ -210,14 +210,10 @@ Effect.prototype = {
         $(this.element).find('button.toggle').click(function(){
             $(this.element).toggleClass('collapsed');
             this.updateEndpoints();
-        }.bind(this))
+        }.bind(this));
 
-        //select this element
-        this.canSelect && $(this.element).mousedown(function(event){
-            $('.effect').removeClass('selected');
-            $(event.currentTarget).addClass('selected');
-
-            this.select();
+        $(this.element).find('a.preview').click(function(){
+            this.deselect();
         }.bind(this));
     },
     initPlumb: function(){
@@ -289,7 +285,15 @@ Effect.prototype = {
         }
     },
     select: function(){
+        $('.effect').removeClass('selected');
+        $(this.element).addClass('selected');
+
         page.outputEffect.filter.attr('in',this.filter);
+    },
+    deselect: function(){
+        $('.effect').removeClass('selected');
+
+        page.outputEffect.update();
     },
 
     render: function(){

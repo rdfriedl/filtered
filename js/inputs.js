@@ -33,10 +33,10 @@ EffectInput.prototype = {
         var bbox = this.element.getBoundingClientRect();
 
         // this.endpoint.anchor.x = this.element.offsetLeft + bbox.width + 10;
-        this.endpoint.anchor.y = this.element.offsetTop + bbox.height/2;
+        this.endpoint.anchor.y = this.element.offsetTop + bbox.height/2 +4;
 
         // this.endpoint.anchor.x /= this.effect.element.offsetWidth;
-        this.endpoint.anchor.y /= 51;
+        this.endpoint.anchor.y /= 55;
 
         this.endpoint.repaint();
     },

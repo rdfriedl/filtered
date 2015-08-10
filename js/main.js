@@ -4,7 +4,6 @@ var filter = undefined;
 var previewText, previewImage;
 
 // The Browser API key obtained from the Google Developers Console.
-var developerKey = 'AIzaSyAkXSsV6L1wVJK10MQVoqTLQmsqzvQBcJw';
 var pickerApiLoaded = false;
 var picker;
 
@@ -62,7 +61,6 @@ function onPickerApiLoad() {
     
     picker = new google.picker.PickerBuilder().
           addView(google.picker.ViewId.IMAGE_SEARCH).
-          setDeveloperKey(developerKey).
           setCallback(pickerCallback).
           build();
 }

@@ -33,6 +33,10 @@ page = {
 			{
 				title: 'GreyScale',
 				effect: GreyScaleEffect
+			},
+			{
+				title: 'Bump',
+				effect: BumpEffect
 			}
 		]),
 		baseEffects: ko.observableArray([
@@ -137,10 +141,12 @@ page = {
 					case 'text':
 						previewImage.hide();
 						previewText.show();
+						svg.size('100%','100%');
 						break;
 					case 'image':
 						previewImage.show();
 						previewText.hide();
+						svg.size('100%',$(svg.node).width());
 						break;
 				}
 				updatePreviewPosition();

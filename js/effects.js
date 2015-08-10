@@ -294,3 +294,69 @@ GreyScaleEffect.prototype = {
 }
 GreyScaleEffect.prototype.constructor = GreyScaleEffect;
 GreyScaleEffect.prototype.__proto__ = MultiEffect.prototype;
+
+//Bump
+function BumpEffect(){
+	MultiEffect.apply(this,arguments);
+
+	this.addInput('in', new EffectInput(this))
+	this.addInput('amount',new NumberInput(this,{
+		min: 1,
+		step: 1
+	}))
+	this.addOutput('result',new EffectOutput(this));
+
+	this.render();
+
+	this.filter = {};
+	this.filter.matrix = new SVG.ConvolveMatrixEffect('');
+
+	this.update();
+}
+BumpEffect.prototype = {
+	options: {
+		title: 'Bump'
+	},
+	update: function(){
+		var v = this.inputs.amount.getValue();
+		this.filter.matrix.attr({
+			order: 3,
+			kernelMatrix: v+' 0 0 0 1 0 0 0 -'+v
+		})
+	}
+}
+BumpEffect.prototype.constructor = BumpEffect;
+BumpEffect.prototype.__proto__ = MultiEffect.prototype;
+
+//Sketch
+function SketchEffect(){
+	MultiEffect.apply(this,arguments);
+
+	this.addInput('in', new EffectInput(this))
+	this.addInput('amount',new NumberInput(this,{
+		min: 1,
+		step: 1
+	}))
+	this.addOutput('result',new EffectOutput(this));
+
+	this.render();
+
+	this.filter = {};
+	this.filter.matrix = new SVG.ConvolveMatrixEffect('');
+
+	this.update();
+}
+SketchEffect.prototype = {
+	options: {
+		title: 'Sketch'
+	},
+	update: function(){
+		var v = this.inputs.amount.getValue();
+		this.filter.matrix.attr({
+			order: 5,
+			kernelMatrix: v+' 0 0 0 1 0 0 0 -'+v
+		})
+	}
+}
+SketchEffect.prototype.constructor = SketchEffect;
+SketchEffect.prototype.__proto__ = MultiEffect.prototype;

@@ -178,7 +178,7 @@ function DisplacementMapEffect(){
 	}));
 	this.addInput('scale',new NumberInput(this,{
 		min: 0,
-		step: 0.1,
+		step: 1,
 		value: 1
 	}));
 	this.addInput('xChannelSelector',new SelectInput(this,{
@@ -218,7 +218,7 @@ function TurbulenceEffect(){
 
 	this.addInput('baseFrequency',new XYInput(this,{
 		min: 0,
-		step: 0.05,
+		step: 0.01,
 		value: 0
 	}));
 	this.addInput('numOctaves',new NumberInput(this,{
@@ -505,7 +505,8 @@ function ConvolveMatrixEffect(){
 	}));
 	this.addInput('bias',new NumberInput(this,{
 		min: 0,
-		value: 0
+		value: 0,
+		step: 0.01
 	}));
 	this.addInput('edgeMode',new SelectInput(this,{
 		options: ['duplicate','wrap','none']

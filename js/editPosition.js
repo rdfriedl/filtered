@@ -35,7 +35,7 @@ editPosition = {
 			this.x(Math.floor(this.x() / gridSize) * gridSize);
 			this.y(Math.floor(this.y() / gridSize) * gridSize);
 		});
-		// this.position.on('',this.updateEffect.bind(this));
+		this.position.on('resizedone',this.updateInputs.bind(this));
 
 		$('#edit-position').on('shown.bs.modal',function(){
 			this.position.size(this.position.width(),this.position.height());
@@ -44,6 +44,8 @@ editPosition = {
 		$('#edit-position .save').click(function(event) {
 			this.save();
 		}.bind(this));
+
+		this.bindInputs();
 	},
 	editEffect: function(effect){
 		$('#edit-position').modal('show');
@@ -53,6 +55,7 @@ editPosition = {
 		this.position
 			.move((this.size.width/4) + ((pos.x / this.settings.percentSize) * this.settings.gridSize),(this.size.height/4) + ((pos.y / this.settings.percentSize) * this.settings.gridSize))
 			.size((pos.width / this.settings.percentSize)*this.settings.gridSize,(pos.height / this.settings.percentSize)*this.settings.gridSize);
+		this.updateInputs();
 	},
 	save: function(){
 		this.updateEffect();
@@ -69,5 +72,32 @@ editPosition = {
 				height: ((this.position.height() / this.settings.gridSize) * this.settings.percentSize)
 			});
 		}
+	},
+	updateInputs: function(){
+		$('#edit-position .input-pos-x').val((((this.position.x()-this.size.width/4) / this.settings.gridSize) * this.settings.percentSize)).attr('step',this.settings.percentSize);
+		$('#edit-position .input-pos-y').val((((this.position.y()-this.size.height/4) / this.settings.gridSize) * this.settings.percentSize)).attr('step',this.settings.percentSize);
+		$('#edit-position .input-pos-width').val(((this.position.width() / this.settings.gridSize) * this.settings.percentSize)).attr('step',this.settings.percentSize);
+		$('#edit-position .input-pos-height').val(((this.position.height() / this.settings.gridSize) * this.settings.percentSize)).attr('step',this.settings.percentSize);
+	},
+	bindInputs: function(){
+		var pos = this.position;
+		var gridSize = this.settings.gridSize;
+		var percentSize = this.settings.percentSize;
+		var offset = {
+			x: (this.size.width/4),
+			y: (this.size.height/4)
+		}
+		$('#edit-position .input-pos-x').on('input',function(){
+			pos.x(offset.x + parseFloat($(this).val()) * (gridSize / percentSize));
+		});
+		$('#edit-position .input-pos-y').on('input',function(){
+			pos.y(offset.y + parseFloat($(this).val()) * (gridSize / percentSize));
+		});
+		$('#edit-position .input-pos-width').on('input',function(){
+			pos.width(parseFloat($(this).val()) * (gridSize / percentSize));
+		});
+		$('#edit-position .input-pos-height').on('input',function(){
+			pos.height(parseFloat($(this).val()) * (gridSize / percentSize));
+		});
 	}
 }

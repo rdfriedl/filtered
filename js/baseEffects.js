@@ -311,7 +311,7 @@ MergeEffect.prototype = {
             icon: 'eye',
             title: 'Preview',
             action: function(){
-                this.selectk();
+                this.select();
             }
         },
         {

@@ -157,6 +157,9 @@ path, ._jsPlumb_endpoint {
     font-weight: bold;
 }
 
+#preview svg{
+    background-color: #485563;
+}
 #preview a[data-toggle="collapse"]:hover, #preview a[data-toggle="collapse"]:focus{
     text-decoration: none;
 }
@@ -165,4 +168,13 @@ path, ._jsPlumb_endpoint {
 }
 #preview .panel {
     margin: 0px 0px 5px 0px;
+}
+#preview .image-change{
+    position: absolute;
+    right: 30px;
+    transition: all .2s;
+    opacity: 0;
+}
+#preview:hover .image-change{
+    opacity: 1;
 }

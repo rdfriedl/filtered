@@ -132,13 +132,26 @@ page = {
 			prettyPrint();
 		},
 		preview: {
+			mode: observable('text',function(val){
+				switch(val){
+					case 'text':
+						previewImage.hide();
+						previewText.show();
+						break;
+					case 'image':
+						previewImage.show();
+						previewText.hide();
+						break;
+				}
+				updatePreviewPosition();
+			}),
 			text: {
 				text: observable('Text',function(val){
-					text.text(val);
-        			updateTextPostion();
+					previewText.text(val);
+        			updatePreviewPosition();
 				}),
 				color: observable('#000000',function(val){
-					text.attr('fill',val);
+					previewText.attr('fill',val);
 				}),
 				font: {
 					fonts: ko.observableArray([
@@ -157,32 +170,40 @@ page = {
 						'"Lucida Console", Monaco, monospace'
 					]),
 					font: observable("'Ultra', serif",function(val){
-						text.font({
+						previewText.font({
 							'font-family': val
 						});
-						updateTextPostion();
+						updatePreviewPosition();
 					}),
 					weights: ['normal','lighter','bold','bolder'],
 					weight: observable(false,function(val){
-						text.font({
+						previewText.font({
 							'font-weight': val
 						})
-	        			updateTextPostion();
+	        			updatePreviewPosition();
 					}),
 					size: observable(120,function(val){
-						text.font({
+						previewText.font({
 							'font-size': val+'px'
 						})
-	        			updateTextPostion();
+	        			updatePreviewPosition();
 					}),
 				},
 				stroke: {
 					color: observable('#000000',function(val){
-						text.attr('stroke',val);
+						previewText.attr('stroke',val);
 					}),
 					size: observable(0,function(val){
-						text.attr('stroke-width',val);
+						previewText.attr('stroke-width',val);
 					})
+				}
+			},
+			image: {
+				url: observable('',function(){
+
+				}),
+				change: function(){
+					pickerApiLoaded && picker.setVisible(true);
 				}
 			}
 		}
@@ -192,7 +213,35 @@ page = {
 	},
 	loadFilter: function(){ //load filter to url
 
-	}
+	},
+
+	toggle: function(observable){
+		return function(){
+			this(!this());
+		}.bind(observable);
+	},
+	increase: function(ob,amount){
+		return _.partial(function(ob,amount){
+			amount = amount || 1;
+			ob(ob()+amount);
+		},ob,amount);
+	},
+	decrease: function(ob,amount){
+		return _.partial(function(ob,amount){
+			amount = amount || 1;
+			ob(ob()-amount);
+		},ob,amount);
+	},
+	set: function(ob,amount){
+		return function(ob,amount){
+			if(typeof amount == "function"){
+				ob(amount());
+			}
+			else{
+				ob(amount);
+			}
+		}.bind(undefined,ob,amount);
+	},
 }
 
 $(document).ready(function() {

@@ -14,7 +14,6 @@ Simple Svg Filter builder
  - Add [ComponentTransfer](http://www.w3.org/TR/SVG/filters.html#feComponentTransferElement) Effect
  - Add [Tile](http://www.w3.org/TR/SVG/filters.html#feTileElement) Effect
  - Add [Image](http://www.w3.org/TR/SVG/filters.html#feImageElement) Effect
- - Image preview (to allow users to build image filters)
  - URL based saving, something like: \<url to editor\>/index.html?effects=\<json data\>
  - Improve position editor, allow for "PX" and "EM" not just "%"
 

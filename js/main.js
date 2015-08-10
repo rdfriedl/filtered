@@ -1,7 +1,13 @@
 var editor;
 var svg = undefined;
 var filter = undefined;
-var text = undefined;
+var previewText, previewImage;
+
+// The Browser API key obtained from the Google Developers Console.
+var developerKey = 'AIzaSyAkXSsV6L1wVJK10MQVoqTLQmsqzvQBcJw';
+var pickerApiLoaded = false;
+var picker;
+
 var connectorPaintStyle = {
         lineWidth: 4,
         strokeStyle: "#485563",
@@ -9,7 +15,6 @@ var connectorPaintStyle = {
         outlineColor: "#2b3e50",
         outlineWidth: 3
     },
-// .. and this is the hover style.
     connectorHoverStyle = {
         lineWidth: 4,
         strokeStyle: "#528705",
@@ -20,8 +25,6 @@ var connectorPaintStyle = {
         fillStyle: "#7AB02C",
         strokeStyle: "#7AB02C"
     },
-// the definition of source endpoints (the small blue ones)
-// the definition of target endpoints (will appear when the user drags a connection)
     outputEndPoint = {
         endpoint: "Dot",
         anchor: [0, 0],
@@ -50,17 +53,49 @@ var connectorPaintStyle = {
         maxConnections: 1
     };
 
+function onApiLoad() {
+    gapi.load('picker', {'callback': onPickerApiLoad});
+}
+
+function onPickerApiLoad() {
+    pickerApiLoaded = true;
+    
+    picker = new google.picker.PickerBuilder().
+          addView(google.picker.ViewId.IMAGE_SEARCH).
+          setDeveloperKey(developerKey).
+          setCallback(pickerCallback).
+          build();
+}
+
 function initEditor(){
     svg = new SVG('preview-svg');
     filter = svg.filter();
 
     var bbox = svg.bbox();
-    text = svg.text('Text');
-    text.font({
+
+    previewText = svg.text('Text');
+    previewText.font({
         size: '120px',
         'font-family': "'Ultra', serif"
     })
-    text.filter(filter);
+    previewText.filter(filter);
+
+    previewImage = svg.image('').loaded(function(img){
+        var w = $('#preview-svg').width();
+        var h = $('#preview-svg').height();
+
+        if(w/h < img.ratio){
+            previewImage.width(w);
+            previewImage.height(w / img.ratio);
+        }
+        else{
+            previewImage.width(h * img.ratio);
+            previewImage.height(h);
+        }
+
+        updatePreviewPosition();
+    });
+    previewImage.filter(filter);
 
     editor = jsPlumb.getInstance({
         // default drag options
@@ -74,8 +109,20 @@ function initEditor(){
     });
 }
 
-function updateTextPostion(){
-    text.center($('#preview-svg').width()/2,$('#preview-svg').height()/2);
+function pickerCallback(data) {
+    var url = '';
+    if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+        var doc = data[google.picker.Response.DOCUMENTS][0];
+        url = doc.thumbnails[doc.thumbnails.length-1][google.picker.Document.URL];
+    }
+    previewImage.load(url);
+}
+
+function updatePreviewPosition(){
+    var w = $('#preview-svg').width();
+    var h = $('#preview-svg').height();
+    previewText.center(w/2,h/2);
+    previewImage.center(w/2,h/2);
 }
 
 $(document).ready(function(){
@@ -141,7 +188,7 @@ $(document).ready(function(){
     new ZeroClipboard($("#copy")[0]);
 
     $(window).resize(function(){
-        updateTextPostion();
+        updatePreviewPosition();
     })
     $(window).trigger('resize');
 });

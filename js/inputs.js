@@ -16,9 +16,17 @@ EffectInput.prototype = {
     value: function(){
         return (this.connection)? this.connection.getValue() : null;
     },
+    setValue: function(output){
+        this.connectionEvent(output);
+
+        editor.connect({uuids:[output.uuid,this.uuid],editable: true});
+    },
 
     initEndpoint: function(){
-        this.endpoint = editor.addEndpoint(this.effect.id,inputEndPoint);
+        this.uuid = this.effect.id+'-'+this.id;
+        this.endpoint = editor.addEndpoint(this.effect.id,inputEndPoint,{
+            uuid: this.uuid
+        });
         this.endpoint.setParameter('this',this);
     },
     connectionEvent: function(output,dontChange){
@@ -30,15 +38,16 @@ EffectInput.prototype = {
         if(!dontChange) this.change();
     },
     updateEndpointPosition: function(){
-        var bbox = this.element.getBoundingClientRect();
+        var bbox = this.effect.element.getBoundingClientRect();
 
         // this.endpoint.anchor.x = this.element.offsetLeft + bbox.width + 10;
-        this.endpoint.anchor.y = this.element.offsetTop + bbox.height/2 +4;
+        // this.endpoint.anchor.y = this.element.offsetTop + bbox.height/2 +4;
 
         // this.endpoint.anchor.x /= this.effect.element.offsetWidth;
-        this.endpoint.anchor.y /= 55;
+        // this.endpoint.anchor.y /= 55;
+        this.endpoint.anchor.y = (this.element.offsetTop + this.element.getBoundingClientRect().height/2) / bbox.height;
 
-        this.endpoint.repaint();
+        // this.endpoint.repaint();
     },
     render: function(){
         if(!this.effect) return;
@@ -75,6 +84,9 @@ ColorInput.prototype = {
     value: function(){
         return $(this.inputElement).val();
     },
+    setValue: function(val){
+        return $(this.inputElement).val(val);
+    },
 
     render: function(){
         if(!this.effect) return;
@@ -105,6 +117,9 @@ SelectInput.prototype = {
     },
     value: function(){
         return $(this.inputElement).val();
+    },
+    setValue: function(val){
+        return $(this.inputElement).val(val);
     },
 
     render: function(){
@@ -147,6 +162,9 @@ NumberInput.prototype = {
     value: function(){
         return parseFloat($(this.inputElement).val());
     },
+    setValue: function(val){
+        return $(this.inputElement).val(val);
+    },
 
     render: function(){
         if(!this.effect) return;
@@ -187,6 +205,9 @@ TextInput.prototype = {
     value: function(){
         return $(this.inputElement).val();
     },
+    setValue: function(val){
+        return $(this.inputElement).val(val);
+    },
 
     render: function(){
         if(!this.effect) return;
@@ -201,58 +222,6 @@ TextInput.prototype.__proto__ = Input.prototype;
 
 //MatrixInput
 function MatrixInput(){
-    Input.apply(this,arguments)
-
-    $el = $('#temp .matrix-input').clone();
-
-    //events
-    this.element = $el[0];
-    $el.on('input',this.change.bind(this));
-    this.titleElement = $el.find('.effect-title')[0];
-    this.inputElement = $el.find('.effect-input-control')[0];
-    this.inputElement.addEventListener('input',this.change.bind(this));
-        
-    $(this.inputElement).val(this.options.value);
-}
-MatrixInput.prototype = {
-    matrix: [],
-    options: {
-        value: ''
-    },
-    value: function(){
-        return this.matrix.join(' ');
-    },
-
-    render: function(){
-        if(!this.effect) return;
-        return this.element;
-    },
-    change: function(){
-        var rows = $(this.inputElement).val().split('\n');
-        for (var i = 0; i < rows.length; i++) {
-            rows[i] = rows[i].split(' ');
-        };
-
-        this.matrix = [];
-        for (var i = 0; i < rows.length; i++) {
-            for (var k = 0; k < rows[i].length; k++) {
-                if(!isNaN(parseFloat(rows[i][k]))){
-                    this.matrix.push(parseFloat(rows[i][k]));
-                }
-            };
-        };
-
-        this.effect.update();
-    },
-    updateElement: function(){
-        Input.prototype.updateElement.call(this);
-    }
-}
-MatrixInput.prototype.constructor = MatrixInput;
-MatrixInput.prototype.__proto__ = Input.prototype;
-
-//MatrixSizeInput
-function MatrixSizeInput(){
     Input.apply(this,arguments)
 
     $el = $('#temp .matrix-size-input').clone();
@@ -270,7 +239,7 @@ function MatrixSizeInput(){
         this.matrix.push(this.options.value);
     };
 }
-MatrixSizeInput.prototype = {
+MatrixInput.prototype = {
     matrix: [],
     options: {
         width: 3,
@@ -279,6 +248,10 @@ MatrixSizeInput.prototype = {
     },
     value: function(){
         return this.matrix.join(' ');
+    },
+    setValue: function(val){
+        val = val || '';
+        this.matrix = val.split(' ');
     },
     setSize: function(x,y){
         x = isNaN(x)? 0 : x;
@@ -325,8 +298,9 @@ MatrixSizeInput.prototype = {
             var $tr = $('<tr>');
 
             for (var col = 0; col < this.options.width; col++) {
+                var index = row*this.options.width + col;
                 var $td = $('<td>');
-                var $input = $('<input>').val(this.options.value).on('change, input',function(event){
+                var $input = $('<input>').val((this.matrix[index] !== undefined)? this.matrix[index] : this.options.value).on('change, input',function(event){
                     this.change();
                 }.bind(this)).on('focus, mouseup',function(event){
                     event.target.setSelectionRange(0,event.target.value.length)
@@ -344,8 +318,8 @@ MatrixSizeInput.prototype = {
         };
     }
 }
-MatrixSizeInput.prototype.constructor = MatrixSizeInput;
-MatrixSizeInput.prototype.__proto__ = Input.prototype;
+MatrixInput.prototype.constructor = MatrixInput;
+MatrixInput.prototype.__proto__ = Input.prototype;
 
 //XYInput
 function XYInput(){
@@ -370,6 +344,14 @@ XYInput.prototype = {
     value: function(){
         return this.getX() + ' ' + this.getY();
     },
+    setValue: function(val){
+        val = val || '';
+        var values = val.split(' ');
+        this.setX(values[0] || this.options.value);
+        if(values[0] !== values[1]){
+            this.setY(values[1]);
+        }
+    },
     getX: function(){
         var v = parseFloat($(this.XinputElement).val());
         return !isNaN(v)? v : 0;
@@ -377,6 +359,12 @@ XYInput.prototype = {
     getY: function(){
         var v = parseFloat($(this.YinputElement).val());
         return !isNaN(v)? v : this.getX();
+    },
+    setX: function(val){
+        $(this.XinputElement).val(val);
+    },
+    setY: function(val){
+        $(this.YinputElement).val(val);
     },
 
     render: function(){

@@ -79,19 +79,9 @@ function initEditor(){
     previewText.filter(filter);
 
     previewImage = svg.image('').loaded(function(img){
-        var w = $('#preview-svg').width();
-        var h = $('#preview-svg').height();
-
-        if(w/h < img.ratio){
-            previewImage.width(w);
-            previewImage.height(w / img.ratio);
-        }
-        else{
-            previewImage.width(h * img.ratio);
-            previewImage.height(h);
-        }
-
+        updateImageSize(img.width/img.height);
         updatePreviewPosition();
+        page.editor.preview.mode.valueHasMutated()
     });
     previewImage.filter(filter);
 
@@ -113,7 +103,7 @@ function pickerCallback(data) {
         var doc = data[google.picker.Response.DOCUMENTS][0];
         url = doc.thumbnails[doc.thumbnails.length-1][google.picker.Document.URL];
     }
-    previewImage.load(url);
+    page.editor.preview.image.url(url);
 }
 
 function updatePreviewPosition(){
@@ -121,6 +111,21 @@ function updatePreviewPosition(){
     var h = $('#preview-svg').height();
     previewText.center(w/2,h/2);
     previewImage.center(w/2,h/2);
+}
+
+function updateImageSize(r){
+    var w = $(svg.node).width();
+    var h = $(svg.node).height();
+    var r = r || previewImage.width() / previewImage.height();
+
+    if(w/h < r){
+        previewImage.width(w);
+        previewImage.height(w / r);
+    }
+    else{
+        previewImage.width(h * r);
+        previewImage.height(h);
+    }
 }
 
 $(document).ready(function(){
@@ -157,11 +162,13 @@ $(document).ready(function(){
             }
             // page.editor.arange(); dont need to arange
         })
+
+        editor.repaintEverything();
+
+        //load filter after editor loads
+        page.editor.start();
+        page.loadFilter();
     });
-
-    jsPlumb.fire("jsPlumbDemoLoaded", editor);
-
-    page.editor.start();
 
     $(document).on('click','[href="#"]',function(event){
         event.preventDefault();
@@ -183,7 +190,9 @@ $(document).ready(function(){
     })
 
     //copy
-    new ZeroClipboard($("#copy")[0]);
+    $(".copy").each(function(i,el){
+        new ZeroClipboard(el);
+    });
 
     $(window).resize(function(){
         updatePreviewPosition();
@@ -202,7 +211,7 @@ SVG.Filter.prototype.put = function(element, i) {
 }
 
 //effect
-function Effect(opts){
+function Effect(opts,styles){
     this.id = 'Effect-' + Math.round(Math.random() * 10000);
     this.inputs = {};
     this.outputs = {};
@@ -211,6 +220,11 @@ function Effect(opts){
     this.options = Object.create(this.options);
     for(var i in opts){
         this.options[i] = opts[i];
+    }
+
+    this.styles = Object.create(this.styles);
+    for(var i in styles){
+        this.styles[i] = styles[i];
     }
 
     this.initElement();
@@ -256,7 +270,6 @@ Effect.prototype = {
         }
     ],
     toggleButton: true,
-    plumb: undefined,
 
     initElement: function(){
         this.element = $('#temp .effect').clone(true,true).attr('id',this.id).get(0);
@@ -268,6 +281,7 @@ Effect.prototype = {
 
         $(this.element).find('button.toggle').click(function(){
             $(this.element).toggleClass('collapsed');
+            editor.repaintEverything();
             this.updateEndpoints();
         }.bind(this));
 
@@ -276,34 +290,38 @@ Effect.prototype = {
         }.bind(this));
     },
     initPlumb: function(){
-        this.plumb = editor.draggable(this.element);
+        editor.draggable(this.element);
     },
 
     getValue: function(){
         return this.filter;
     },
 
-    addInput: function(name,input){
-        this.inputs[name] = input;
-        input.options.title = input.options.title || name;
-        // this.render();
-        return input;
+    addInput: function(name,inputType,opts,data){
+        opts = opts || {};
+        data = data || {};
+
+        data.id = data.id || name;
+        opts.title = opts.title || name;
+
+        return this.inputs[name] = new (inputType)(this,opts,data);
     },
-    addOutput: function(name,output){
-        this.outputs[name] = output;
-        output.options.title = output.options.title || name;
-        // this.render();
-        return output;
+    addOutput: function(name,outputType,opts,data){
+        opts = opts || {};
+        data = data || {};
+
+        data.id = data.id || name;
+        opts.title = opts.title || name;
+
+        return this.outputs[name] = new (outputType)(this,opts,data);
     },
     removeInput: function(name){
         this.inputs[name]._remove();
         delete this.inputs[name];
-        // this.render();
     },
     removeOutput: function(name){
         this.outputs[name]._remove();
         delete this.outputs[name];
-        // this.render();
     },
 
     hide: function(){
@@ -319,10 +337,14 @@ Effect.prototype = {
     remove: function(){
         //remove myself
         jsPlumb.detachAllConnections(this.element);
-        this.plumb.removeAllEndpoints(this.element);
+        editor.removeAllEndpoints(this.element);
         jsPlumb.remove(this.element);
+        page.effects.removeEffect(this);
     },
 
+    change: function(){
+        this.update();
+    },
     update: function(){ //updates its own filter element
         if(!this.filter) return;
 
@@ -415,7 +437,7 @@ Effect.prototype = {
         for (var i in this.outputs) {
             if(this.outputs[i] instanceof EffectInput || this.outputs[i] instanceof EffectOutput) this.outputs[i].updateEndpointPosition();
         };
-        this.plumb.repaint(this.element);
+        editor.repaint(this.element);
     },
     updateMenu: function(){
         var $item = $('<li><a href="#"><i class="fa"></i> <span></span></a></li>');
@@ -471,13 +493,15 @@ function Input(effect,opts,data){
     }
 }
 Input.prototype = {
+    id: '',
     effect: undefined,
     element: undefined,
     titleElement: undefined,
     inputElement: undefined,
     value: '',
     options: {
-        title: 'input'
+        title: 'input',
+        value: '' //default value
     },
 
     getValue: function(){
@@ -488,8 +512,15 @@ Input.prototype = {
             return this.value;
         }
     },
+    getAttrValue: function(){ //returns value only when its not == to options.value
+        var v = this.getValue();
+        return v==this.options.value? null : v;
+    },
+    setValue: function(val){
+        this.value = val;
+    },
     change: function(){ //fires when input changes
-        this.effect.update();
+        this.effect.change();
     },
     toString: function(){
         return this.getValue();
@@ -511,7 +542,7 @@ Input.prototype = {
         else $(this.titleElement).hide();
     },
     _remove: function(){
-        this.effect.plumb.deleteEndpoint(this.endpoint)
+        editor.deleteEndpoint(this.endpoint)
     }
 }
 Input.prototype.constructor = Input;
@@ -530,6 +561,7 @@ function Output(effect,opts,data){
     }
 }
 Output.prototype = {
+    id: '',
     effect: undefined,
     value: '',
     options: {
@@ -561,7 +593,7 @@ Output.prototype = {
 
     },
     _remove: function(){
-        this.effect.plumb.deleteEndpoint(this.endpoint)
+        editor.deleteEndpoint(this.endpoint)
     }
 }
 Output.prototype.constructor = Output;

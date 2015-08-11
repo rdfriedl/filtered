@@ -4,9 +4,11 @@ Simple Svg Filter builder
 ![screenshot](https://raw.githubusercontent.com/rdfriedl/filtered/master/screenshot.png)
 
 ### Browser Support
-- Chrome
-- Internet Exporer
-- FireFox 
+- Chrome 31+
+- FireFox 38+
+- Safari 7.1+
+- Internet Exporer 10+
+- Opera 30+
 
 ### To-Do
  - Add [SpecularLighting](http://www.w3.org/TR/SVG/filters.html#feSpecularLightingElement) Effect
@@ -14,8 +16,9 @@ Simple Svg Filter builder
  - Add [ComponentTransfer](http://www.w3.org/TR/SVG/filters.html#feComponentTransferElement) Effect
  - Add [Tile](http://www.w3.org/TR/SVG/filters.html#feTileElement) Effect
  - Add [Image](http://www.w3.org/TR/SVG/filters.html#feImageElement) Effect
- - URL based saving, something like: \<url to editor\>/index.html?effects=\<json data\>
  - Improve position editor, allow for "PX" and "EM" not just "%"
+ - Add panning to editor, right now it just has zoom
+ - Add a function for loading filters in the form of xml
 
 ### Contributing
 Try to keep your code clean.

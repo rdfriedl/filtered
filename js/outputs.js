@@ -13,19 +13,24 @@ EffectOutput.prototype = {
     },
 
     initEndpoint: function(){
-        this.endpoint = editor.addEndpoint(this.effect.id,outputEndPoint);
+        this.uuid = this.effect.id+'-'+this.id;
+        this.endpoint = editor.addEndpoint(this.effect.id,outputEndPoint,{
+            uuid: this.uuid
+        });
         this.endpoint.setParameter('this',this);
     },
     updateEndpointPosition: function(){
-        var bbox = this.element.getBoundingClientRect();
+        var bbox = this.effect.element.getBoundingClientRect();
 
-        this.endpoint.anchor.x = this.element.offsetLeft + bbox.width + 10 + 4;
-        this.endpoint.anchor.y = this.element.offsetTop + bbox.height/2 + 4;
+        // this.endpoint.anchor.x = this.element.offsetLeft + bbox.width + 10 + 4;
+        // this.endpoint.anchor.y = this.element.offsetTop + bbox.height/2 + 4;
 
-        this.endpoint.anchor.x /= this.effect.element.offsetWidth;
-        this.endpoint.anchor.y /= 55;
+        // this.endpoint.anchor.x /= this.effect.element.offsetWidth;
+        this.endpoint.anchor.x = 1;
+        // this.endpoint.anchor.y /= 55;
+        this.endpoint.anchor.y = (this.element.offsetTop + this.element.getBoundingClientRect().height/2) / bbox.height;
 
-        this.endpoint.repaint();
+        // this.endpoint.repaint();
     },
     render: function(){
         if(!this.effect) return;

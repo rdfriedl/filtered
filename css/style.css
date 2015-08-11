@@ -2,9 +2,17 @@
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
-    -moz-user-select: -moz-none;
+    -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+#export *{
+    -webkit-touch-callout: all;
+    -webkit-user-select: all;
+    -khtml-user-select: all;
+    -moz-user-select: all;
+    -ms-user-select: all;
+    user-select: all;
 }
 
 html,body,body>.row,.full-height{
@@ -32,7 +40,7 @@ textarea{
 .modal-xl{
     width: 90%;
 }
-.btn.zeroclipboard-is-hover{
+.copy.zeroclipboard-is-hover{
     background-color: #31b0d5;
 }
 .svg_select_points_rot{
@@ -53,6 +61,7 @@ textarea{
     opacity: .8;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.48);
     border: 2px dashed transparent;
+    margin: 0px;
 }
 
 #editor .effect.selected {
@@ -134,6 +143,7 @@ path, ._jsPlumb_endpoint {
     word-wrap: normal;
     background-color: white;
     border: none;
+    color: black;
 }
 
 #editor .effect:nth-child(1){

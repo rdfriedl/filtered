@@ -58,27 +58,28 @@ MultiEffect.prototype.__proto__ = Effect.prototype;
 function ShadowEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in', new EffectInput(this))
-	this.addInput('color',new ColorInput(this));
-	this.addInput('opacity',new NumberInput(this,{
+	this.addInput('in',EffectInput)
+	this.addInput('color',ColorInput);
+	this.addInput('opacity',NumberInput,{
 		min: 0,
 		max: 1,
 		step: .1,
 		value: 1
-	}));
-	this.addInput('offsetX',new NumberInput(this,{
+	});
+	this.addInput('offsetX',NumberInput,{
 		value: 8
-	}));
-	this.addInput('offsetY',new NumberInput(this,{
+	});
+	this.addInput('offsetY',NumberInput,{
 		value: 8
-	}));
-	this.addInput('blur',new NumberInput(this,{
+	});
+	this.addInput('blur',NumberInput,{
 		min: 0,
 		value: 3
-	}));
-	this.addOutput('result',new EffectOutput(this));
+	});
+	this.addOutput('result',EffectOutput);
 
 	this.render();
+	this.updateEndpoints();
 
 	this.filter = {};
 	this.filter.color = new SVG.FloodEffect();
@@ -131,21 +132,22 @@ ShadowEffect.prototype.__proto__ = MultiEffect.prototype;
 function StrokeEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in', new EffectInput(this))
-	this.addInput('color',new ColorInput(this));
-	this.addInput('opacity',new NumberInput(this,{
+	this.addInput('in',EffectInput)
+	this.addInput('color',ColorInput);
+	this.addInput('opacity',NumberInput,{
 		min: 0,
 		max: 1,
 		step: .1,
 		value: 1
-	}));
-	this.addInput('size',new NumberInput(this,{
+	});
+	this.addInput('size',NumberInput,{
 		min: 0,
 		value: 2
-	}));
-	this.addOutput('result',new EffectOutput(this));
+	});
+	this.addOutput('result',EffectOutput);
 
 	this.render();
+	this.updateEndpoints();
 
 	this.filter = {};
 	this.filter.color = new SVG.FloodEffect();
@@ -191,17 +193,18 @@ StrokeEffect.prototype.__proto__ = MultiEffect.prototype;
 function RecolorEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in', new EffectInput(this))
-	this.addInput('color',new ColorInput(this));
-	this.addInput('opacity',new NumberInput(this,{
+	this.addInput('in',EffectInput)
+	this.addInput('color',ColorInput);
+	this.addInput('opacity',NumberInput,{
 		min: 0,
 		max: 1,
 		step: .1,
 		value: 1
-	}));
-	this.addOutput('result',new EffectOutput(this));
+	});
+	this.addOutput('result',EffectOutput);
 
 	this.render();
+	this.updateEndpoints();
 
 	this.filter = {};
 	this.filter.color = new SVG.FloodEffect();
@@ -241,10 +244,11 @@ RecolorEffect.prototype.__proto__ = MultiEffect.prototype;
 function SepiatoneEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in', new EffectInput(this))
-	this.addOutput('result',new EffectOutput(this));
+	this.addInput('in',EffectInput)
+	this.addOutput('result',EffectOutput);
 
 	this.render();
+	this.updateEndpoints();
 
 	this.filter = {};
 	this.filter.matrix = new SVG.ColorMatrixEffect('matrix', 
@@ -270,10 +274,11 @@ SepiatoneEffect.prototype.__proto__ = MultiEffect.prototype;
 function GreyScaleEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in', new EffectInput(this))
-	this.addOutput('result',new EffectOutput(this));
+	this.addInput('in',EffectInput)
+	this.addOutput('result',EffectOutput);
 
 	this.render();
+	this.updateEndpoints();
 
 	this.filter = {};
 	this.filter.matrix = new SVG.ColorMatrixEffect('matrix', 
@@ -299,14 +304,15 @@ GreyScaleEffect.prototype.__proto__ = MultiEffect.prototype;
 function BumpEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in', new EffectInput(this))
-	this.addInput('amount',new NumberInput(this,{
-		min: 1,
+	this.addInput('in',EffectInput)
+	this.addInput('amount',NumberInput,{
+		min: 0,
 		step: 1
-	}))
-	this.addOutput('result',new EffectOutput(this));
+	})
+	this.addOutput('result',EffectOutput);
 
 	this.render();
+	this.updateEndpoints();
 
 	this.filter = {};
 	this.filter.matrix = new SVG.ConvolveMatrixEffect('');
@@ -327,36 +333,3 @@ BumpEffect.prototype = {
 }
 BumpEffect.prototype.constructor = BumpEffect;
 BumpEffect.prototype.__proto__ = MultiEffect.prototype;
-
-//Sketch
-function SketchEffect(){
-	MultiEffect.apply(this,arguments);
-
-	this.addInput('in', new EffectInput(this))
-	this.addInput('amount',new NumberInput(this,{
-		min: 1,
-		step: 1
-	}))
-	this.addOutput('result',new EffectOutput(this));
-
-	this.render();
-
-	this.filter = {};
-	this.filter.matrix = new SVG.ConvolveMatrixEffect('');
-
-	this.update();
-}
-SketchEffect.prototype = {
-	options: {
-		title: 'Sketch'
-	},
-	update: function(){
-		var v = this.inputs.amount.getValue();
-		this.filter.matrix.attr({
-			order: 5,
-			kernelMatrix: v+' 0 0 0 1 0 0 0 -'+v
-		})
-	}
-}
-SketchEffect.prototype.constructor = SketchEffect;
-SketchEffect.prototype.__proto__ = MultiEffect.prototype;

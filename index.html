@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>Filterd</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/prettify.css">
@@ -81,7 +81,7 @@
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a data-toggle="modal" href="#export" data-bind="click: editor.exportFilter"><i class="fa fa-check"></i> Export</a></li>
+                            <li><a data-toggle="modal" href="#export" data-bind="click: exportFilter.export"><i class="fa fa-check"></i> Export</a></li>
                             <li><a data-toggle="modal" href="#help"><i class="fa fa-question"></i> Help</a></li>
                         </ul>
                     </div><!-- /.navbar-collapse -->
@@ -94,6 +94,7 @@
                 <div id="preview" class="panel panel-default" data-bind="with: editor.preview">
                     <div class="panel-heading">
                         Preview
+                        <a type="button" href="http://github.com/rdfriedl/filtered" target="_blank" class="btn btn-info btn-xs pull-right"><i class="fa fa-github"></i> Source On Github</a>
                     </div>
                     <div class="panel-body">
                         <button type="button" class="btn btn-default image-change" data-bind="visible: mode() == 'image', click: image.change">Change</button>
@@ -171,16 +172,38 @@
             </div>
         </div>
 
-        <div class="modal fade" id="export">
+        <div class="modal fade" id="export" data-bind="with: exportFilter">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
-                        <a id="copy" class="btn btn-info btn-sm pull-right" data-bind="attr: {'data-clipboard-text': editor.exproted}">Copy to clipboard</a>
                         <h4 class="modal-title">Export</h4>
                     </div>
                     <div class="modal-body">
-                        <pre class="form-control prettyprint lang-html" data-bind="text: editor.exproted"></pre>
+                        <div role="tabpanel">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#export-filter-tab" data-toggle="tab">SVG Filter</a></li>
+                                <li><a href="#export-json-tab" data-toggle="tab">JSON</a></li>
+                                <li><a href="#export-url-tab" data-toggle="tab">URL</a></li>
+                            </ul>
+                        
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="export-filter-tab">
+                                    <a class="btn btn-info btn-sm pull-right copy" data-bind="attr: {'data-clipboard-text': filter}">Copy to clipboard</a>
+                                    <pre class="form-control prettyprint lang-html" data-bind="text: filter"></pre>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="export-json-tab">
+                                    <a class="btn btn-info btn-sm pull-right copy" data-bind="attr: {'data-clipboard-text': json}">Copy to clipboard</a>
+                                    <pre class="form-control prettyprint lang-js" data-bind="text: json"></pre>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="export-url-tab">
+                                    <a class="btn btn-info btn-sm pull-right copy" data-bind="attr: {'data-clipboard-text': url}">Copy to clipboard</a>
+                                    <pre class="form-control" data-bind="text: url"></pre>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -272,11 +295,9 @@
                     <span class="effect-title"></span>
                 </div>
                 <div class="panel-body">
-                    <form>
-                        <!-- inputs / outputs go here -->
-                        <div class="effect-inputs"></div>
-                        <div class="effect-outputs"></div>
-                    </form>
+                    <!-- inputs / outputs go here -->
+                    <div class="effect-inputs"></div>
+                    <div class="effect-outputs"></div>
                 </div>
                 <a class="btn btn-warning btn-sm preview"><i class="fa fa-eye-slash"></i></a>
             </div>

@@ -1,450 +1,71 @@
-//flood
-function FloodEffect(){
+//blend
+function BlendEffect(){
 	Effect.apply(this,arguments);
 
-	this.addInput('color',new ColorInput(this));
-	this.addInput('opacity',new NumberInput(this,{
-		min: 0,
-		max: 1,
-		step: .1,
-		value: 1
-	}));
-	this.addOutput('result',new EffectOutput(this));
-
-	this.render();
-
-	this.filter = new SVG.FloodEffect();
-	this.update();
-}
-FloodEffect.prototype = {
-	options: {
-		title: 'Flood'
-	},
-	update: function(){
-		this.filter.attr({
-			'flood-color': this.inputs.color.getValue(),
-			'flood-opacity': this.inputs.opacity.getValue(),
-		});
-	}
-}
-FloodEffect.prototype.constructor = FloodEffect;
-FloodEffect.prototype.__proto__ = Effect.prototype;
-
-//offset
-function OffsetEffect(){
-	Effect.apply(this,arguments);
-
-	this.addInput('in',new EffectInput(this,{
-		title: "in"
-	}));
-	this.addInput('x',new NumberInput(this));
-	this.addInput('y',new NumberInput(this));
-	this.addOutput('result',new EffectOutput(this));
-
-	this.render();
-
-	this.filter = new SVG.OffsetEffect();
-	this.update();
-}
-OffsetEffect.prototype = {
-	options: {
-		title: 'Offset'
-	},
-	update: function(){
-		this.filter.attr({
-			in: this.inputs.in.getValue(),
-			dx: this.inputs.x.getValue(),
-			dy: this.inputs.y.getValue(),
-		})
-	}
-}
-OffsetEffect.prototype.constructor = OffsetEffect;
-OffsetEffect.prototype.__proto__ = Effect.prototype;
-
-//Tile
-function TileEffect(){
-	Effect.apply(this,arguments);
-
-	this.addInput('in',new EffectInput(this,{
-		title: "in"
-	}));
-	this.addOutput('result',new EffectOutput(this));
-
-	this.render();
-
-	this.filter = new SVG.TileEffect();
-	this.update();
-}
-TileEffect.prototype = {
-	options: {
-		title: 'Tile'
-	},
-	update: function(){
-		this.filter.attr({
-			in: this.inputs.in.getValue()
-		})
-	}
-}
-TileEffect.prototype.constructor = TileEffect;
-TileEffect.prototype.__proto__ = Effect.prototype;
-
-//GaussianBlur
-function GaussianBlurEffect(){
-	Effect.apply(this,arguments);
-
-	this.addInput('in',new EffectInput(this,{
-		title: "in"
-	}));
-	this.addInput('blur',new XYInput(this,{
-		min: 0,
-		value: 0
-	}));
-	this.addOutput('result',new EffectOutput(this));
-
-	this.render();
-
-	this.filter = new SVG.GaussianBlurEffect(0);
-	this.update();
-}
-GaussianBlurEffect.prototype = {
-	options: {
-		title: 'Blur'
-	},
-	update: function(){
-
-		this.filter.attr({
-			in: this.inputs.in.getValue(),
-			'stdDeviation': this.inputs.blur.getValue()
-		});
-	}
-}
-GaussianBlurEffect.prototype.constructor = GaussianBlurEffect;
-GaussianBlurEffect.prototype.__proto__ = Effect.prototype;
-
-//Morphology
-function MorphologyEffect(){
-	Effect.apply(this,arguments);
-
-	this.addInput('in',new EffectInput(this,{
-		title: "in"
-	}));
-	this.addInput('operator',new SelectInput(this,{
-		options: [
-			{
-				title: 'out',
-				value: 'dilate'
-			},
-			{
-				title: 'in',
-				value: 'erode'
-			}
-		]
-	}));
-	this.addInput('radius',new XYInput(this,{
-		min: 0,
-		value: 0
-	}));
-	this.addOutput('result',new EffectOutput(this));
-
-	this.render();
-
-	this.filter = new SVG.MorphologyEffect();
-	this.update();
-}
-MorphologyEffect.prototype = {
-	options: {
-		title: 'Morphology'
-	},
-	update: function(){
-		this.filter.attr({
-			in: this.inputs.in.getValue(),
-			operator: this.inputs.operator.getValue(),
-			radius: this.inputs.radius.getValue()
-		});
-	}
-}
-MorphologyEffect.prototype.constructor = MorphologyEffect;
-MorphologyEffect.prototype.__proto__ = Effect.prototype;
-
-//DisplacementMap
-function DisplacementMapEffect(){
-	Effect.apply(this,arguments);
-
-	this.addInput('in',new EffectInput(this,{
-		title: "in"
-	}));
-	this.addInput('in2',new EffectInput(this,{
-		title: "in 2"
-	}));
-	this.addInput('scale',new NumberInput(this,{
-		min: 0,
-		step: 1,
-		value: 1
-	}));
-	this.addInput('xChannelSelector',new SelectInput(this,{
-		options: ['R','G','B','A']
-	}));
-	this.addInput('yChannelSelector',new SelectInput(this,{
-		options: ['R','G','B','A']
-	}));
-
-	this.addOutput('result',new EffectOutput(this));
-
-	this.render();
-
-	this.filter = new SVG.DisplacementMapEffect();
-	this.update();
-}
-DisplacementMapEffect.prototype = {
-	options: {
-		title: 'DisplacementMap'
-	},
-	update: function(){
-		this.filter.attr({
-			in: this.inputs.in.getValue(),
-			in2: this.inputs.in2.getValue(),
-			scale: this.inputs.scale.getValue(),
-			xChannelSelector: this.inputs.xChannelSelector.getValue(),
-			yChannelSelector: this.inputs.yChannelSelector.getValue()
-		});
-	}
-}
-DisplacementMapEffect.prototype.constructor = DisplacementMapEffect;
-DisplacementMapEffect.prototype.__proto__ = Effect.prototype;
-
-//Turbulence
-function TurbulenceEffect(){
-	Effect.apply(this,arguments);
-
-	this.addInput('baseFrequency',new XYInput(this,{
-		min: 0,
-		step: 0.01,
-		value: 0
-	}));
-	this.addInput('numOctaves',new NumberInput(this,{
-		min: 0,
-		value: 1
-	}));
-	this.addInput('seed',new NumberInput(this,{
-		min: 0,
-		value: 1
-	}));
-	this.addInput('stitchTiles',new SelectInput(this,{
-		options: ['stitch','noStitch']
-	}));
-	this.addInput('type',new SelectInput(this,{
-		options: ['turbulence','fractalNoise']
-	}));
-
-	this.addOutput('result',new EffectOutput(this));
-
-	this.render();
-
-	this.filter = new SVG.TurbulenceEffect();
-	this.update();
-}
-TurbulenceEffect.prototype = {
-	options: {
-		title: 'Turbulence'
-	},
-	update: function(){
-		this.filter.attr({
-			baseFrequency: this.inputs.baseFrequency.getValue(),
-			numOctaves: this.inputs.numOctaves.getValue(),
-			seed: this.inputs.seed.getValue(),
-			stitchTiles: this.inputs.stitchTiles.getValue(),
-			type: this.inputs.type.getValue()
-		});
-	}
-}
-TurbulenceEffect.prototype.constructor = TurbulenceEffect;
-TurbulenceEffect.prototype.__proto__ = Effect.prototype;
-
-//Merge
-function MergeEffect(){
-	Effect.apply(this,arguments);
-
-	this.addInput('in 1',new EffectInput(this,{
+	this.addInput('mode',SelectInput,{
+		value: 'normal',
+		options: ['normal','multiply','screen','darken','lighten']
+	});
+	this.addInput('in',EffectInput,{
 		title: "in 1"
-	}));
-	this.addOutput('result',new EffectOutput(this));
-
-	this.render();
-
-	this.filter = new SVG.MergeEffect();
-	this.update();
-}
-MergeEffect.prototype = {
-	options: {
-		title: 'Merge'
-	},
-    menu: [
-        {
-            type: 'item',
-            icon: 'plus',
-            title: 'Add Input',
-            action: function(){
-            	var a = Object.keys(this.inputs);
-                this.addInput('in'+(a.length+1), new EffectInput(this,{
-                	title: 'in '+(a.length+1)
-                }));
-                this.render();
-            }
-        },
-        {
-            type: 'item',
-            icon: 'minus',
-            title: 'Remove Input',
-            action: function(){
-            	var a = Object.keys(this.inputs);
-                if(a.length > 0){
-                	this.removeInput(a[a.length-1]);
-                	this.render();
-                }
-            }
-        },
-        {
-            type: 'separator'
-        },
-        {
-            type: 'item',
-            icon: 'eye',
-            title: 'Preview',
-            action: function(){
-                this.select();
-            }
-        },
-        {
-            type: 'item',
-            icon: 'object-ungroup',
-            title: 'Position',
-            action: function(){
-                this.editPosition();
-            }
-        },
-        {
-            type: 'item',
-            icon: 'trash-o',
-            title: 'Delete',
-            action: function(){
-                this.remove();
-            }
-        }
-    ],
-	update: function(){
-		this.filter.clear();
-		for(var i in this.inputs){
-			if(this.inputs[i].getValue()) this.filter.add(new SVG.MergeNode(this.inputs[i].getValue()));
-		}
-	}
-}
-MergeEffect.prototype.constructor = MergeEffect;
-MergeEffect.prototype.__proto__ = Effect.prototype;
-
-//composite
-function CompositeEffect(){
-	Effect.apply(this,arguments);
-
-	this.addInput('in',new EffectInput(this,{
-		title: "in 1"
-	}));
-	this.addInput('in2',new EffectInput(this,{
+	});
+	this.addInput('in2',EffectInput,{
 		title: "in 2"
-	}));
-	this.addInput('operator',new SelectInput(this,{
-		options: ['over','in','out','atop','xor','arithmetic']
-	}));
-	this.addInput('K1',new NumberInput(this,{
-		value: 0
-	}));
-	this.addInput('K2',new NumberInput(this,{
-		value: 0
-	}));
-	this.addInput('K3',new NumberInput(this,{
-		value: 0
-	}));
-	this.addInput('K4',new NumberInput(this,{
-		value: 0
-	}));
-	this.addOutput('result',new EffectOutput(this));
-
-	this.filter = new SVG.CompositeEffect();
-	this.update();
+	});
+	this.addOutput('result',EffectOutput);
 
 	this.render();
+	this.updateEndpoints();
+
+	this.filter = new SVG.BlendEffect();
+	this.update();
 }
-CompositeEffect.prototype = {
+BlendEffect.prototype = {
 	options: {
-		title: 'Composite'
+		title: 'Blend'
 	},
 	update: function(inputs){
-		if(this.inputs.operator.getValue() == 'arithmetic'){
-			this.inputs.K1.show();
-			this.inputs.K2.show();
-			this.inputs.K3.show();
-			this.inputs.K4.show();
-			this.filter.attr({
-				K1: this.inputs.K1.getValue(),
-				K2: this.inputs.K2.getValue(),
-				K3: this.inputs.K3.getValue(),
-				K4: this.inputs.K4.getValue()
-			})
-			this.updateEndpoints();
-		}
-		else{
-			this.inputs.K1.hide();
-			this.inputs.K2.hide();
-			this.inputs.K3.hide();
-			this.inputs.K4.hide();
-			this.filter.attr({
-				K1: null,
-				K2: null,
-				K3: null,
-				K4: null
-			})
-			this.updateEndpoints();
-		}
-
 		this.filter.attr({
 			in: this.inputs.in.getValue(),
 			in2: this.inputs.in2.getValue(),
-			operator: this.inputs.operator.getValue()
+			mode: this.inputs.mode.getAttrValue()
 		});
 	}
 }
-CompositeEffect.prototype.constructor = CompositeEffect;
-CompositeEffect.prototype.__proto__ = Effect.prototype;
+BlendEffect.prototype.constructor = BlendEffect;
+BlendEffect.prototype.__proto__ = Effect.prototype;
 
 //ColorMatrix
 function ColorMatrixEffect(){
 	Effect.apply(this,arguments);
 
-	this.addInput('in',new EffectInput(this,{
+	this.addInput('in',EffectInput,{
 		title: "in 1"
-	}));
-	this.addInput('type',new SelectInput(this,{
+	});
+	this.addInput('type',SelectInput,{
+		value: 'matrix',
 		options: ["matrix",'saturate','hueRotate','luminanceToAlpha']
-	}));
-	this.addInput('matrix',new MatrixSizeInput(this,{
+	});
+	this.addInput('matrix',MatrixInput,{
 		width: 5,
 		height: 4
-	}));
-	this.addInput('saturate',new NumberInput(this,{
+	});
+	this.addInput('saturate',NumberInput,{
 		min: 0,
-		max: 1,
-		step: .1,
-		value: 0
-	}));
-	this.addInput('hueRotate',new NumberInput(this,{
+		step: 1,
+		value: 1
+	});
+	this.addInput('hueRotate',NumberInput,{
 		min: 0,
 		max: 360,
 		step: 10,
 		value: 0
-	}));
+	});
 
-	this.addOutput('result',new EffectOutput(this));
+	this.addOutput('result',EffectOutput);
 
 	this.render();
+	this.updateEndpoints();
 
 	this.filter = new SVG.ColorMatrixEffect();
 	this.update();
@@ -484,40 +105,121 @@ ColorMatrixEffect.prototype = {
 ColorMatrixEffect.prototype.constructor = ColorMatrixEffect;
 ColorMatrixEffect.prototype.__proto__ = Effect.prototype;
 
+//ComponentTransfer
+
+//composite
+function CompositeEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('in',EffectInput,{
+		title: "in 1"
+	});
+	this.addInput('in2',EffectInput,{
+		title: "in 2"
+	});
+	this.addInput('operator',SelectInput,{
+		value: 'over',
+		options: ['over','in','out','atop','xor','arithmetic']
+	});
+	this.addInput('K1',NumberInput,{
+		value: 0
+	});
+	this.addInput('K2',NumberInput,{
+		value: 0
+	});
+	this.addInput('K3',NumberInput,{
+		value: 0
+	});
+	this.addInput('K4',NumberInput,{
+		value: 0
+	});
+	this.addOutput('result',EffectOutput);
+
+	this.filter = new SVG.CompositeEffect();
+	this.update();
+
+	this.render();
+	this.updateEndpoints();
+}
+CompositeEffect.prototype = {
+	options: {
+		title: 'Composite'
+	},
+	update: function(inputs){
+		if(this.inputs.operator.getAttrValue() == 'arithmetic'){
+			this.inputs.K1.show();
+			this.inputs.K2.show();
+			this.inputs.K3.show();
+			this.inputs.K4.show();
+			this.filter.attr({
+				K1: this.inputs.K1.getAttrValue(),
+				K2: this.inputs.K2.getAttrValue(),
+				K3: this.inputs.K3.getAttrValue(),
+				K4: this.inputs.K4.getAttrValue()
+			})
+			this.updateEndpoints();
+		}
+		else{
+			this.inputs.K1.hide();
+			this.inputs.K2.hide();
+			this.inputs.K3.hide();
+			this.inputs.K4.hide();
+			this.filter.attr({
+				K1: null,
+				K2: null,
+				K3: null,
+				K4: null
+			})
+			this.updateEndpoints();
+		}
+
+		this.filter.attr({
+			in: this.inputs.in.getValue(),
+			in2: this.inputs.in2.getValue(),
+			operator: this.inputs.operator.getAttrValue()
+		});
+	}
+}
+CompositeEffect.prototype.constructor = CompositeEffect;
+CompositeEffect.prototype.__proto__ = Effect.prototype;
+
 //ConvolveMatrix
 function ConvolveMatrixEffect(){
 	Effect.apply(this,arguments);
 
-	this.addInput('in',new EffectInput(this,{
+	this.addInput('in',EffectInput,{
 		title: "in 1"
-	}));
-	this.addInput('order',new XYInput(this,{
+	});
+	this.addInput('order',XYInput,{
 		min: 1,
 		value: 3
-	}));
-	this.addInput('matrix',new MatrixSizeInput(this,{
+	});
+	this.addInput('matrix',MatrixInput,{
 		width: 3,
 		height: 3
-	}));
-	this.addInput('divisor',new NumberInput(this,{
+	});
+	this.addInput('divisor',NumberInput,{
 		min: 0,
 		value: 1
-	}));
-	this.addInput('bias',new NumberInput(this,{
+	});
+	this.addInput('bias',NumberInput,{
 		min: 0,
 		value: 0,
 		step: 0.01
-	}));
-	this.addInput('edgeMode',new SelectInput(this,{
+	});
+	this.addInput('edgeMode',SelectInput,{
+		value: 'duplicate',
 		options: ['duplicate','wrap','none']
-	}));
-	this.addInput('preserveAlpha',new SelectInput(this,{
+	});
+	this.addInput('preserveAlpha',SelectInput,{
+		value: 'false',
 		options: ['false','true']
-	}));
+	});
 
-	this.addOutput('result',new EffectOutput(this));
+	this.addOutput('result',EffectOutput);
 
 	this.render();
+	this.updateEndpoints();
 
 	this.filter = new SVG.ConvolveMatrixEffect('');
 	this.update();
@@ -537,89 +239,431 @@ ConvolveMatrixEffect.prototype = {
 
 		this.filter.attr({
 			in: this.inputs.in.getValue(),
-			order: this.inputs.order.getValue(),
-			kernelMatrix: this.inputs.matrix.getValue(),
-			divisor: this.inputs.divisor.getValue(),
-			bias: this.inputs.bias.getValue(),
-			edgeMode: this.inputs.edgeMode.getValue(),
-			preserveAlpha: this.inputs.preserveAlpha.getValue()
+			order: this.inputs.order.getAttrValue(),
+			kernelMatrix: this.inputs.matrix.getAttrValue(),
+			divisor: this.inputs.divisor.getAttrValue(),
+			bias: this.inputs.bias.getAttrValue(),
+			edgeMode: this.inputs.edgeMode.getAttrValue(),
+			preserveAlpha: this.inputs.preserveAlpha.getAttrValue()
 		});
 	}
 }
 ConvolveMatrixEffect.prototype.constructor = ConvolveMatrixEffect;
 ConvolveMatrixEffect.prototype.__proto__ = Effect.prototype;
 
-//blend
-function BlendEffect(){
+//DiffuseLighting
+
+//DisplacementMap
+function DisplacementMapEffect(){
 	Effect.apply(this,arguments);
 
-	this.addInput('mode',new SelectInput(this,{
-		options: ['normal','multiply','screen','darken','lighten']
-	}));
-	this.addInput('in',new EffectInput(this,{
-		title: "in 1"
-	}));
-	this.addInput('in2',new EffectInput(this,{
+	this.addInput('in',EffectInput,{
+		title: "in"
+	});
+	this.addInput('in2',EffectInput,{
 		title: "in 2"
-	}));
-	this.addOutput('result',new EffectOutput(this));
+	});
+	this.addInput('scale',NumberInput,{
+		min: 0,
+		step: 1,
+		value: 0
+	});
+	this.addInput('xChannelSelector',SelectInput,{
+		value: 'A',
+		options: ['R','G','B','A']
+	});
+	this.addInput('yChannelSelector',SelectInput,{
+		value: 'A',
+		options: ['R','G','B','A']
+	});
+
+	this.addOutput('result',EffectOutput);
 
 	this.render();
+	this.updateEndpoints();
 
-	this.filter = new SVG.BlendEffect();
+	this.filter = new SVG.DisplacementMapEffect();
 	this.update();
 }
-BlendEffect.prototype = {
+DisplacementMapEffect.prototype = {
 	options: {
-		title: 'Blend'
+		title: 'DisplacementMap'
 	},
-	update: function(inputs){
+	update: function(){
 		this.filter.attr({
 			in: this.inputs.in.getValue(),
 			in2: this.inputs.in2.getValue(),
-			mode: this.inputs.mode.getValue()
+			scale: this.inputs.scale.getAttrValue(),
+			xChannelSelector: this.inputs.xChannelSelector.getAttrValue(),
+			yChannelSelector: this.inputs.yChannelSelector.getAttrValue()
 		});
 	}
 }
-BlendEffect.prototype.constructor = BlendEffect;
-BlendEffect.prototype.__proto__ = Effect.prototype;
+DisplacementMapEffect.prototype.constructor = DisplacementMapEffect;
+DisplacementMapEffect.prototype.__proto__ = Effect.prototype;
+
+//Flood
+function FloodEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('color',ColorInput);
+	this.addInput('opacity',NumberInput,{
+		min: 0,
+		max: 1,
+		step: .1,
+		value: 1
+	});
+	this.addOutput('result',EffectOutput);
+
+	this.render();
+	this.updateEndpoints();
+
+	this.filter = new SVG.FloodEffect();
+	this.update();
+}
+FloodEffect.prototype = {
+	options: {
+		title: 'Flood'
+	},
+	update: function(){
+		this.filter.attr({
+			'flood-color': this.inputs.color.getAttrValue(),
+			'flood-opacity': this.inputs.opacity.getAttrValue(),
+		});
+	}
+}
+FloodEffect.prototype.constructor = FloodEffect;
+FloodEffect.prototype.__proto__ = Effect.prototype;
+
+//GaussianBlur
+function GaussianBlurEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('in',EffectInput,{
+		title: "in"
+	});
+	this.addInput('blur',XYInput,{
+		min: 0,
+		value: 0
+	});
+	this.addOutput('result',EffectOutput);
+
+	this.render();
+	this.updateEndpoints();
+
+	this.filter = new SVG.GaussianBlurEffect(0);
+	this.update();
+}
+GaussianBlurEffect.prototype = {
+	options: {
+		title: 'Blur'
+	},
+	update: function(){
+
+		this.filter.attr({
+			in: this.inputs.in.getValue(),
+			'stdDeviation': this.inputs.blur.getValue()
+		});
+	}
+}
+GaussianBlurEffect.prototype.constructor = GaussianBlurEffect;
+GaussianBlurEffect.prototype.__proto__ = Effect.prototype;
+
+//Image
+
+//Merge
+function MergeEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('in 1',EffectInput,{
+		title: "in 1"
+	});
+	this.addInput('in 2',EffectInput,{
+		title: "in 2"
+	});
+	this.addOutput('result',EffectOutput);
+
+	this.render();
+	this.updateEndpoints();
+
+	this.filter = new SVG.MergeEffect();
+	this.update();
+}
+MergeEffect.prototype = {
+	options: {
+		title: 'Merge'
+	},
+    menu: [
+        {
+            type: 'item',
+            icon: 'plus',
+            title: 'Add Input',
+            action: function(){
+            	var a = Object.keys(this.inputs);
+                this.addInput('in'+(a.length+1),EffectInput,{
+                	title: 'in '+(a.length+1)
+                });
+                this.render();
+                editor.repaintEverything();
+                this.updateEndpoints();
+            }
+        },
+        {
+            type: 'item',
+            icon: 'minus',
+            title: 'Remove Input',
+            action: function(){
+            	var a = Object.keys(this.inputs);
+                if(a.length > 0){
+                	this.removeInput(a[a.length-1]);
+                	this.render();
+                	editor.repaintEverything();
+                	this.updateEndpoints();
+                }
+            }
+        },
+        {
+            type: 'separator'
+        },
+        {
+            type: 'item',
+            icon: 'eye',
+            title: 'Preview',
+            action: function(){
+                this.select();
+            }
+        },
+        {
+            type: 'item',
+            icon: 'object-ungroup',
+            title: 'Position',
+            action: function(){
+                this.editPosition();
+            }
+        },
+        {
+            type: 'item',
+            icon: 'trash-o',
+            title: 'Delete',
+            action: function(){
+                this.remove();
+            }
+        }
+    ],
+	update: function(){
+		this.filter.clear();
+		for(var i in this.inputs){
+			if(this.inputs[i].getAttrValue()) this.filter.add(new SVG.MergeNode(this.inputs[i].getAttrValue()));
+		}
+	}
+}
+MergeEffect.prototype.constructor = MergeEffect;
+MergeEffect.prototype.__proto__ = Effect.prototype;
+
+//Morphology
+function MorphologyEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('in',EffectInput,{
+		title: "in"
+	});
+	this.addInput('operator',SelectInput,{
+		value: 'erode',
+		options: [
+			{
+				title: 'out',
+				value: 'dilate'
+			},
+			{
+				title: 'in',
+				value: 'erode'
+			}
+		]
+	});
+	this.addInput('radius',XYInput,{
+		min: 0,
+		value: 0
+	});
+	this.addOutput('result',EffectOutput);
+
+	this.render();
+	this.updateEndpoints();
+
+	this.filter = new SVG.MorphologyEffect();
+	this.update();
+}
+MorphologyEffect.prototype = {
+	options: {
+		title: 'Morphology'
+	},
+	update: function(){
+		this.filter.attr({
+			in: this.inputs.in.getValue(),
+			operator: this.inputs.operator.getAttrValue(),
+			radius: this.inputs.radius.getValue()
+		});
+	}
+}
+MorphologyEffect.prototype.constructor = MorphologyEffect;
+MorphologyEffect.prototype.__proto__ = Effect.prototype;
+
+//offset
+function OffsetEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('in',EffectInput,{
+		title: "in"
+	});
+	this.addInput('x',NumberInput,{
+		value: 0
+	});
+	this.addInput('y',NumberInput,{
+		value: 0
+	});
+	this.addOutput('result',EffectOutput);
+
+	this.render();
+	this.updateEndpoints();
+
+	this.filter = new SVG.OffsetEffect();
+	this.update();
+}
+OffsetEffect.prototype = {
+	options: {
+		title: 'Offset'
+	},
+	update: function(){
+		this.filter.attr({
+			in: this.inputs.in.getValue(),
+			dx: this.inputs.x.getAttrValue(),
+			dy: this.inputs.y.getAttrValue(),
+		})
+	}
+}
+OffsetEffect.prototype.constructor = OffsetEffect;
+OffsetEffect.prototype.__proto__ = Effect.prototype;
+
+//SpecularLighting
+
+//Tile
+function TileEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('in',EffectInput,{
+		title: "in"
+	});
+
+	this.addOutput('result',EffectOutput);
+
+	this.render();
+	this.updateEndpoints();
+
+	this.filter = new SVG.TileEffect();
+	this.update();
+}
+TileEffect.prototype = {
+	options: {
+		title: 'Tile'
+	},
+	update: function(){
+		this.filter.attr({
+			in: this.inputs.in.getValue()
+		})
+	}
+}
+TileEffect.prototype.constructor = TileEffect;
+TileEffect.prototype.__proto__ = Effect.prototype;
+
+//Turbulence
+function TurbulenceEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('baseFrequency',XYInput,{
+		min: 0,
+		step: 0.01,
+		value: 0
+	});
+	this.addInput('numOctaves',NumberInput,{
+		min: 0,
+		value: 1
+	});
+	this.addInput('seed',NumberInput,{
+		min: 0,
+		value: 0
+	});
+	this.addInput('stitchTiles',SelectInput,{
+		value: 'noStitch',
+		options: ['stitch','noStitch']
+	});
+	this.addInput('type',SelectInput,{
+		value: 'turbulence',
+		options: ['turbulence','fractalNoise']
+	});
+
+	this.addOutput('result',EffectOutput);
+
+	this.render();
+	this.updateEndpoints();
+
+	this.filter = new SVG.TurbulenceEffect();
+	this.update();
+}
+TurbulenceEffect.prototype = {
+	options: {
+		title: 'Turbulence'
+	},
+	update: function(){
+		this.filter.attr({
+			baseFrequency: this.inputs.baseFrequency.getAttrValue(),
+			numOctaves: this.inputs.numOctaves.getAttrValue(),
+			seed: this.inputs.seed.getAttrValue(),
+			stitchTiles: this.inputs.stitchTiles.getValue(), //required
+			type: this.inputs.type.getAttrValue()
+		});
+	}
+}
+TurbulenceEffect.prototype.constructor = TurbulenceEffect;
+TurbulenceEffect.prototype.__proto__ = Effect.prototype;
+
+// ------------------------- input & outputs ---------------------------
 
 //inputs
 function InputEffect(){
 	Effect.apply(this,arguments);
 
-	this.addOutput('BackgroundImage',new EffectOutput(this,{
+	this.addOutput('BackgroundImage',EffectOutput,{
 		title: 'BackgroundImage'
 	},{
 		value: 'BackgroundImage'
-	}));
-	this.addOutput('BackgroundAlpha',new EffectOutput(this,{
+	});
+	this.addOutput('BackgroundAlpha',EffectOutput,{
 		title: 'BackgroundAlpha'
 	},{
 		value: 'BackgroundAlpha'
-	}));
-	this.addOutput('FillPaint',new EffectOutput(this,{
+	});
+	this.addOutput('FillPaint',EffectOutput,{
 		title: 'FillPaint'
 	},{
 		value: 'FillPaint'
-	}));
-	this.addOutput('StrokePaint',new EffectOutput(this,{
+	});
+	this.addOutput('StrokePaint',EffectOutput,{
 		title: 'StrokePaint'
 	},{
 		value: 'StrokePaint'
-	}));
-	this.addOutput('SourceAlpha',new EffectOutput(this,{
+	});
+	this.addOutput('SourceAlpha',EffectOutput,{
 		title: "SourceAlpha"
 	},{
 		value: 'SourceAlpha'
-	}));
-	this.addOutput('SourceGraphic',new EffectOutput(this,{
+	});
+	this.addOutput('SourceGraphic',EffectOutput,{
 		title: "SourceGraphic"
 	},{
 		value: 'SourceGraphic'
-	}));
+	});
 
 	this.render();
+	this.updateEndpoints();
 }
 InputEffect.prototype = {
 	options: {
@@ -635,11 +679,12 @@ InputEffect.prototype.__proto__ = Effect.prototype;
 function OutputEffect(){
 	Effect.apply(this,arguments);
 
-	this.addInput('in',new EffectInput(this,{
+	this.addInput('in',EffectInput,{
 		title: "out"
-	}));
+	});
 
 	this.render();
+	this.updateEndpoints();
 
 	this.filter = new SVG.OffsetEffect()
 	this.update();
@@ -650,9 +695,6 @@ OutputEffect.prototype = {
 	},
 	menu: [],
 	toggleButton: false,
-	update: function(){
-		return this.inputs.in.getValue();
-	},
 	update: function(){
 		this.filter.attr({
 			in: this.inputs.in.getValue() || 'SourceGraphic',

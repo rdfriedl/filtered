@@ -28,7 +28,7 @@ EffectOutput.prototype = {
         // this.endpoint.anchor.x /= this.effect.element.offsetWidth;
         this.endpoint.anchor.x = 1;
         // this.endpoint.anchor.y /= 55;
-        this.endpoint.anchor.y = (this.element.offsetTop + this.element.getBoundingClientRect().height/2) / bbox.height;
+        this.endpoint.anchor.y = (this.element.offsetTop + this.element.getBoundingClientRect().height/2 + 4) / bbox.height;
 
         // this.endpoint.repaint();
     },

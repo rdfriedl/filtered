@@ -281,7 +281,6 @@ Effect.prototype = {
 
         $(this.element).find('button.toggle').click(function(){
             $(this.element).toggleClass('collapsed');
-            editor.repaintEverything();
             this.updateEndpoints();
         }.bind(this));
 
@@ -437,7 +436,7 @@ Effect.prototype = {
         for (var i in this.outputs) {
             if(this.outputs[i] instanceof EffectInput || this.outputs[i] instanceof EffectOutput) this.outputs[i].updateEndpointPosition();
         };
-        editor.repaint(this.element);
+        editor.repaintEverything();
     },
     updateMenu: function(){
         var $item = $('<li><a href="#"><i class="fa"></i> <span></span></a></li>');

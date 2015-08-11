@@ -404,7 +404,6 @@ MergeEffect.prototype = {
                 	title: 'in '+(a.length+1)
                 });
                 this.render();
-                editor.repaintEverything();
                 this.updateEndpoints();
             }
         },
@@ -417,7 +416,6 @@ MergeEffect.prototype = {
                 if(a.length > 0){
                 	this.removeInput(a[a.length-1]);
                 	this.render();
-                	editor.repaintEverything();
                 	this.updateEndpoints();
                 }
             }

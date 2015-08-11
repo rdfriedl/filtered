@@ -65,6 +65,29 @@ function onPickerApiLoad() {
           build();
 }
 
+function parseSearch(url){
+    if(!parseSearch.cache){
+        url = url || location.search;
+        var queries = url.replace(/^\?/, '').replace(/\+/g,' ').split('&');
+        parseSearch.cache = {};
+        for( i = 0; i < queries.length; i++ ) {
+            split = queries[i].split('=');
+            parseSearch.cache[split[0]] = window.unescape(split[1]);
+        }
+    }
+    return parseSearch.cache;
+}
+
+function createSearch(data){
+    var str = '';
+    for(var i in data){
+        if(data[i] == null || data[i] == undefined) continue;
+        str += i + '=' + data[i] + '&';
+    }
+    str = str.substr(0,str.length-1);
+    return str;
+}
+
 function initEditor(){
     svg = new SVG('preview-svg');
     filter = svg.filter();
@@ -168,6 +191,7 @@ $(document).ready(function(){
         //load filter after editor loads
         page.editor.start();
         page.loadFilter();
+        page.loadSearch();
     });
 
     $(document).on('click','[href="#"]',function(event){

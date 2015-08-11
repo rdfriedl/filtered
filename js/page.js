@@ -233,9 +233,7 @@ page = {
 				outputPosition: {
 					left: $(page.outputEffect.element).css('left'),
 					top: $(page.outputEffect.element).css('top')
-				},
-				previewImage: (page.editor.preview.image.url() !== '')? page.editor.preview.image.url() : undefined,
-				preivewMode: (page.editor.preview.mode() !== 'text')? page.editor.preview.mode() : undefined
+				}
 			};
 			var effects = page.effects._effects;
 
@@ -290,9 +288,6 @@ page = {
 			$(page.inputEffect.element).css(json.inputPosition);
 			$(page.outputEffect.element).css(json.outputPosition);
 
-			page.editor.preview.image.url(json.previewImage || '');
-			page.editor.preview.mode(json.preivewMode || 'text');
-
 			for(var i = 0; i < json.effects.length; i++){
 				var data = json.effects[i];
 
@@ -339,13 +334,16 @@ page = {
 		json: ko.observable(''),
 		url: ko.observable(''),
 		export: function(){
+			$('.prettyprinted').children().remove();
+			page.exportFilter.filter('');
+			page.exportFilter.json('');
+			page.exportFilter.url('');
+
 			//if theres something selected deselect it
 			$('.effect').removeClass('selected');
 			page.outputEffect.update();
 			
 			page.exportFilter.filter(filter.node.outerHTML.replace(/></g,'>\n<'));
-			$('.prettyprinted').removeClass('prettyprinted');
-			prettyPrint();
 
 			var json = page.export.json();
 
@@ -353,20 +351,26 @@ page = {
 
 			var str = btoa(JSON.stringify(json));
 			if(str.length < 2083){
-				page.exportFilter.url((location.href.substr(0,location.href.indexOf('#')) || location.href) + '#' + str);
+				page.exportFilter.url(location.origin+location.pathname +'?' + createSearch({
+					save: str,
+					previewImage: (page.editor.preview.image.url() !== '')? page.editor.preview.image.url() : undefined,
+					mode: (page.editor.preview.mode() !== 'text')? page.editor.preview.mode() : undefined
+				}));
 			}
 			else{
 				page.exportFilter.url('Error: url to long');
 			}
+			
+			$('.prettyprinted').removeClass('prettyprinted');
+			prettyPrint();
 		}
 	},
 	loadFilter: function(){ //load filter to url
 		try{
-			var json = location.hash;
+			var json = parseSearch().save;
 
-			if(json == '') return;
+			if(!json || json == '') return;
 
-			json = json.substr(1,json.length);
 			json = atob(json);
 			json = JSON.parse(json);
 
@@ -375,6 +379,14 @@ page = {
 		catch(e){
 			console.error('failed to load save from hash');
 			console.error(e);
+		}
+	},
+	loadSearch: function(){
+		if(parseSearch().mode){
+			page.editor.preview.mode(parseSearch().mode || page.editor.preview.mode());
+		}
+		if(parseSearch().previewImage){
+			page.editor.preview.image.url(parseSearch().previewImage || page.editor.preview.image.url());
 		}
 	},
 

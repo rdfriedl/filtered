@@ -94,6 +94,10 @@ function initEditor(){
     svg = new SVG('preview-svg');
     filter = svg.filter();
 
+    var desc = document.createElement('desc');
+    desc.textContent = 'Created with Filtered | '+location.protocol+'//'+location.host+location.pathname;
+    filter.node.appendChild(desc);
+
     var bbox = svg.bbox();
 
     previewText = svg.text('Text');
@@ -222,6 +226,7 @@ $(document).ready(function(){
 
     $(window).resize(function(){
         updatePreviewPosition();
+        editor.repaintEverything();
     })
     $(window).trigger('resize');
 });

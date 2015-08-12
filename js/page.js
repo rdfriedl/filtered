@@ -48,6 +48,10 @@ page = {
 				title: 'ColorMatrix',
 				effect: ColorMatrixEffect
 			},
+			// {
+			// 	title: 'ComponentTransfer',
+			// 	effect: ComponentTransferEffect
+			// },
 			{
 				title: 'Composite',
 				effect: CompositeEffect

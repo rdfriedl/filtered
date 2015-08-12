@@ -14,11 +14,12 @@ function BlendEffect(){
 	});
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = new SVG.BlendEffect();
+
+	this.render();
 	this.update();
+	this.updateEndpoints();
+    this.updatePostion();
 }
 BlendEffect.prototype = {
 	options: {
@@ -64,11 +65,12 @@ function ColorMatrixEffect(){
 
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = new SVG.ColorMatrixEffect();
+
+	this.render();
 	this.update();
+	this.updateEndpoints();
+    this.updatePostion();
 }
 ColorMatrixEffect.prototype = {
 	options: {
@@ -106,6 +108,36 @@ ColorMatrixEffect.prototype.constructor = ColorMatrixEffect;
 ColorMatrixEffect.prototype.__proto__ = Effect.prototype;
 
 //ComponentTransfer
+function ComponentTransferEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('in',EffectInput,{
+		title: "in 1"
+	});
+	this.addOutput('result',EffectOutput);
+
+	this.filter = new SVG.ComponentTransferEffect();
+
+	this.render();
+	this.update();
+	this.updateEndpoints();
+    this.updatePostion();
+}
+ComponentTransferEffect.prototype = {
+	options: {
+		title: 'ComponentTransfer'
+	},
+	style: {
+		width: '300px'
+	},
+	update: function(inputs){
+		this.filter.attr({
+			in: this.inputs.in.getValue()
+		});
+	}
+}
+ComponentTransferEffect.prototype.constructor = ComponentTransferEffect;
+ComponentTransferEffect.prototype.__proto__ = Effect.prototype;
 
 //composite
 function CompositeEffect(){
@@ -136,10 +168,11 @@ function CompositeEffect(){
 	this.addOutput('result',EffectOutput);
 
 	this.filter = new SVG.CompositeEffect();
-	this.update();
 
 	this.render();
+	this.update();
 	this.updateEndpoints();
+    this.updatePostion();
 }
 CompositeEffect.prototype = {
 	options: {
@@ -218,11 +251,12 @@ function ConvolveMatrixEffect(){
 
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = new SVG.ConvolveMatrixEffect('');
+
+	this.render();
 	this.update();
+	this.updateEndpoints();
+    this.updatePostion();
 }
 ConvolveMatrixEffect.prototype = {
 	style: {
@@ -279,11 +313,12 @@ function DisplacementMapEffect(){
 
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = new SVG.DisplacementMapEffect();
+
+	this.render();
 	this.update();
+	this.updateEndpoints();
+    this.updatePostion();
 }
 DisplacementMapEffect.prototype = {
 	options: {
@@ -315,11 +350,12 @@ function FloodEffect(){
 	});
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = new SVG.FloodEffect();
+
+	this.render();
 	this.update();
+	this.updateEndpoints();
+    this.updatePostion();
 }
 FloodEffect.prototype = {
 	options: {
@@ -348,18 +384,18 @@ function GaussianBlurEffect(){
 	});
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = new SVG.GaussianBlurEffect(0);
+
+	this.render();
 	this.update();
+	this.updateEndpoints();
+    this.updatePostion();
 }
 GaussianBlurEffect.prototype = {
 	options: {
 		title: 'Blur'
 	},
 	update: function(){
-
 		this.filter.attr({
 			in: this.inputs.in.getValue(),
 			'stdDeviation': this.inputs.blur.getValue()
@@ -383,106 +419,85 @@ function MergeEffect(){
 	});
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = new SVG.MergeEffect();
+
+	this.menu = [
+		{
+			type: 'item',
+			icon: 'plus',
+			title: 'Add Input',
+			action: function(){
+				var a = Object.keys(this.inputs);
+				this.addInput('in'+(a.length+1),EffectInput,{
+					title: 'in '+(a.length+1)
+				});
+				this.render();
+				this.updateEndpoints();
+			}
+		},
+		{
+			type: 'item',
+			icon: 'minus',
+			title: 'Remove Input',
+			action: function(){
+				var a = Object.keys(this.inputs);
+				if(a.length > 0){
+					this.removeInput(a[a.length-1]);
+					this.render();
+					this.updateEndpoints();
+				}
+			}
+		},
+		{
+			type: 'separator'
+		}
+	].concat(this.menu);
+	this.updateMenu();
+
+	this.render();
 	this.update();
+	this.updateEndpoints();
+    this.updatePostion();
 }
 MergeEffect.prototype = {
 	options: {
 		title: 'Merge'
 	},
-    menu: [
-        {
-            type: 'item',
-            icon: 'plus',
-            title: 'Add Input',
-            action: function(){
-            	var a = Object.keys(this.inputs);
-                this.addInput('in'+(a.length+1),EffectInput,{
-                	title: 'in '+(a.length+1)
-                });
-                this.render();
-                this.updateEndpoints();
-            }
-        },
-        {
-            type: 'item',
-            icon: 'minus',
-            title: 'Remove Input',
-            action: function(){
-            	var a = Object.keys(this.inputs);
-                if(a.length > 0){
-                	this.removeInput(a[a.length-1]);
-                	this.render();
-                	this.updateEndpoints();
-                }
-            }
-        },
-        {
-            type: 'separator'
-        },
-        {
-            type: 'item',
-            icon: 'eye',
-            title: 'Preview',
-            action: function(){
-                this.select();
-            }
-        },
-        {
-            type: 'item',
-            icon: 'object-ungroup',
-            title: 'Position',
-            action: function(){
-                this.editPosition();
-            }
-        },
-        {
-            type: 'item',
-            icon: 'trash-o',
-            title: 'Delete',
-            action: function(){
-                this.remove();
-            }
-        }
-    ],
-    fromJSON: function(data,dontUpdate){
-        data = data || {};
+	fromJSON: function(data,dontUpdate){
+		data = data || {};
 
-        if(data.inputs){
-            for(var k in data.inputs){
-            	if(!this.inputs[k]){
-	                this.addInput(k,EffectInput,{
-	                	title: k
-	                });
-            	}
-                this.inputs[k].fromJSON(data.inputs[k]);
-            }
-        }
+		if(data.inputs){
+			for(var k in data.inputs){
+				if(!this.inputs[k]){
+					this.addInput(k,EffectInput,{
+						title: k
+					});
+				}
+				this.inputs[k].fromJSON(data.inputs[k]);
+			}
+		}
 
-        if(data.style){
-            this.style.top = data.style.top;
-            this.style.left = data.style.left;
-            this.applyStyles();
-            this.updateEndpoints();
-        }
+		if(data.style){
+			this.style.top = data.style.top;
+			this.style.left = data.style.left;
+			this.applyStyles();
+			this.updateEndpoints();
+		}
 
-        if(data.position){
-            this.position.x = data.position.x !== undefined? data.position.x : this.position.x;
-            this.position.y = data.position.y !== undefined? data.position.y : this.position.y;
-            this.position.width = data.position.width !== undefined? data.position.width : this.position.width;
-            this.position.height = data.position.height !== undefined? data.position.height : this.position.height;
-            this.updatePostion();
-        }
+		if(data.position){
+			this.position.x = data.position.x !== undefined? data.position.x : this.position.x;
+			this.position.y = data.position.y !== undefined? data.position.y : this.position.y;
+			this.position.width = data.position.width !== undefined? data.position.width : this.position.width;
+			this.position.height = data.position.height !== undefined? data.position.height : this.position.height;
+			this.updatePostion();
+		}
 
-        if(!dontUpdate){
-        	this.render();
-        	this.updateEndpoints();
-        	this.update();
-        }
-    },
+		if(!dontUpdate){
+			this.render();
+			this.updateEndpoints();
+			this.update();
+		}
+	},
 	update: function(){
 		this.filter.clear();
 		for(var i in this.inputs){
@@ -519,11 +534,12 @@ function MorphologyEffect(){
 	});
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = new SVG.MorphologyEffect();
+
+	this.render();
 	this.update();
+	this.updateEndpoints();
+    this.updatePostion();
 }
 MorphologyEffect.prototype = {
 	options: {
@@ -555,11 +571,12 @@ function OffsetEffect(){
 	});
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = new SVG.OffsetEffect();
+
+	this.render();
 	this.update();
+	this.updateEndpoints();
+    this.updatePostion();
 }
 OffsetEffect.prototype = {
 	options: {
@@ -588,11 +605,12 @@ function TileEffect(){
 
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = new SVG.TileEffect();
+
+	this.render();
 	this.update();
+	this.updateEndpoints();
+    this.updatePostion();
 }
 TileEffect.prototype = {
 	options: {
@@ -635,11 +653,12 @@ function TurbulenceEffect(){
 
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = new SVG.TurbulenceEffect();
+
+	this.render();
 	this.update();
+	this.updateEndpoints();
+    this.updatePostion();
 }
 TurbulenceEffect.prototype = {
 	options: {
@@ -696,14 +715,40 @@ function InputEffect(){
 	});
 
 	this.render();
+	this.update();
 	this.updateEndpoints();
+    this.updatePostion();
 }
 InputEffect.prototype = {
 	options: {
 		title: 'Input'
 	},
-	menu: [],
-	toggleButton: false
+	menu: [
+		{
+			type: 'item',
+			icon: 'object-ungroup',
+			title: 'Position',
+			action: function(){
+				this.editPosition();
+			}
+		},
+        {
+            type: 'item',
+            icon: 'question',
+            title: 'Help',
+            action: function(){
+                $('#help').modal('show');
+                $('iframe').attr('src','http://www.w3.org/TR/SVG/filters.html#FilterElement');
+            }
+		}
+	],
+	toggleButton: false,
+	updatePostion: function(){ //use filter and not this.filter
+        filter.x(this.position.x + '%');
+        filter.y(this.position.y + '%');
+        filter.width(this.position.width + '%');
+        filter.height(this.position.height + '%');
+	}
 }
 InputEffect.prototype.constructor = InputEffect;
 InputEffect.prototype.__proto__ = Effect.prototype;
@@ -716,11 +761,12 @@ function OutputEffect(){
 		title: "out"
 	});
 
-	this.render();
-	this.updateEndpoints();
+	this.filter = new SVG.OffsetEffect();
 
-	this.filter = new SVG.OffsetEffect()
+	this.render();
 	this.update();
+	this.updateEndpoints();
+    this.updatePostion();
 }
 OutputEffect.prototype = {
 	options: {

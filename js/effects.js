@@ -47,6 +47,15 @@ Effect.prototype = {
         },
         {
             type: 'item',
+            icon: 'question',
+            title: 'Help',
+            action: function(){
+                $('#help').modal('show');
+                $('iframe').attr('src','http://www.w3.org/TR/SVG/filters.html#'+this.filter.type+'Element');
+            }
+        },
+        {
+            type: 'item',
             icon: 'trash-o',
             title: 'Delete',
             action: function(){
@@ -169,7 +178,12 @@ Effect.prototype = {
         var data = {
             id: this.id,
             type: this.constructor.name,
-            position: this.position,
+            position: {
+                x: this.position.hasOwnProperty('x')? this.position.x : undefined,
+                y: this.position.hasOwnProperty('y')? this.position.y : undefined,
+                width: this.position.hasOwnProperty('width')? this.position.width : undefined,
+                height: this.position.hasOwnProperty('height')? this.position.height : undefined
+            },
             style: {
                 top: this.element.style.top,
                 left: this.element.style.left
@@ -229,20 +243,20 @@ Effect.prototype = {
     setPosition: function(data){
         data = data || {};
 
-        this.position.width = data.width || this.position.width;
-        this.position.height = data.height || this.position.height;
-        this.position.x = data.x || this.position.x;
-        this.position.y = data.y || this.position.y;
+        if(data.x !== this.position.__proto__.x && data.x !== undefined){ this.position.x = data.x } else { delete this.position.x };
+        if(data.y !== this.position.__proto__.y && data.y !== undefined){ this.position.y = data.y } else { delete this.position.y };
+        if(data.width !== this.position.__proto__.width && data.width !== undefined){ this.position.width = data.width } else { delete this.position.width };
+        if(data.height !== this.position.__proto__.height && data.height !== undefined){ this.position.height = data.height } else { delete this.position.height };
         this.updatePostion();
     },
     getPosition: function(){
         return this.position;
     },
     updatePostion: function(){
-        this.filter.width(this.position.width + '%');
-        this.filter.height(this.position.height + '%');
-        this.filter.x(this.position.x + '%');
-        this.filter.y(this.position.y + '%');
+        if(this.position.hasOwnProperty('x')){ this.filter.x(this.position.x + '%') } else { this.filter.attr('x',null) };
+        if(this.position.hasOwnProperty('y')){ this.filter.y(this.position.y + '%') } else { this.filter.attr('y',null) };
+        if(this.position.hasOwnProperty('width')){ this.filter.width(this.position.width + '%') } else { this.filter.attr('width',null) };
+        if(this.position.hasOwnProperty('height')){ this.filter.height(this.position.height + '%') } else { this.filter.attr('height',null) };
     },
 
     render: function(){
@@ -321,6 +335,14 @@ Effect.prototype.constructor = Effect;
 //muti filter
 function MultiEffect(){
 	Effect.apply(this,arguments);
+
+    for(var i = 0; i < this.menu.length; i++){
+        if(this.menu[i].title == 'Help'){
+            this.menu.splice(i,1);
+            break;
+        }
+    }
+    this.updateMenu();
 }
 MultiEffect.prototype = {
 	options: {
@@ -398,9 +420,6 @@ function ShadowEffect(){
 	});
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = {};
 	this.filter.color = new SVG.FloodEffect();
 	this.filter.composite = new SVG.CompositeEffect({
@@ -415,7 +434,10 @@ function ShadowEffect(){
 	});
 	this.filter.merge = new SVG.MergeEffect();
 
-	this.update();
+    this.render();
+    this.update();
+    this.updateEndpoints();
+    this.updatePostion();
 }
 ShadowEffect.prototype = {
 	options: {
@@ -466,9 +488,6 @@ function StrokeEffect(){
 	});
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = {};
 	this.filter.color = new SVG.FloodEffect();
 	this.filter.composite = new SVG.CompositeEffect({
@@ -480,7 +499,10 @@ function StrokeEffect(){
 	});
 	this.filter.merge = new SVG.MergeEffect();
 
-	this.update();
+    this.render();
+    this.update();
+    this.updateEndpoints();
+    this.updatePostion();
 }
 StrokeEffect.prototype = {
 	options: {
@@ -523,9 +545,6 @@ function RecolorEffect(){
 	});
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = {};
 	this.filter.color = new SVG.FloodEffect();
 	this.filter.composite = new SVG.CompositeEffect({
@@ -534,7 +553,10 @@ function RecolorEffect(){
 	})
 	this.filter.merge = new SVG.MergeEffect();
 
-	this.update();
+    this.render();
+    this.update();
+    this.updateEndpoints();
+    this.updatePostion();
 }
 RecolorEffect.prototype = {
 	options: {
@@ -567,9 +589,6 @@ function SepiatoneEffect(){
 	this.addInput('in',EffectInput)
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = {};
 	this.filter.matrix = new SVG.ColorMatrixEffect('matrix', 
 		[ .343, .669, .119, 0, 0 
@@ -577,7 +596,10 @@ function SepiatoneEffect(){
         , .172, .334, .111, 0, 0
         , .000, .000, .000, 1, 0 ]);
 
-	this.update();
+    this.render();
+    this.update();
+    this.updateEndpoints();
+    this.updatePostion();
 }
 SepiatoneEffect.prototype = {
 	options: {
@@ -597,9 +619,6 @@ function GreyScaleEffect(){
 	this.addInput('in',EffectInput)
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = {};
 	this.filter.matrix = new SVG.ColorMatrixEffect('matrix', 
 		[ .333, .333, .333, 0, 0 
@@ -607,7 +626,10 @@ function GreyScaleEffect(){
         , .333, .333, .333, 0, 0
         , .000, .000, .000, 1, 0 ]);
 
-	this.update();
+    this.render();
+    this.update();
+    this.updateEndpoints();
+    this.updatePostion();
 }
 GreyScaleEffect.prototype = {
 	options: {
@@ -631,13 +653,13 @@ function BumpEffect(){
 	})
 	this.addOutput('result',EffectOutput);
 
-	this.render();
-	this.updateEndpoints();
-
 	this.filter = {};
 	this.filter.matrix = new SVG.ConvolveMatrixEffect('');
 
-	this.update();
+    this.render();
+    this.update();
+    this.updateEndpoints();
+    this.updatePostion();
 }
 BumpEffect.prototype = {
 	options: {

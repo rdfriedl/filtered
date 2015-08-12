@@ -223,110 +223,92 @@ page = {
 		json: function(){
 			var json = {
 				effects: [],
-				connections: [],
-				inputEffectID: page.inputEffect.id,
-				outputEffectID: page.outputEffect.id,
-				inputPosition: {
-					left: $(page.inputEffect.element).css('left'),
-					top: $(page.inputEffect.element).css('top')
-				},
-				outputPosition: {
-					left: $(page.outputEffect.element).css('left'),
-					top: $(page.outputEffect.element).css('top')
-				}
+				inputEffect: page.inputEffect.toJSON(),
+				outputEffect: page.outputEffect.toJSON()
 			};
 			var effects = page.effects._effects;
 
 			for(var i = 0; i < effects.length; i++){
-				var effect = effects[i];
-				var data = {
-					id: effect.id,
-					type: effect.constructor.name,
-					inputs: {},
-					left: effect.element.style.left,
-					top: effect.element.style.top
-				}
-				for(var k in effect.inputs){
-					if(effect.inputs[k] instanceof EffectInput){
-						if(effect.inputs[k].connection){
-							json.connections.push([
-								[effect.id,effect.inputs[k].id],
-								[effect.inputs[k].connection.effect.id,effect.inputs[k].connection.id]
-							]);
-						}
-					}
-					else{
-						data.inputs[k] = effect.inputs[k].getAttrValue() || undefined;
-					}
-				}
-				json.effects.push(data);
-			}
-
-			//export output connections
-			var effect = page.outputEffect;
-			for(var k in effect.inputs){
-				if(effect.inputs[k] instanceof EffectInput){
-					if(effect.inputs[k].connection){
-						json.connections.push([
-							[effect.id,effect.inputs[k].id],
-							[effect.inputs[k].connection.effect.id,effect.inputs[k].connection.id]
-						]);
-					}
-				}
+				json.effects.push(effects[i].toJSON());
 			}
 
 			return json;
+		},
+		url: function(){
+			var json = page.export.json();
+
+			var str = btoa(JSON.stringify(json));
+			if(str.length < 2083){
+				return location.origin+location.pathname +'?' + createSearch({
+					save: str,
+					previewImage: (page.editor.preview.image.url() !== '')? page.editor.preview.image.url() : undefined,
+					mode: (page.editor.preview.mode() !== 'text')? page.editor.preview.mode() : undefined
+				});
+			}
+			return location.origin+location.pathname
+		},
+		xml: function(){
+
 		}
 	},
 	import: {
 		json: function(json){
 			var effects = {};
-
-			effects[json.inputEffectID] = page.inputEffect;
-			effects[json.outputEffectID] = page.outputEffect;
-
-			$(page.inputEffect.element).css(json.inputPosition);
-			$(page.outputEffect.element).css(json.outputPosition);
+			var replaceID = function(obj,id,replaceWith){
+				for(var i in obj){
+					if(typeof obj[i] == 'object'){
+						replaceID(obj[i],id,replaceWith);
+					}
+					else if(obj[i] == id){
+						obj[i] = replaceWith;
+					}
+				}
+			}
 
 			for(var i = 0; i < json.effects.length; i++){
 				var data = json.effects[i];
 
-				var effect = new window[data.type]({},{
-					left: data.left,
-					top: data.top
-				});
+				var effect = new window[data.type];
+				effects[effect.id] = effect;
+				replaceID(json,data.id,effect.id);
 				page.effects._effects.push(effect);
-				effects[data.id] = effect;
-
-				for(var k in data.inputs){
-					effect.inputs[k].setValue(data.inputs[k]);
-				}
-
-				effect.update();
+				//cant import the data yet because not all the effects have been created
 			}
 
-			//make connections
-			var getInput = function(id){
-				if(effects[id[0]] && effects[id[0]].inputs[id[1]]){
-					return effects[id[0]].inputs[id[1]];
-				}
+			//set the input/output effects ids
+			if(json.outputEffect){
+				replaceID(json,json.outputEffect.id,page.outputEffect.id);
 			}
-			var getOutput = function(id){
-				if(effects[id[0]] && effects[id[0]].outputs[id[1]]){
-					return effects[id[0]].outputs[id[1]];
-				}
+			if(json.inputEffect){
+				replaceID(json,json.inputEffect.id,page.inputEffect.id);
 			}
-			for(var i = 0; i < json.connections.length; i++){
-				var data = json.connections[i];
-				var input = getInput(data[0]);
-				var output = getOutput(data[1]);
 
-				if(!input || !output) continue;
-
-				input.setValue(output);
+			//import data
+			for(var i = 0; i < json.effects.length; i++){
+				var effect = effects[json.effects[i].id];
+				if(effect) effect.fromJSON(json.effects[i]);
+			}
+			if(json.outputEffect){
+				page.outputEffect.fromJSON(json.outputEffect);
+			}
+			if(json.inputEffect){
+				page.inputEffect.fromJSON(json.inputEffect);
 			}
 
 			page.editor.arange();
+		},
+		url: function(url){
+			var json = parseSearch(url).save;
+
+			if(!json || json == '') return;
+
+			json = atob(json);
+			json = JSON.parse(json);
+
+			page.import.json(json);
+		},
+		xml: function(){
+
 		}
 	},
 	exportFilter: {
@@ -344,22 +326,8 @@ page = {
 			page.outputEffect.update();
 			
 			page.exportFilter.filter(filter.node.outerHTML.replace(/></g,'>\n<'));
-
-			var json = page.export.json();
-
-			page.exportFilter.json(JSON.stringify(json, null, 4));
-
-			var str = btoa(JSON.stringify(json));
-			if(str.length < 2083){
-				page.exportFilter.url(location.origin+location.pathname +'?' + createSearch({
-					save: str,
-					previewImage: (page.editor.preview.image.url() !== '')? page.editor.preview.image.url() : undefined,
-					mode: (page.editor.preview.mode() !== 'text')? page.editor.preview.mode() : undefined
-				}));
-			}
-			else{
-				page.exportFilter.url('Error: url to long');
-			}
+			page.exportFilter.json(JSON.stringify(page.export.json(), null, 4));
+			page.exportFilter.url(page.export.url());
 			
 			$('.prettyprinted').removeClass('prettyprinted');
 			prettyPrint();
@@ -367,17 +335,10 @@ page = {
 	},
 	loadFilter: function(){ //load filter to url
 		try{
-			var json = parseSearch().save;
-
-			if(!json || json == '') return;
-
-			json = atob(json);
-			json = JSON.parse(json);
-
-			page.import.json(json);
+			page.import.url(location.href);
 		}
 		catch(e){
-			console.error('failed to load save from hash');
+			console.error('failed to load from url');
 			console.error(e);
 		}
 	},

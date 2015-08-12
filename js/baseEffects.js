@@ -225,7 +225,7 @@ function ConvolveMatrixEffect(){
 	this.update();
 }
 ConvolveMatrixEffect.prototype = {
-	styles: {
+	style: {
 		width: '300px'
 	},
 	options: {
@@ -448,6 +448,41 @@ MergeEffect.prototype = {
             }
         }
     ],
+    fromJSON: function(data,dontUpdate){
+        data = data || {};
+
+        if(data.inputs){
+            for(var k in data.inputs){
+            	if(!this.inputs[k]){
+	                this.addInput(k,EffectInput,{
+	                	title: k
+	                });
+            	}
+                this.inputs[k].fromJSON(data.inputs[k]);
+            }
+        }
+
+        if(data.style){
+            this.style.top = data.style.top;
+            this.style.left = data.style.left;
+            this.applyStyles();
+            this.updateEndpoints();
+        }
+
+        if(data.position){
+            this.position.x = data.position.x !== undefined? data.position.x : this.position.x;
+            this.position.y = data.position.y !== undefined? data.position.y : this.position.y;
+            this.position.width = data.position.width !== undefined? data.position.width : this.position.width;
+            this.position.height = data.position.height !== undefined? data.position.height : this.position.height;
+            this.updatePostion();
+        }
+
+        if(!dontUpdate){
+        	this.render();
+        	this.updateEndpoints();
+        	this.update();
+        }
+    },
 	update: function(){
 		this.filter.clear();
 		for(var i in this.inputs){

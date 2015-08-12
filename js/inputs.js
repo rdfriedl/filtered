@@ -1,3 +1,73 @@
+//Input
+function Input(effect,opts,data){
+    this.effect = effect;
+
+    this.options = Object.create(this.options);
+    for(var i in opts){
+        this.options[i] = opts[i];
+    }
+
+    for(var i in data){
+        this[i] = data[i];
+    }
+}
+Input.prototype = {
+    id: '',
+    effect: undefined,
+    element: undefined,
+    titleElement: undefined,
+    inputElement: undefined,
+    options: {
+        title: 'input',
+        value: '' //default value
+    },
+
+    getValue: function(){
+        return $(this.inputElement).val();
+    },
+    getAttrValue: function(){ //returns value only when its not == to options.value
+        var v = this.getValue();
+        return v==this.options.value? null : v;
+    },
+    setValue: function(val){
+        $(this.inputElement).val(val);
+    },
+    change: function(){ //fires when input changes
+        this.effect.change();
+    },
+    toString: function(){
+        return this.getValue();
+    },
+    toJSON: function(){
+        return this.getAttrValue();
+    },
+    fromJSON: function(data){
+        this.setValue(data);
+    },
+    show: function(){
+        $(this.element).show();
+    },
+    hide: function(){
+        $(this.element).hide();
+    },
+    render: function(){
+        if(!this.effect) return;
+        // return $('#temp .effect-input').clone().get(0);
+    },
+    updateElement: function(){
+        if(this.options.title){
+            $(this.titleElement).show().text(this.options.title);
+        }
+        else $(this.titleElement).hide();
+
+        $(this.inputElement).val(this.getValue());
+    },
+    _remove: function(){
+        editor.deleteEndpoint(this.endpoint)
+    }
+}
+Input.prototype.constructor = Input;
+
 //EffectInput
 function EffectInput(){
     Input.apply(this,arguments)
@@ -13,13 +83,42 @@ function EffectInput(){
 EffectInput.prototype = {
     endpoint: undefined,
     connection: undefined,
-    value: function(){
+    getValue: function(){
         return (this.connection)? this.connection.getValue() : null;
     },
-    setValue: function(output){
-        this.connectionEvent(output);
+    setValue: function(output,dontChange){
+        this.connectionEvent(output,dontChange);
 
         editor.connect({uuids:[output.uuid,this.uuid],editable: true});
+    },
+
+    toJSON: function(){
+        if(this.connection){
+            return [this.connection.effect.id,this.connection.id];
+        }
+    },
+    fromJSON: function(data){
+        //find the element and the output and connect to it
+        for(var i in page.effects._effects){
+            var effect = page.effects._effects[i];
+            if(effect.id == data[0]){
+                if(effect.outputs[data[1]]){
+                    this.setValue(effect.outputs[data[1]],true);
+                }
+            }
+        }
+        if(data[0] == page.inputEffect.id){
+            var effect = page.inputEffect;
+            if(effect.outputs[data[1]]){
+                this.setValue(effect.outputs[data[1]],true);
+            }
+        }
+        if(data[0] == page.outputEffect.id){
+            var effect = page.outputEffect;
+            if(effect.outputs[data[1]]){
+                this.setValue(effect.outputs[data[1]],true);
+            }
+        }
     },
 
     initEndpoint: function(){
@@ -39,22 +138,12 @@ EffectInput.prototype = {
     },
     updateEndpointPosition: function(){
         var bbox = this.effect.element.getBoundingClientRect();
-
-        // this.endpoint.anchor.x = this.element.offsetLeft + bbox.width + 10;
-        // this.endpoint.anchor.y = this.element.offsetTop + bbox.height/2 +4;
-
-        // this.endpoint.anchor.x /= this.effect.element.offsetWidth;
-        // this.endpoint.anchor.y /= 55;
         this.endpoint.anchor.y = (this.element.offsetTop + this.element.getBoundingClientRect().height/2 + 2) / bbox.height;
-
-        // this.endpoint.repaint();
+        this.endpoint.repaint();
     },
     render: function(){
         if(!this.effect) return;
         return this.element;
-    },
-    updateElement: function(){
-        Input.prototype.updateElement.call(this);
     },
     arange: function(){
         if(!this.connection) return;
@@ -81,19 +170,10 @@ ColorInput.prototype = {
     options: {
         value: '#000000'
     },
-    value: function(){
-        return $(this.inputElement).val();
-    },
-    setValue: function(val){
-        return $(this.inputElement).val(val);
-    },
 
     render: function(){
         if(!this.effect) return;
         return this.element;
-    },
-    updateElement: function(){
-        Input.prototype.updateElement.call(this);
     }
 }
 ColorInput.prototype.constructor = ColorInput;
@@ -114,12 +194,6 @@ SelectInput.prototype = {
     options: {
         options: [],
         value: ''
-    },
-    value: function(){
-        return $(this.inputElement).val();
-    },
-    setValue: function(val){
-        return $(this.inputElement).val(val);
     },
 
     render: function(){
@@ -159,11 +233,8 @@ NumberInput.prototype = {
         step: undefined,
         value: 0
     },
-    value: function(){
+    getValue: function(){
         return parseFloat($(this.inputElement).val());
-    },
-    setValue: function(val){
-        return $(this.inputElement).val(val);
     },
 
     render: function(){
@@ -202,19 +273,10 @@ TextInput.prototype = {
     options: {
         value: ''
     },
-    value: function(){
-        return $(this.inputElement).val();
-    },
-    setValue: function(val){
-        return $(this.inputElement).val(val);
-    },
 
     render: function(){
         if(!this.effect) return;
         return this.element;
-    },
-    updateElement: function(){
-        Input.prototype.updateElement.call(this);
     }
 }
 TextInput.prototype.constructor = TextInput;
@@ -246,12 +308,25 @@ MatrixInput.prototype = {
         height: 3,
         value: 0
     },
-    value: function(){
+    getValue: function(){
         return this.matrix.join(' ');
     },
     setValue: function(val){
         val = val || '';
         this.matrix = val.split(' ');
+    },
+    toJSON: function(){
+        return {
+            width: this.options.width,
+            height: this.options.height,
+            matrix: this.getValue()
+        }
+    },
+    fromJSON: function(data){
+        this.options.width = data.width || this.options.width;
+        this.options.height = data.height || this.options.height;
+        this.setValue(data.matrix);
+        this.updateElement();
     },
     setSize: function(x,y){
         x = isNaN(x)? 0 : x;
@@ -341,7 +416,7 @@ XYInput.prototype = {
         step: undefined,
         value: 0
     },
-    value: function(){
+    getValue: function(){
         return this.getX() + ' ' + this.getY();
     },
     setValue: function(val){

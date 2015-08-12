@@ -1,3 +1,54 @@
+//Output
+function Output(effect,opts,data){
+    this.effect = effect;
+
+    this.options = Object.create(this.options);
+    for(var i in opts){
+        this.options[i] = opts[i];
+    }
+
+    for(var i in data){
+        this[i] = data[i];
+    }
+}
+Output.prototype = {
+    id: '',
+    effect: undefined,
+    value: '',
+    options: {
+        title: 'output'
+    },
+
+    getValue: function(){
+        if(typeof this.value == 'function'){
+            return this.value();
+        }
+        else{
+            return this.value;
+        }
+    },
+    toString: function(){
+        return this.getValue();
+    },
+    show: function(){
+        $(this.element).show();
+    },
+    hide: function(){
+        $(this.element).hide();
+    },
+    render: function(){
+        if(!this.effect) return;
+        // return $('#temp .effect-input').clone().get(0);
+    },
+    updateElement: function(){
+
+    },
+    _remove: function(){
+        editor.deleteEndpoint(this.endpoint)
+    }
+}
+Output.prototype.constructor = Output;
+
 //EffectOutput
 function EffectOutput(){
     Output.apply(this,arguments);

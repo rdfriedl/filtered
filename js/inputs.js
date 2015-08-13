@@ -464,3 +464,133 @@ XYInput.prototype = {
 }
 XYInput.prototype.constructor = XYInput;
 XYInput.prototype.__proto__ = Input.prototype;
+
+
+//FuncRGBAInput
+function FuncRGBAInput(){
+    Input.apply(this,arguments)
+
+    $el = $('#temp .funcrgba-input').clone();
+
+    this.element = $el[0];
+    this.titleElement = $el.find('.effect-title')[0];
+    this.inputElement = $el.find('.effect-input-control')[0];
+    this.inputElement.addEventListener('input',this.change.bind(this));
+
+    $(this.element).find('.add-table-index').click(function(){
+        this.table.push(1);
+        this.updateElement();
+        this.change();
+    }.bind(this))
+
+    $(this.element).find('.remove-table-index').click(function(){
+        this.table.pop();
+        this.updateElement();
+        this.change();
+    }.bind(this))
+
+    $(this.element).find('.input-type').on('change',function(event){
+        this.type = $(event.target).val();
+        $(this.element).find('[data-type]').hide();
+        $(this.element).find('[data-type="'+this.type+'"]').show();
+        this.effect.updateEndpoints();
+        this.change();
+    }.bind(this))
+
+    $(this.element).find('[data-type]').hide();
+    $(this.element).find('[data-type="'+this.type+'"]').show();
+}
+FuncRGBAInput.prototype = {
+    options: {
+        chanel: "R"
+    },
+    type: 'identity',
+    table: [1,0],
+    getAttrValue: function(){ //returns obj of values/attrs
+        switch(this.type){
+            case "identity":
+                return {};
+                break;
+            case "table":
+                break;
+            case "discrete":
+                break;
+            case "linear":
+                break;
+            case "gamma":
+                break;
+        }
+    },
+    setValue: function(val){
+        val = val || '';
+        var values = val.split(' ');
+        this.tabel = values;
+    },
+    _getColor: function(i){
+        switch(this.options.chanel){
+            case 'R':
+                return 'rgb('+Math.round(this.table[i]*255)+',0,0)';
+                break;
+            case 'G':
+                return 'rgb(0,'+Math.round(this.table[i]*255)+',0)';
+                break;
+            case 'B':
+                return 'rgb(0,0,'+Math.round(this.table[i]*255)+')';
+                break;
+            case 'A':
+                var val = Math.round(this.table[i]*255);
+                return 'rgb('+val+','+val+','+val+')';
+                break;
+        }
+    },
+
+    render: function(){
+        if(!this.effect) return;
+        return this.element;
+    },
+    updateElement: function(){
+        Input.prototype.updateElement.call(this);
+
+        //table
+        var $table = $(this.inputElement);
+
+        $table.find('thead>tr').children().remove();
+        $table.find('tbody>tr').children().remove();
+        for(var i = 0; i < this.table.length; i++){
+            $('<th>')
+                .css('background', 'linear-gradient(to right, rgb('+Math.round((1-(i/this.table.length))*255)+',0,0) , rgb('+Math.round((1-((i+1)/this.table.length))*255)+',0,0))')
+                .appendTo($table.find('thead>tr'));
+
+            $('<td>').append(
+                $('<input class="form-control">')
+                    .css({
+                        'background': this._getColor(i),
+                        'margin': '0px',
+                        'padding': '0px 0px 0px 5px',
+                        'height': '24px',
+                        'color': 'grey'
+                    })
+                    .attr({
+                        type: 'number',
+                        min: 0,
+                        max: 1,
+                        step: 0.1,
+                        value: this.table[i]
+                    })
+                    .data('index',i)
+                    .on('input',function(event){
+                        var $this = $(event.target);
+                        var val = parseFloat($this.val());
+                        this.table[$this.data('index')] = val;
+                        $this.css('background', 'rgb('+Math.round(val*255)+',0,0)');
+                    }.bind(this))
+            )
+            .css({
+                'padding': '0px'
+            })
+            .appendTo($table.find('tbody>tr'))
+        }
+    }
+}
+FuncRGBAInput.prototype.constructor = FuncRGBAInput;
+FuncRGBAInput.prototype.__proto__ = Input.prototype;

@@ -40,9 +40,7 @@ BlendEffect.prototype.__proto__ = Effect.prototype;
 function ColorMatrixEffect(){
 	Effect.apply(this,arguments);
 
-	this.addInput('in',EffectInput,{
-		title: "in 1"
-	});
+	this.addInput('in',EffectInput);
 	this.addInput('type',SelectInput,{
 		value: 'matrix',
 		options: ["matrix",'saturate','hueRotate','luminanceToAlpha']
@@ -111,8 +109,18 @@ ColorMatrixEffect.prototype.__proto__ = Effect.prototype;
 function ComponentTransferEffect(){
 	Effect.apply(this,arguments);
 
-	this.addInput('in',EffectInput,{
-		title: "in 1"
+	this.addInput('in',EffectInput);
+	this.addInput('R',FuncRGBAInput,{
+		chanel: "R"
+	});
+	this.addInput('G',FuncRGBAInput,{
+		chanel: "G"
+	});
+	this.addInput('B',FuncRGBAInput,{
+		chanel: "B"
+	});
+	this.addInput('A',FuncRGBAInput,{
+		chanel: "A"
 	});
 	this.addOutput('result',EffectOutput);
 
@@ -220,9 +228,7 @@ CompositeEffect.prototype.__proto__ = Effect.prototype;
 function ConvolveMatrixEffect(){
 	Effect.apply(this,arguments);
 
-	this.addInput('in',EffectInput,{
-		title: "in 1"
-	});
+	this.addInput('in',EffectInput);
 	this.addInput('order',XYInput,{
 		min: 1,
 		value: 3
@@ -738,7 +744,7 @@ InputEffect.prototype = {
             title: 'Help',
             action: function(){
                 $('#help').modal('show');
-                $('iframe').attr('src','http://www.w3.org/TR/SVG/filters.html#FilterElement');
+                $('iframe').attr('src','help/index.html#FilterElement');
             }
 		}
 	],

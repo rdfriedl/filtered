@@ -51,7 +51,7 @@ Effect.prototype = {
             title: 'Help',
             action: function(){
                 $('#help').modal('show');
-                $('iframe').attr('src','http://www.w3.org/TR/SVG/filters.html#'+this.filter.type+'Element');
+                $('iframe').attr('src','help/index.html#'+this.filter.type+'Element');
             }
         },
         {

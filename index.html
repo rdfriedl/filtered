@@ -199,7 +199,7 @@
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="export-url-tab">
                                     <a class="btn btn-info btn-sm pull-right copy" data-bind="attr: {'data-clipboard-text': url}">Copy to clipboard</a>
-                                    <pre class="form-control" data-bind="text: url"></pre>
+                                    <pre class="form-control wrap" data-bind="text: url"></pre>
                                 </div>
                             </div>
                         </div>
@@ -349,9 +349,9 @@
                     <option value="linear">linear</option>
                     <option value="gamma">gamma</option>
                 </select>
-                <button type="button" class="btn btn-info btn-xs pull-right add-table-index" data-type="table"><i class="fa fa-plus"></i></button>
-                <button type="button" class="btn btn-info btn-xs pull-right remove-table-index" data-type="table"><i class="fa fa-minus"></i></button>
-                <table class="table effect-input-control" style="margin: 0px;" data-type="table">
+                <button type="button" class="btn btn-info btn-xs pull-right type type-table type-discrete add-table-index"><i class="fa fa-plus"></i></button>
+                <button type="button" class="btn btn-info btn-xs pull-right type type-table type-discrete remove-table-index"><i class="fa fa-minus"></i></button>
+                <table class="table input-table effect-input-control type type-table type-discrete" style="margin: 0px;">
                     <thead>
                         <tr>
                         </tr>
@@ -361,6 +361,30 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="type type-gamma" style="padding-top: 5px;">
+                    <div class="input-group">
+                        <span class="input-group-addon">amplitude</span>
+                        <input type="number" class="form-control input-amplitude" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">exponent</span>
+                        <input type="number" class="form-control input-exponent" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">offset</span>
+                        <input type="number" class="form-control input-offset" step="0.1">
+                    </div>
+                </div>
+                <div class="type type-linear" style="padding-top: 5px;">
+                    <div class="input-group">
+                        <span class="input-group-addon">slope</span>
+                        <input type="number" class="form-control input-slope" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">intercept</span>
+                        <input type="number" class="form-control input-intercept" step="0.1">
+                    </div>
+                </div>
             </div>
         </div>
         <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>

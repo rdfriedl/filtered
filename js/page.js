@@ -329,8 +329,8 @@ page = {
 			$('.effect').removeClass('selected');
 			page.outputEffect.update();
 			
-			page.exportFilter.filter(filter.node.outerHTML.replace(/></g,'>\n<'));
-			page.exportFilter.json(JSON.stringify(page.export.json(), null, 4));
+			page.exportFilter.filter(formatXml(filter.node.outerHTML));
+			page.exportFilter.json(JSON.stringify(page.export.json(), null, 2));
 			page.exportFilter.url(page.export.url());
 			
 			$('.prettyprinted').removeClass('prettyprinted');

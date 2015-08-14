@@ -145,6 +145,13 @@ path, ._jsPlumb_endpoint {
     border: none;
     color: black;
 }
+#export pre.wrap{
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}
 
 #editor .effect:nth-child(1){
     top: 20%;
@@ -187,4 +194,21 @@ path, ._jsPlumb_endpoint {
 }
 #preview:hover .image-change{
     opacity: 1;
+}
+
+.funcrgba-input .input-table input[type=text]::-webkit-inner-spin-button, 
+.funcrgba-input .input-table input[type=text]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+.funcrgba-input .input-table input[type=text]{
+    margin: 0px;
+    padding: 0px 0px 0px 5px;
+    height: 24px;
+    border: none;
+    text-align: center;
+}
+.funcrgba-input .input-table input[type=text].invert{
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
 }

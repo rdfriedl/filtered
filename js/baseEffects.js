@@ -142,6 +142,24 @@ ComponentTransferEffect.prototype = {
 		this.filter.attr({
 			in: this.inputs.in.getValue()
 		});
+
+		var _this = this;
+		this.filter.each(function(){
+			switch(this.type){
+				case "feFuncR":
+					this.attr(_this.inputs.R.getAttrValue());
+					break;
+				case "feFuncG":
+					this.attr(_this.inputs.G.getAttrValue());
+					break;
+				case "feFuncB":
+					this.attr(_this.inputs.B.getAttrValue());
+					break;
+				case "feFuncA":
+					this.attr(_this.inputs.A.getAttrValue());
+					break;
+			}
+		})
 	}
 }
 ComponentTransferEffect.prototype.constructor = ComponentTransferEffect;

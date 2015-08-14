@@ -470,6 +470,8 @@ XYInput.prototype.__proto__ = Input.prototype;
 function FuncRGBAInput(){
     Input.apply(this,arguments)
 
+    this.table = [0,1];
+
     $el = $('#temp .funcrgba-input').clone();
 
     this.element = $el[0];
@@ -491,54 +493,115 @@ function FuncRGBAInput(){
 
     $(this.element).find('.input-type').on('change',function(event){
         this.type = $(event.target).val();
-        $(this.element).find('[data-type]').hide();
-        $(this.element).find('[data-type="'+this.type+'"]').show();
+        this.updateBackground();
+        this.updateVisible();
         this.effect.updateEndpoints();
         this.change();
     }.bind(this))
 
-    $(this.element).find('[data-type]').hide();
-    $(this.element).find('[data-type="'+this.type+'"]').show();
+    $(this.element).find('.input-amplitude').on('input',function(){
+        this.amplitude = parseFloat($(event.target).val());
+        this.change();
+    }.bind(this))
+    $(this.element).find('.input-exponent').on('input',function(){
+        this.exponent = parseFloat($(event.target).val());
+        this.change();
+    }.bind(this))
+    $(this.element).find('.input-offset').on('input',function(){
+        this.offset = parseFloat($(event.target).val());
+        this.change();
+    }.bind(this))
+    $(this.element).find('.input-slope').on('input',function(){
+        this.slope = parseFloat($(event.target).val());
+        this.change();
+    }.bind(this))
+    $(this.element).find('.input-intercept').on('input',function(){
+        this.intercept = parseFloat($(event.target).val());
+        this.change();
+    }.bind(this))
 }
 FuncRGBAInput.prototype = {
     options: {
         chanel: "R"
     },
     type: 'identity',
-    table: [1,0],
-    getAttrValue: function(){ //returns obj of values/attrs
+    table: [],
+    amplitude: 1,
+    exponent: 1,
+    offset: 0,
+    slope: 1,
+    intercept: 0,
+    getValue: function(){ //returns obj of values/attrs
+        var data = {
+            type: this.type,
+            tableValues: undefined,
+            amplitude: undefined,
+            exponent: undefined,
+            offset: undefined,
+            slope: undefined,
+            intercept: undefined
+        }
         switch(this.type){
             case "identity":
-                return {};
                 break;
             case "table":
+                data.tableValues = this.table;
                 break;
             case "discrete":
+                data.tableValues = this.table;
                 break;
             case "linear":
+                data.slope = this.slope;
+                data.intercept = this.intercept;
                 break;
             case "gamma":
+                data.amplitude = this.amplitude;
+                data.exponent = this.exponent;
+                data.offset = this.offset;
                 break;
         }
+
+        return data;
     },
-    setValue: function(val){
-        val = val || '';
-        var values = val.split(' ');
-        this.tabel = values;
+    getAttrValue: function(){
+        var data = this.getValue();
+        var func = function(obj){
+            for(var i in obj){
+                if(obj[i] == undefined) obj[i] = null;
+
+                if(typeof obj[i] == 'object'){
+                    func(obj[i]);
+                }
+            }
+        }
+        func(data);
+        return data;
     },
-    _getColor: function(i){
+    toJSON: function(){
+        return this.getValue();
+    },
+    setValue: function(data){
+        data = data || {};
+
+        this.type = data.type || this.type;
+        this.table = data.tableValues || this.table;
+
+        this.updateElement();
+    },
+    _getColor: function(i,d){
+        if(isNaN(i)) i = d;
         switch(this.options.chanel){
             case 'R':
-                return 'rgb('+Math.round(this.table[i]*255)+',0,0)';
+                return 'rgb('+Math.round(i*255)+',0,0)';
                 break;
             case 'G':
-                return 'rgb(0,'+Math.round(this.table[i]*255)+',0)';
+                return 'rgb(0,'+Math.round(i*255)+',0)';
                 break;
             case 'B':
-                return 'rgb(0,0,'+Math.round(this.table[i]*255)+')';
+                return 'rgb(0,0,'+Math.round(i*255)+')';
                 break;
             case 'A':
-                var val = Math.round(this.table[i]*255);
+                var val = Math.round(i*255);
                 return 'rgb('+val+','+val+','+val+')';
                 break;
         }
@@ -550,39 +613,97 @@ FuncRGBAInput.prototype = {
     },
     updateElement: function(){
         Input.prototype.updateElement.call(this);
+        var $el = $(this.element);
+
+        //type
+        $(this.element).find('.input-type').val(this.type);
 
         //table
-        var $table = $(this.inputElement);
+        var $table = $el.find('.input-table');
 
         $table.find('thead>tr').children().remove();
         $table.find('tbody>tr').children().remove();
+
         for(var i = 0; i < this.table.length; i++){
             $('<th>')
-                .css('background', 'linear-gradient(to right, rgb('+Math.round((1-(i/this.table.length))*255)+',0,0) , rgb('+Math.round((1-((i+1)/this.table.length))*255)+',0,0))')
+                .css('background', 'linear-gradient(to right, '+this._getColor(i/this.table.length)+' , '+this._getColor((i+1)/this.table.length)+')')
                 .appendTo($table.find('thead>tr'));
 
             $('<td>').append(
                 $('<input class="form-control">')
-                    .css({
-                        'background': this._getColor(i),
-                        'margin': '0px',
-                        'padding': '0px 0px 0px 5px',
-                        'height': '24px',
-                        'color': 'grey'
-                    })
                     .attr({
-                        type: 'number',
+                        type: 'text',
                         min: 0,
                         max: 1,
                         step: 0.1,
-                        value: this.table[i]
+                        value: this.table[i],
+                        'data-index': i
                     })
-                    .data('index',i)
+                    // .css({
+                    //     'text-align': (function(){
+                    //         if(this.type == 'table'){
+                    //             switch(i){
+                    //                 case 0:
+                    //                     return 'left';
+                    //                     break;
+                    //                 case this.table.length-1:
+                    //                     return 'right';
+                    //                     break;
+                    //             }
+                    //         }
+                    //         return 'center';
+                    //     })()
+                    // }),
                     .on('input',function(event){
                         var $this = $(event.target);
-                        var val = parseFloat($this.val());
-                        this.table[$this.data('index')] = val;
-                        $this.css('background', 'rgb('+Math.round(val*255)+',0,0)');
+                        var val = parseFloat($this.val()) || 0;
+                        var i = $this.data('index');
+                        this.table[i] = val;
+                        
+                        this.updateBackground();
+                    }.bind(this))
+                    .on('focus, mouseup',function(event){
+                        event.target.setSelectionRange(0,event.target.value.length)
+                    })
+                    .on('update-background',function(event){
+                        var $this = $(event.target);
+                        var val = parseFloat($this.val()) || 0;
+                        var i = $this.data('index');
+                        var colors = [];
+
+                        switch(this.type){
+                            case 'table':
+                                switch(i){
+                                    case 0:
+                                        colors = [
+                                            this._getColor(this.table[i]),
+                                            this._getColor(((this.table[i+1]+this.table[i])/3)*2,(i+1)/this.table.length)
+                                        ];
+                                        break;
+                                    case this.table.length-1:
+                                        colors = [
+                                            this._getColor(this.table[i-1] + (this.table[i]-this.table[i-1])/3,i/this.table.length),
+                                            this._getColor(this.table[i])
+                                        ];
+                                        break;
+                                    default:
+                                        colors = [
+                                            this._getColor((this.table[i-1]+this.table[i])/2,i/this.table.length),
+                                            this._getColor(this.table[i]),
+                                            this._getColor((this.table[i+1]+this.table[i])/2,(i+1)/this.table.length)
+                                        ];
+                                        break;
+                                }
+                                break;
+                            case 'discrete':
+                                colors = [
+                                    this._getColor(this.table[i]),
+                                    this._getColor(this.table[i])
+                                ];
+                                break;
+                        }
+
+                        $this.css('background', 'linear-gradient(to right, '+colors.join(',')+')');
                     }.bind(this))
             )
             .css({
@@ -590,6 +711,60 @@ FuncRGBAInput.prototype = {
             })
             .appendTo($table.find('tbody>tr'))
         }
+        this.updateBackground();
+
+        //gamma
+        $el.find('.input-amplitude').val(this.amplitude);
+        $el.find('.input-exponent').val(this.exponent);
+        $el.find('.input-offset').val(this.offset);
+
+        //liner
+        $el.find('.input-slope').val(this.slope);
+        $el.find('.input-intercept').val(this.intercept);
+
+        this.updateVisible();
+        this.effect.updateEndpoints();
+    },
+    updateBackground: function(){
+        $(this.element).find('.input-table thead th').each(function(i,el){
+            $(el).css('background', 'linear-gradient(to right, '+this._getColor(i/this.table.length)+' , '+this._getColor((i+1)/this.table.length)+')')
+        }.bind(this));
+        switch(this.type){
+            case 'table':
+                var colors = [];
+
+                for(var i = 0; i < this.table.length; i++){
+                    colors.push(this._getColor(this.table[i]));
+                }
+
+                $(this.element).find('.input-table tbody input').css('background', 'transparent');
+
+                $(this.element).find('.input-table').css('background','linear-gradient(to right, '+colors.join(',')+')');
+
+                //set the text color
+                $(this.element).find('.input-table tbody input').each(function(i,el){
+                    var color = this._getColor(this.table[i]);
+                    $(el).css({
+                        color: color
+                    }).addClass('invert');
+                }.bind(this));
+                break;
+            case 'discrete':
+                $(this.element).find('.input-table tbody input').each(function(i,el){
+                    var color = this._getColor(this.table[i]);
+                    $(el).css({
+                        background: color,
+                        color: 'grey'
+                    }).removeClass('invert');
+                }.bind(this));
+
+                $(this.element).find('.input-table').css('background','transparent');
+                break;
+        }
+    },
+    updateVisible: function(){
+        $(this.element).find('.type').hide();
+        $(this.element).find('.type-'+this.type).show();
     }
 }
 FuncRGBAInput.prototype.constructor = FuncRGBAInput;

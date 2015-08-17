@@ -51,7 +51,7 @@ Effect.prototype = {
             title: 'Help',
             action: function(){
                 $('#help').modal('show');
-                $('iframe').attr('src','help/index.html#'+this.filter.type+'Element');
+                $('#help iframe').attr('src','help/index.html#'+this.filter.type+'Element');
             }
         },
         {
@@ -221,14 +221,30 @@ Effect.prototype = {
         }
 
         if(data.position){
-            this.position.x = data.position.x !== undefined? data.position.x : this.position.x;
-            this.position.y = data.position.y !== undefined? data.position.y : this.position.y;
-            this.position.width = data.position.width !== undefined? data.position.width : this.position.width;
-            this.position.height = data.position.height !== undefined? data.position.height : this.position.height;
+            if(data.position.x){ this.position.x = data.position.x } else { delete this.position.x};
+            if(data.position.y){ this.position.y = data.position.y } else { delete this.position.y};
+            if(data.position.width){ this.position.width = data.position.width } else { delete this.position.width};
+            if(data.position.height){ this.position.height = data.position.height } else { delete this.position.height};
             this.updatePostion();
         }
 
         if(!dontUpdate) this.update();
+    },
+    fromElement: function(el){
+        var attrs = el.attributes;
+        for(var i = 0; i < attrs.length; i++){
+            if(this.inputs[attrs[i].name]){
+                this.inputs[attrs[i].name].fromAttr(attrs[i].value);
+            }
+            //dont import outputs
+        }
+
+        //read position
+        var pos = {};
+        if(attrs.getNamedItem('x')) pos.x = parseFloat(attrs.getNamedItem('x').value);
+        if(attrs.getNamedItem('y')) pos.y = parseFloat(attrs.getNamedItem('y').value);
+        if(attrs.getNamedItem('width')) pos.width = parseFloat(attrs.getNamedItem('width').value);
+        if(attrs.getNamedItem('height')) pos.height = parseFloat(attrs.getNamedItem('height').value);
     },
 
     position: {
@@ -243,10 +259,14 @@ Effect.prototype = {
     setPosition: function(data){
         data = data || {};
 
-        if(data.x !== this.position.__proto__.x && data.x !== undefined){ this.position.x = data.x } else { delete this.position.x };
-        if(data.y !== this.position.__proto__.y && data.y !== undefined){ this.position.y = data.y } else { delete this.position.y };
-        if(data.width !== this.position.__proto__.width && data.width !== undefined){ this.position.width = data.width } else { delete this.position.width };
-        if(data.height !== this.position.__proto__.height && data.height !== undefined){ this.position.height = data.height } else { delete this.position.height };
+        if(!isNaN(data.x) ){ this.position.x = data.x } else { delete this.position.x };
+        if(!isNaN(data.y) ){ this.position.y = data.y } else { delete this.position.y };
+        if(!isNaN(data.width) ){ this.position.width = data.width } else { delete this.position.width };
+        if(!isNaN(data.height) ){ this.position.height = data.height } else { delete this.position.height };
+        this.updatePostion();
+    },
+    resetPosition: function(){
+        this.position = Object.create(this.__proto__.position);
         this.updatePostion();
     },
     getPosition: function(){
@@ -386,10 +406,10 @@ MultiEffect.prototype = {
     },
     updatePostion: function(){
     	for(var i in this.filter){
-	        this.filter[i].width(this.position.width + '%');
-	        this.filter[i].height(this.position.height + '%');
-	        this.filter[i].x(this.position.x + '%');
-	        this.filter[i].y(this.position.y + '%');
+            if(this.position.hasOwnProperty('x')){ this.filter[i].x(this.position.x + '%') } else { this.filter[i].attr('x',null) };
+            if(this.position.hasOwnProperty('y')){ this.filter[i].y(this.position.y + '%') } else { this.filter[i].attr('y',null) };
+            if(this.position.hasOwnProperty('width')){ this.filter[i].width(this.position.width + '%') } else { this.filter[i].attr('width',null) };
+            if(this.position.hasOwnProperty('height')){ this.filter[i].height(this.position.height + '%') } else { this.filter[i].attr('height',null) };
     	}
     }
 }
@@ -668,6 +688,7 @@ BumpEffect.prototype = {
 	update: function(){
 		var v = this.inputs.amount.getValue();
 		this.filter.matrix.attr({
+            in: this.inputs.in.getValue(),
 			order: 3,
 			kernelMatrix: v+' 0 0 0 1 0 0 0 -'+v
 		})

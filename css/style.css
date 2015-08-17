@@ -46,6 +46,14 @@ textarea{
 .svg_select_points_rot{
     display: none;
 }
+input[type="image"]{
+    color: transparent;
+    padding: 0pc;
+    border: 0px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
 
 #editor {
     /* for IE10+ touch devices */
@@ -211,4 +219,9 @@ path, ._jsPlumb_endpoint {
 .funcrgba-input .input-table input[type=text].invert{
     -webkit-filter: invert(100%);
     filter: invert(100%);
+}
+
+.matrix-size-input .matrix input {
+    border: none;
+    padding: 2px;
 }

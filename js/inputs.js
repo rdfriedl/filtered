@@ -44,6 +44,9 @@ Input.prototype = {
     fromJSON: function(data){
         this.setValue(data);
     },
+    fromAttr: function(val){
+        this.setValue(val);
+    },
     show: function(){
         $(this.element).show();
     },
@@ -313,7 +316,7 @@ MatrixInput.prototype = {
     },
     setValue: function(val){
         val = val || '';
-        this.matrix = val.split(' ');
+        this.matrix = val.replace(/^\s+/, '').replace(/\s+$/, '').replace(/\s+/g, ' ').split(' ');
     },
     toJSON: function(){
         return {
@@ -326,6 +329,10 @@ MatrixInput.prototype = {
         this.options.width = data.width || this.options.width;
         this.options.height = data.height || this.options.height;
         this.setValue(data.matrix);
+        this.updateElement();
+    },
+    fromAttr: function(data){
+        this.setValue(data);
         this.updateElement();
     },
     setSize: function(x,y){
@@ -639,21 +646,6 @@ FuncRGBAInput.prototype = {
                         value: this.table[i],
                         'data-index': i
                     })
-                    // .css({
-                    //     'text-align': (function(){
-                    //         if(this.type == 'table'){
-                    //             switch(i){
-                    //                 case 0:
-                    //                     return 'left';
-                    //                     break;
-                    //                 case this.table.length-1:
-                    //                     return 'right';
-                    //                     break;
-                    //             }
-                    //         }
-                    //         return 'center';
-                    //     })()
-                    // }),
                     .on('input',function(event){
                         var $this = $(event.target);
                         var val = parseFloat($this.val()) || 0;
@@ -769,3 +761,134 @@ FuncRGBAInput.prototype = {
 }
 FuncRGBAInput.prototype.constructor = FuncRGBAInput;
 FuncRGBAInput.prototype.__proto__ = Input.prototype;
+
+//ImageInput
+function ImageInput(){
+    Input.apply(this,arguments)
+
+    $el = $('#temp .image-input').clone();
+
+    this.element = $el[0];
+    this.titleElement = $el.find('.effect-title')[0];
+    this.inputElement = $el.find('.effect-input-control')[0];
+    $(this.inputElement).on('change',this.change.bind(this));
+}
+ImageInput.prototype = {
+    options: {},
+    getValue: function(){
+        return $(this.inputElement).val();
+    },
+    setValue: function(url){
+        $(this.inputElement).val(url);
+        this.updateImage();
+    },
+    change: function(){
+        this.effect.change();
+        this.updateImage();
+    },
+    updateImage: function(){
+        var url = $(this.inputElement).val();
+        var image = new Image();
+        image.onload = function(){
+            $(this.inputElement).css({
+                'background-image': 'url('+window.escape(url).replace('%3A',':')+')',
+                'height': Math.round($(this.inputElement).width() * (image.height/image.width))+'px'
+            });
+            this.effect.updateEndpoints();
+        }.bind(this);
+        image.src = url;
+    },
+
+    render: function(){
+        if(!this.effect) return;
+        return this.element;
+    }
+}
+ImageInput.prototype.constructor = ImageInput;
+ImageInput.prototype.__proto__ = Input.prototype;
+
+//MutiSelectInput
+function MutiSelectInput(){
+    Input.apply(this,arguments)
+
+    $el = $('#temp .muti-select-input').clone();
+
+    this.element = $el[0];
+    this.titleElement = $el.find('.effect-title')[0];
+    this.inputElement = $el.find('.effect-input-control')[0];
+    $(this.inputElement).on('change',this.change.bind(this));
+}
+MutiSelectInput.prototype = {
+    options: {
+        options: []
+    },
+    getValue: function(){
+        var values = [];
+        $(this.inputElement).children().each(function(){
+            if(!$(this).attr('disabled') && $(this).val() !== '') values.push($(this).val());
+        })
+        return values.join(' ');
+    },
+    setValue: function(data){
+        for (var i = 0; i < data.length; i++) {
+            $(this.inputElement).children().eq(i).val(data[i]);
+        };
+        this.updateDisabled();
+    },
+    toJSON: function(){
+        var values = [];
+        $(this.inputElement).children().each(function(){
+            values.push($(this).val());
+        })
+        return values;
+    },
+
+    render: function(){
+        if(!this.effect) return;
+        return this.element;
+    },
+    change: function(){
+        this.updateDisabled();
+        this.effect.change();
+    },
+    updateElement: function(){
+        var options = this.options.options;
+        for (var i = 0; i < options.length; i++) {
+            var el = $('<select>').addClass('form-control');
+
+            for (var k = 0; k < options[i].options.length; k++) {
+                el.append(
+                    $('<option>')
+                        .text(options[i].options[k].title!==undefined? options[i].options[k].title : options[i].options[k])
+                        .val(options[i].options[k].value!==undefined? options[i].options[k].value : options[i].options[k])
+                );
+            };
+
+            if(options[i].value) el.val(options[i].value);
+            el.on('change',this.change.bind(this));
+            el.appendTo(this.inputElement);
+        };
+
+        this.updateDisabled();
+    },
+    updateDisabled: function(){
+        var options = this.options.options;
+        for (var i = 0; i < options.length; i++) {
+            var el = $(this.inputElement).children().eq(i);
+
+            el.removeAttr('disabled');
+            if(options[i].disabled){
+                if(options[i].disabled.indexOf($(this.inputElement).children().eq(i-1).val()) !== -1){
+                    el.attr('disabled','disabled');
+                }
+            }
+            if(options[i].enabled){
+                if(options[i].enabled.indexOf($(this.inputElement).children().eq(i-1).val()) !== -1){
+                    el.removeAttr('disabled');
+                }
+            }
+        };
+    }
+}
+MutiSelectInput.prototype.constructor = MutiSelectInput;
+MutiSelectInput.prototype.__proto__ = Input.prototype;

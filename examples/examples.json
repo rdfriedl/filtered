@@ -1,0 +1,22 @@
+[
+	{
+		"title": "",
+		"imageURL": "examples/screenshots/1.png",
+		"json": "examples/json/1.json"
+	},
+	{
+		"title": "",
+		"imageURL": "examples/screenshots/2.png",
+		"json": "examples/json/2.json"
+	},
+	{
+		"title": "",
+		"imageURL": "examples/screenshots/3.png",
+		"json": "examples/json/3.json"
+	},
+	{
+		"title": "",
+		"imageURL": "examples/screenshots/4.png",
+		"json": "examples/json/4.json"
+	}
+]

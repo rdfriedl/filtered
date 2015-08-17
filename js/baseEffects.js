@@ -100,6 +100,24 @@ ColorMatrixEffect.prototype = {
 			in: this.inputs.in.getValue(),
 			type: this.inputs.type.getValue(),
 		});
+	},
+	fromElement: function(el){
+		Effect.prototype.fromElement.apply(this,arguments);
+
+		var val = el.getAttribute('values');
+		if(val == undefined || val == null) return;
+		switch(this.inputs.type.getValue()){
+			case 'matrix':
+				this.inputs.matrix.fromAttr(val);
+				break;
+			case 'saturate':
+				this.inputs.saturate.fromAttr(val);
+				break;
+			case 'hueRotate':
+				this.inputs.hueRotate.fromAttr(val);
+				break;
+		}
+		this.update();
 	}
 }
 ColorMatrixEffect.prototype.constructor = ColorMatrixEffect;
@@ -235,7 +253,7 @@ CompositeEffect.prototype = {
 		this.filter.attr({
 			in: this.inputs.in.getValue(),
 			in2: this.inputs.in2.getValue(),
-			operator: this.inputs.operator.getAttrValue()
+			operator: this.inputs.operator.getValue()
 		});
 	}
 }
@@ -430,6 +448,49 @@ GaussianBlurEffect.prototype.constructor = GaussianBlurEffect;
 GaussianBlurEffect.prototype.__proto__ = Effect.prototype;
 
 //Image
+function ImageEffect(){
+	Effect.apply(this,arguments);
+
+	this.addInput('image',ImageInput);
+	this.addInput('preserveAspectRatio',MutiSelectInput,{
+		options: [
+			{
+				options: [{title: 'none', value: ''},'defer'],
+				value: ''
+			},
+			{
+				options: ['none','xMinYMin','xMidYMin','xMaxYMin','xMinYMid','xMidYMid','xMaxYMid','xMinYMax','xMidYMax','xMaxYMax'],
+				value: 'xMidYMid'
+			},
+			{
+				options: ['meet','slice'],
+				value: 'meet',
+				disabled: ['none']
+			}
+		]
+	});
+	this.addOutput('result',EffectOutput);
+
+	this.filter = new SVG.ImageEffect();
+
+	this.render();
+	this.update();
+	this.updateEndpoints();
+    this.updatePostion();
+}
+ImageEffect.prototype = {
+	options: {
+		title: 'Image'
+	},
+	update: function(){
+		this.filter.attr({
+			'xlink:href': this.inputs.image.getAttrValue(),
+			preserveAspectRatio: this.inputs.preserveAspectRatio.getValue(),
+		})
+	}
+}
+ImageEffect.prototype.constructor = ImageEffect;
+ImageEffect.prototype.__proto__ = Effect.prototype;
 
 //Merge
 function MergeEffect(){
@@ -694,7 +755,7 @@ TurbulenceEffect.prototype = {
 			numOctaves: this.inputs.numOctaves.getAttrValue(),
 			seed: this.inputs.seed.getAttrValue(),
 			stitchTiles: this.inputs.stitchTiles.getValue(), //required
-			type: this.inputs.type.getAttrValue()
+			type: this.inputs.type.getValue()
 		});
 	}
 }
@@ -762,16 +823,16 @@ InputEffect.prototype = {
             title: 'Help',
             action: function(){
                 $('#help').modal('show');
-                $('iframe').attr('src','help/index.html#FilterElement');
+                $('#help iframe').attr('src','help/index.html#FilterElement');
             }
 		}
 	],
 	toggleButton: false,
 	updatePostion: function(){ //use filter and not this.filter
-        filter.x(this.position.x + '%');
-        filter.y(this.position.y + '%');
-        filter.width(this.position.width + '%');
-        filter.height(this.position.height + '%');
+        if(this.position.hasOwnProperty('x')){ filter.x(this.position.x + '%') } else { filter.attr('x',null) };
+        if(this.position.hasOwnProperty('y')){ filter.y(this.position.y + '%') } else { filter.attr('y',null) };
+        if(this.position.hasOwnProperty('width')){ filter.width(this.position.width + '%') } else { filter.attr('width',null) };
+        if(this.position.hasOwnProperty('height')){ filter.height(this.position.height + '%') } else { filter.attr('height',null) };
 	}
 }
 InputEffect.prototype.constructor = InputEffect;

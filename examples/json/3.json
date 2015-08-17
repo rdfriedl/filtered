@@ -1,0 +1,91 @@
+{
+  "effects": [
+    {
+      "id": "Effect-1192",
+      "type": "TurbulenceEffect",
+      "position": {},
+      "style": {
+        "top": "394px",
+        "left": "55px"
+      },
+      "inputs": {
+        "baseFrequency": "0.01 0.01",
+        "numOctaves": 2,
+        "type": "fractalNoise"
+      }
+    },
+    {
+      "id": "Effect-4676",
+      "type": "ComponentTransferEffect",
+      "position": {},
+      "style": {
+        "top": "194px",
+        "left": "398px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-1192",
+          "result"
+        ],
+        "R": {
+          "type": "discrete",
+          "tableValues": [
+            0,
+            1
+          ]
+        },
+        "G": {
+          "type": "discrete",
+          "tableValues": [
+            0,
+            1
+          ]
+        },
+        "B": {
+          "type": "discrete",
+          "tableValues": [
+            0,
+            1
+          ]
+        },
+        "A": {
+          "type": "discrete",
+          "tableValues": [
+            1
+          ]
+        }
+      }
+    }
+  ],
+  "inputEffect": {
+    "id": "Effect-6027",
+    "type": "InputEffect",
+    "position": {
+      "x": 0,
+      "y": 0,
+      "width": 100,
+      "height": 100
+    },
+    "style": {
+      "top": "80px",
+      "left": "44px"
+    }
+  },
+  "outputEffect": {
+    "id": "Effect-4291",
+    "type": "OutputEffect",
+    "position": {},
+    "style": {
+      "top": "",
+      "left": ""
+    },
+    "inputs": {
+      "in": [
+        "Effect-4676",
+        "result"
+      ]
+    }
+  },
+  "previewImage": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Tree_at_Golf_Course.JPG",
+  "mode": "image"
+}

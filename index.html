@@ -81,7 +81,9 @@
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
+                            <li><a data-toggle="modal" href="#import"><i class="fa fa-folder-open"></i> Import</a></li>
                             <li><a data-toggle="modal" href="#export" data-bind="click: exportFilter.export"><i class="fa fa-check"></i> Export</a></li>
+                            <li><a data-toggle="modal" href="#examples"><i class="fa fa-flask"></i> Examples</a></li>
                             <li><a data-toggle="modal" href="#help"><i class="fa fa-question"></i> Help</a></li>
                         </ul>
                     </div><!-- /.navbar-collapse -->
@@ -94,6 +96,7 @@
                 <div id="preview" class="panel panel-default" data-bind="with: editor.preview">
                     <div class="panel-heading">
                         Preview
+                        <a class="btn btn-info btn-xs pull-right" href="http://rdfriedl.github.io/" target="_blank">Created by Rdfriedl</a>
                     </div>
                     <div class="panel-body">
                         <button type="button" class="btn btn-default image-change" data-bind="visible: mode() == 'image', click: image.change">Change</button>
@@ -208,6 +211,43 @@
             </div>
         </div>
 
+        <div class="modal fade" id="import" data-bind="with: importFilter">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
+                        <h4 class="modal-title">Import</h4>
+                    </div>
+                    <div class="modal-body">
+                       <textarea class="form-control" data-bind="value: data"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success btn-sm" data-bind="click: importFilter" data-dismiss="modal">Import</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="examples" data-bind="with: examples">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
+                        <h4 class="modal-title">Examples</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" data-bind="foreach: examples">
+                            <div class="col-xs-4">
+                                <a href="#" class="thumbnail" data-bind="click: $root.examples.select" data-dismiss="modal">
+                                    <img data-bind="attr:{src:imageURL}">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="modal fade" id="help">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -223,12 +263,55 @@
             </div>
         </div>
 
+        <div class="modal fade" id="README">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
+                        <h2 class="modal-title"><b>Filtered<b> <small>Simple Svg Filter builder</small></h2>
+                    </div>
+                    <div class="modal-body">
+                        <img src="./screenshot.png" alt="screenshot" width="100%"></p>
+
+                        <h3 id="browser-support">Browser Support</h3>
+                        <ul>
+                        <li>Chrome 31+</li>
+                        <li>FireFox 38+</li>
+                        <li>Safari 7.1+</li>
+                        <li>Internet Exporer 10+</li>
+                        <li>Opera 30+</li>
+                        </ul>
+
+                        <h2 id="to-do">To-Do</h2>
+
+                        <ul>
+                        <li>Add <a target="_blank" href="http://www.w3.org/TR/SVG/filters.html#feSpecularLightingElement">SpecularLighting</a> Effect</li>
+                        <li>Add <a target="_blank" href="http://www.w3.org/TR/SVG/filters.html#feDiffuseLightingElement">DiffuseLighting</a> Effect</li>
+                        <li>Add <a target="_blank" href="http://www.w3.org/TR/SVG/filters.html#feTileElement">Tile</a> Effect</li>
+                        <li>Improve position editor, allow for "PX" and "EM" not just "%"</li>
+                        <li>Improve ComponentTransfer.render</li>
+                        <li>Add panning to editor, right now it just has zoom</li>
+                        <li>Add a function for loading filters in the form of xml</li>
+                        </ul>
+
+                        <h2>SVG Filter Documentations</h2>
+                        <ul>
+                        <li><a href="http://www.w3.org/TR/SVG/filters.html" target="_blank">S3C</a></li>
+                        <li><a href="https://docs.webplatform.org/wiki/svg/tutorials/smarter_svg_filters" target="_blank">WebPlatform</a></li>
+                        <li><a href="http://tutorials.jenkov.com/svg/filters.html" target="_blank">jenkov.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="modal fade" id="edit-position" data-backdrop="static">
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
                         <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
-                        <a href="#" class="btn btn-success btn-sm pull-right save">Save</a>
+                        <a href="#" class="btn btn-success btn-sm pull-right save" data-dismiss="modal">Save</a>
+                        <a href="#" class="btn btn-info btn-sm pull-right reset" data-dismiss="modal">Reset</a>
                         <h4 class="modal-title">Edit Position</h4>
                     </div>
                     <div class="modal-body">
@@ -385,6 +468,14 @@
                         <input type="number" class="form-control input-intercept" step="0.1">
                     </div>
                 </div>
+            </div>
+            <div class="form-group image-input">
+                <span class="effect-title"></span>
+                <input class="form-control effect-input-control" type="image">
+            </div>
+            <div class="form-group muti-select-input">
+                <span class="effect-title"></span>
+                <div class="effect-input-control"></div>
             </div>
         </div>
         <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>

@@ -10,8 +10,12 @@ module.exports = function(grunt) {
 				files: [
 					{
 						expand: true,
-						src: ['css/*','fonts/*','help/**'],
+						src: ['css/*','fonts/*','help/**','examples/**'],
 						dest: path
+					},
+					{
+						src: ['screenshot.png'],
+						dest: 'dist/screenshot.png'
 					},
 					{
 						src: ['lib/ZeroClipboard.swf'],

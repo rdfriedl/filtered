@@ -73,6 +73,10 @@ page = {
 				effect: GaussianBlurEffect
 			},
 			{
+				title: 'Image',
+				effect: ImageEffect
+			},
+			{
 				title: 'Merge',
 				effect: MergeEffect
 			},
@@ -93,13 +97,26 @@ page = {
 				effect: TurbulenceEffect
 			},
 		]),
-		createEffect: function(){
-			page.effects._effects.push(new this.effect({},{
-				left: '30%',
-				top: '30%'
-			}));
-			page.editor.arange();
-			editor.repaintEverything();
+		createEffect: function(type){
+			var effect = page.effects.getEffect(type);
+
+			if(effect){
+				page.effects._effects.push(new (effect.effect)({},{
+					left: '30%',
+					top: '30%'
+				}));
+				page.editor.arange();
+			}
+		},
+		getEffect: function(type){
+			var a = page.effects.effects().concat(page.effects.baseEffects());
+			type = type || '';
+			type = type.replace('Effect','');
+			for(var i in a){
+				if(a[i].title.toLowerCase() == type.toLowerCase()){
+					return a[i];
+				}
+			}
 		},
 		removeEffect: function(effect){
 			var a = page.effects._effects;
@@ -114,11 +131,15 @@ page = {
 			page.outputEffect = new OutputEffect();
 
 			for (var i = 0; i < page.effects.effects().length; i++) {
-				page.effects.effects()[i].create = page.effects.createEffect.bind(page.effects.effects()[i]);
+				page.effects.effects()[i].create = page.effects.createEffect.bind(undefined,page.effects.effects()[i].title);
 			};
 			for (var i = 0; i < page.effects.baseEffects().length; i++) {
-				page.effects.baseEffects()[i].create = page.effects.createEffect.bind(page.effects.baseEffects()[i]);
+				page.effects.baseEffects()[i].create = page.effects.createEffect.bind(undefined,page.effects.baseEffects()[i].title);
 			};
+
+			$.getJSON('examples/examples.json', function(json) {
+				page.examples.examples(json);
+			});
 		},
 		zoom: {
 			zoomLevel: observable(1,function(val){
@@ -218,17 +239,39 @@ page = {
 					previewImage.load(url);
 				}),
 				change: function(){
+    				pickerCallbackFunction = function(url){
+    					page.editor.preview.image.url(url);
+    				};
 					pickerApiLoaded && picker.setVisible(true);
 				}
 			}
+		},
+
+		clear: function(){
+			while(page.effects._effects.length > 0){
+				page.effects._effects[0].remove();
+			}
+		}
+	},
+	examples: {
+		examples: ko.observableArray([]),
+		select: function(){
+			$.getJSON(this.json, function(json) {
+				if(!json) return;
+
+				page.editor.clear();
+				page.import.json(json,true);
+			});
 		}
 	},
 	export:{
-		json: function(){
+		json: function(exportPreview){
 			var json = {
 				effects: [],
 				inputEffect: page.inputEffect.toJSON(),
-				outputEffect: page.outputEffect.toJSON()
+				outputEffect: page.outputEffect.toJSON(),
+				previewImage: (page.editor.preview.image.url() !== '' && exportPreview)? page.editor.preview.image.url() : undefined,
+				mode: (page.editor.preview.mode() !== 'text' && exportPreview)? page.editor.preview.mode() : undefined
 			};
 			var effects = page.effects._effects;
 
@@ -252,11 +295,14 @@ page = {
 			return location.origin+location.pathname
 		},
 		xml: function(){
-
+			var str = filter.node.outerHTML
+				.replace(new RegExp('<feOffset id="'+page.outputEffect.filter.id()+'(.*?)<\/feOffset>'),'')
+				.replace(/id="(.*?)"( |)/g,'');
+			return formatXml(str).replace(/><\/(.*?)>/g,'/>');
 		}
 	},
 	import: {
-		json: function(json){
+		json: function(json,importPreview){
 			var effects = {};
 			var replaceID = function(obj,id,replaceWith){
 				for(var i in obj){
@@ -272,7 +318,10 @@ page = {
 			for(var i = 0; i < json.effects.length; i++){
 				var data = json.effects[i];
 
-				var effect = new window[data.type];
+				var effectType = page.effects.getEffect(data.type);
+				if(!effectType) continue;
+
+				var effect = new (effectType.effect);
 				effects[effect.id] = effect;
 				replaceID(json,data.id,effect.id);
 				page.effects._effects.push(effect);
@@ -299,6 +348,13 @@ page = {
 				page.inputEffect.fromJSON(json.inputEffect);
 			}
 
+			if(json.mode && importPreview){
+				page.editor.preview.mode(json.mode || page.editor.preview.mode());
+			}
+			if(json.previewImage && importPreview){
+				page.editor.preview.image.url(json.previewImage || page.editor.preview.image.url());
+			}
+
 			page.editor.arange();
 		},
 		url: function(url){
@@ -311,8 +367,46 @@ page = {
 
 			page.import.json(json);
 		},
-		xml: function(){
+		xml: function(xml){
+			var $xml = $(xml);
+			var filterEl = $xml.is('filter')? $xml[0] : $xml.find('filter')[0];
+			var filters = page.effects.effects();
+			var effects = {};
+			var replaceID = function(el,id,replaceWith){
+				if(el.getAttribute('id') == id){
+					el.setAttribute('id',replaceWith);
+				}
+				for(var i = 0; i < el.children.length; i++) {
+					replaceID(el.children[i]);
+				}
+			}
 
+			for (var i = 0; i < filterEl.children.length; i++) {
+			 	var el = filterEl.children[i];
+				var type = el.nodeName.toLowerCase().replace('fe','');
+
+				var effectType = page.effects.getEffect(type);
+				if(!effectType) continue;
+
+				var effect = new (effectType.effect);
+
+				//index it
+				effects[el.getAttribute('id') || effect.id] = {
+					effect: effect,
+					el: el
+				};
+
+				if(el.getAttribute('id')){
+					replaceID(filterEl,el.getAttribute('id'),effect.id);
+				}
+				page.effects._effects.push(effect);
+				//cant import the data yet because not all the effects have been created
+			};
+
+			//import
+			for(var i in effects){
+				effects[i].effect.fromElement(effects[i].el);
+			}
 		}
 	},
 	exportFilter: {
@@ -329,12 +423,20 @@ page = {
 			$('.effect').removeClass('selected');
 			page.outputEffect.update();
 			
-			page.exportFilter.filter(formatXml(filter.node.outerHTML));
-			page.exportFilter.json(JSON.stringify(page.export.json(), null, 2));
+			page.exportFilter.filter(page.export.xml());
+			page.exportFilter.json(JSON.stringify(page.export.json(true), null, 2));
 			page.exportFilter.url(page.export.url());
 			
 			$('.prettyprinted').removeClass('prettyprinted');
 			prettyPrint();
+		}
+	},
+	importFilter: {
+		data: ko.observable(''),
+		importFilter: function(){
+			page.editor.clear();
+			page.import.xml(page.importFilter.data());
+			page.importFilter.data('');
 		}
 	},
 	loadFilter: function(){ //load filter to url

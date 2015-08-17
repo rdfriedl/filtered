@@ -1,0 +1,99 @@
+{
+  "effects": [
+    {
+      "id": "Effect-7582",
+      "type": "FloodEffect",
+      "position": {},
+      "style": {
+        "top": "506px",
+        "left": "71px"
+      }
+    },
+    {
+      "id": "Effect-586",
+      "type": "CompositeEffect",
+      "position": {},
+      "style": {
+        "top": "526px",
+        "left": "398px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-7582",
+          "result"
+        ],
+        "in2": [
+          "Effect-7473",
+          "SourceAlpha"
+        ],
+        "operator": "out"
+      }
+    },
+    {
+      "id": "Effect-1714",
+      "type": "GaussianBlurEffect",
+      "position": {},
+      "style": {
+        "top": "559px",
+        "left": "723px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-586",
+          "result"
+        ],
+        "blur": "3 3"
+      }
+    },
+    {
+      "id": "Effect-198",
+      "type": "CompositeEffect",
+      "position": {},
+      "style": {
+        "top": "132px",
+        "left": "448px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-7473",
+          "SourceGraphic"
+        ],
+        "in2": [
+          "Effect-1714",
+          "result"
+        ],
+        "operator": "in"
+      }
+    }
+  ],
+  "inputEffect": {
+    "id": "Effect-7473",
+    "type": "InputEffect",
+    "position": {
+      "x": 10,
+      "y": 0,
+      "width": 120,
+      "height": 100
+    },
+    "style": {
+      "top": "98px",
+      "left": "25px"
+    }
+  },
+  "outputEffect": {
+    "id": "Effect-2324",
+    "type": "OutputEffect",
+    "position": {},
+    "style": {
+      "top": "289px",
+      "left": "861px"
+    },
+    "inputs": {
+      "in": [
+        "Effect-198",
+        "result"
+      ]
+    }
+  },
+  "mode": "text"
+}

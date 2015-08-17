@@ -45,6 +45,10 @@ editPosition = {
 			this.save();
 		}.bind(this));
 
+		$('#edit-position .reset').click(function(event) {
+			this.reset();
+		}.bind(this));
+
 		this.bindInputs();
 	},
 	editEffect: function(effect){
@@ -59,8 +63,12 @@ editPosition = {
 	},
 	save: function(){
 		this.updateEffect();
-
-		$('#edit-position').modal('hide');
+	},
+	reset: function(){
+		//update the effects position
+		if(this.effect){
+			this.effect.resetPosition();
+		}
 	},
 	updateEffect: function(){
 		//update the effects position

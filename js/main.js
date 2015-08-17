@@ -180,13 +180,14 @@ function initEditor(){
     });
 }
 
+var pickerCallbackFunction = undefined;
 function pickerCallback(data) {
     var url = '';
     if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
         var doc = data[google.picker.Response.DOCUMENTS][0];
         url = doc.thumbnails[doc.thumbnails.length-1][google.picker.Document.URL];
     }
-    page.editor.preview.image.url(url);
+    if(pickerCallbackFunction) pickerCallbackFunction(url);
 }
 
 function updatePreviewPosition(){
@@ -278,11 +279,23 @@ $(document).ready(function(){
         new ZeroClipboard(el);
     });
 
+    $(document).on('click','input[type="image"]',function(){
+        pickerCallbackFunction = function(url){
+            $(this).val(url).trigger('change');
+        }.bind(this);
+        pickerApiLoaded && picker.setVisible(true);
+    })
+
     $(window).resize(function(){
         updatePreviewPosition();
         editor.repaintEverything();
     })
     $(window).trigger('resize');
+
+    if(!localStorage.welcome){
+        $('#README').modal('show');
+        localStorage.welcome = true;
+    }
 });
 
 SVG.Filter.prototype.put = function(element, i) {

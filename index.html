@@ -21,6 +21,10 @@
         <script src="lib/svg.select.min.js"></script>
         <script src="lib/svg.resize.min.js"></script>
         <script src="lib/svg.draggable.min.js"></script>
+
+        <script src="lib/three.min.js"></script>
+        <script src="lib/threejs/controls/OrbitControls.js"></script>
+        <script src="lib/threejs/controls/TransformControls.js"></script>
         
         <script src="lib/prettify.js"></script>
         <script src="lib/ZeroClipboard.Core.min.js"></script>
@@ -28,6 +32,7 @@
 
         <script src="js/main.js"></script>
         <script src="js/editPosition.js"></script>
+        <script src="js/editLight.js"></script>
         <script src="js/effects.js"></script>
         <script src="js/baseEffects.js"></script>
         <script src="js/inputs.js"></script>
@@ -353,16 +358,18 @@
             </div>
         </div>
 
-        <div class="modal fade" id="edit-position" data-backdrop="static">
-            <div class="modal-dialog modal-md">
+        <div class="modal fade" id="edit-light" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
-                        <a href="#" class="btn btn-success btn-sm pull-right save">Save</a>
-                        <h4 class="modal-title">Edit Position</h4>
+                        <a href="#" class="btn btn-success btn-sm pull-right save" data-dismiss="modal">Save</a>
+                        <h4 class="modal-title">Edit Light</h4>
                     </div>
                     <div class="modal-body">
-                        <svg id="edit-position-svg" style="width: 100%;height: auto;"></svg>
+                        <div id="container">
+                            
+                        </div>
                     </div>
                 </div>
             </div>

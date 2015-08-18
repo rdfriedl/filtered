@@ -225,3 +225,8 @@ path, ._jsPlumb_endpoint {
     border: none;
     padding: 2px;
 }
+
+#edit-light canvas{
+    width: 100% !important;
+    height: auto !important;
+}

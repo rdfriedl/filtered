@@ -216,6 +216,7 @@ $(document).ready(function(){
 
     initEditor();
     editPosition.init();
+    editLight.init();
 
     // suspend drawing and initialise.
     editor.batch(function () {

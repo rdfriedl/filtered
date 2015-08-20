@@ -1,3 +1,5 @@
+"use strict";
+
 //blend
 function BlendEffect(){
 	Effect.apply(this,arguments);
@@ -29,7 +31,7 @@ BlendEffect.prototype = {
 		this.filter.attr({
 			in: this.inputs.in.getValue(),
 			in2: this.inputs.in2.getValue(),
-			mode: this.inputs.mode.getAttrValue()
+			mode: this.inputs.mode.getValue()
 		});
 	}
 }
@@ -633,7 +635,7 @@ MorphologyEffect.prototype = {
 	update: function(){
 		this.filter.attr({
 			in: this.inputs.in.getValue(),
-			operator: this.inputs.operator.getAttrValue(),
+			operator: this.inputs.operator.getValue(),
 			radius: this.inputs.radius.getValue()
 		});
 	}

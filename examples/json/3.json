@@ -1,7 +1,7 @@
 {
   "effects": [
     {
-      "id": "Effect-1192",
+      "id": "Effect-4727",
       "type": "TurbulenceEffect",
       "position": {},
       "style": {
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "Effect-4676",
+      "id": "Effect-4156",
       "type": "ComponentTransferEffect",
       "position": {},
       "style": {
@@ -24,7 +24,7 @@
       },
       "inputs": {
         "in": [
-          "Effect-1192",
+          "Effect-4727",
           "result"
         ],
         "R": {
@@ -58,7 +58,7 @@
     }
   ],
   "inputEffect": {
-    "id": "Effect-6027",
+    "id": "Effect-9340",
     "type": "InputEffect",
     "position": {
       "x": 0,
@@ -72,7 +72,7 @@
     }
   },
   "outputEffect": {
-    "id": "Effect-4291",
+    "id": "Effect-4373",
     "type": "OutputEffect",
     "position": {},
     "style": {
@@ -81,7 +81,7 @@
     },
     "inputs": {
       "in": [
-        "Effect-4676",
+        "Effect-4156",
         "result"
       ]
     }

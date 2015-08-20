@@ -1,1 +1,96 @@
-{"effects":[{"id":"Effect-7967","type":"ComponentTransferEffect","style":{"top":"429px","left":"97px"},"inputs":{"in":["Effect-7757","SourceGraphic"],"R":{"type":"table","tableValues":[0,1,0,1]},"G":{"type":"table","tableValues":[0,1,0,1]},"B":{"type":"table","tableValues":[0,1,0,1]},"A":{"type":"identity"}}},{"id":"Effect-2121","type":"BumpEffect","style":{"top":"210px","left":"511px"},"inputs":{"in":["Effect-7967","result"],"amount":2}}],"inputEffect":{"id":"Effect-7757","type":"InputEffect","style":{"top":"44px","left":"49px"}},"outputEffect":{"id":"Effect-2160","type":"OutputEffect","style":{"top":"","left":""},"inputs":{"in":["Effect-2121","result"]}},"mode":"image","previewImage":"https://upload.wikimedia.org/wikipedia/commons/f/fe/Tree_at_Golf_Course.JPG"}
+{
+  "effects": [
+    {
+      "id": "Effect-3703",
+      "type": "ComponentTransferEffect",
+      "position": {},
+      "style": {
+        "top": "429px",
+        "left": "97px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-6822",
+          "SourceGraphic"
+        ],
+        "R": {
+          "type": "table",
+          "tableValues": [
+            0,
+            1,
+            0,
+            1
+          ]
+        },
+        "G": {
+          "type": "table",
+          "tableValues": [
+            0,
+            1,
+            0,
+            1
+          ]
+        },
+        "B": {
+          "type": "table",
+          "tableValues": [
+            0,
+            1,
+            0,
+            1
+          ]
+        },
+        "A": {
+          "type": "identity"
+        }
+      }
+    },
+    {
+      "id": "Effect-4301",
+      "type": "BumpEffect",
+      "position": {},
+      "style": {
+        "top": "210px",
+        "left": "511px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-3703",
+          "result"
+        ],
+        "amount": 2
+      }
+    }
+  ],
+  "inputEffect": {
+    "id": "Effect-6822",
+    "type": "InputEffect",
+    "position": {
+      "x": 0,
+      "y": 0,
+      "width": 100,
+      "height": 100
+    },
+    "style": {
+      "top": "44px",
+      "left": "48px"
+    }
+  },
+  "outputEffect": {
+    "id": "Effect-6914",
+    "type": "OutputEffect",
+    "position": {},
+    "style": {
+      "top": "",
+      "left": ""
+    },
+    "inputs": {
+      "in": [
+        "Effect-4301",
+        "result"
+      ]
+    }
+  },
+  "previewImage": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Tree_at_Golf_Course.JPG",
+  "mode": "image"
+}

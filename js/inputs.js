@@ -1,3 +1,5 @@
+"use strict";
+
 //Input
 function Input(effect,opts,data){
     this.effect = effect;
@@ -75,7 +77,7 @@ Input.prototype.constructor = Input;
 function EffectInput(){
     Input.apply(this,arguments)
 
-    $el = $('#temp .effect-input').clone();
+    var $el = $('#temp .effect-input').clone();
 
     this.element = $el[0];
     this.titleElement = $el.find('.effect-title')[0];
@@ -160,7 +162,7 @@ EffectInput.prototype.__proto__ = Input.prototype;
 function ColorInput(){
     Input.apply(this,arguments);
 
-    $el = $('#temp .color-input').clone();
+    var $el = $('#temp .color-input').clone();
 
     this.element = $el[0];
     this.titleElement = $el.find('.effect-title')[0];
@@ -186,7 +188,7 @@ ColorInput.prototype.__proto__ = Input.prototype;
 function SelectInput(){
     Input.apply(this,arguments)
 
-    $el = $('#temp .select-input').clone();
+    var $el = $('#temp .select-input').clone();
 
     this.element = $el[0];
     this.titleElement = $el.find('.effect-title')[0];
@@ -222,7 +224,7 @@ SelectInput.prototype.__proto__ = Input.prototype;
 function NumberInput(){
     Input.apply(this,arguments)
 
-    $el = $('#temp .number-input').clone();
+    var $el = $('#temp .number-input').clone();
 
     this.element = $el[0];
     this.titleElement = $el.find('.effect-title')[0];
@@ -257,11 +259,55 @@ NumberInput.prototype = {
 NumberInput.prototype.constructor = NumberInput;
 NumberInput.prototype.__proto__ = Input.prototype;
 
+//RangeInput
+function RangeInput(){
+    Input.apply(this,arguments)
+
+    var $el = $('#temp .range-input').clone();
+
+    this.element = $el[0];
+    this.titleElement = $el.find('.effect-title')[0];
+    this.inputElement = $el.find('.effect-input-control')[0];
+    this.inputElement.addEventListener('input',this.change.bind(this));
+}
+RangeInput.prototype = {
+    options: {
+        min: undefined,
+        max: undefined,
+        step: undefined,
+        value: 0
+    },
+    getValue: function(){
+        return parseFloat($(this.inputElement).val());
+    },
+    change: function(){
+        Input.prototype.change.apply(this,arguments);
+        $(this.element).find('.feedback').text(this.getValue());
+    },
+
+    render: function(){
+        if(!this.effect) return;
+        return this.element;
+    },
+    updateElement: function(){
+        Input.prototype.updateElement.call(this);
+        $(this.element).find('.feedback').text(this.options.value);
+
+        $(this.inputElement).attr({
+            min: this.options.min,
+            max: this.options.max,
+            step: this.options.step,
+        }).val(this.options.value);
+    }
+}
+RangeInput.prototype.constructor = RangeInput;
+RangeInput.prototype.__proto__ = Input.prototype;
+
 //TextInput
 function TextInput(){
     Input.apply(this,arguments)
 
-    $el = $('#temp .text-input').clone();
+    var $el = $('#temp .text-input').clone();
 
     //events
     this.element = $el[0];
@@ -289,7 +335,7 @@ TextInput.prototype.__proto__ = Input.prototype;
 function MatrixInput(){
     Input.apply(this,arguments)
 
-    $el = $('#temp .matrix-size-input').clone();
+    var $el = $('#temp .matrix-size-input').clone();
 
     //events
     this.element = $el[0];
@@ -358,7 +404,7 @@ MatrixInput.prototype = {
 
         this.matrix = [];
         $rows.each(function(i,el){
-            $row = $(el);
+            var $row = $(el);
             $row.find('td').each(function(i,el){
                 var val = parseFloat($(el).find('input').val());
                 if(!isNaN(val)){
@@ -407,7 +453,7 @@ MatrixInput.prototype.__proto__ = Input.prototype;
 function XYInput(){
     Input.apply(this,arguments)
 
-    $el = $('#temp .xy-input').clone();
+    var $el = $('#temp .xy-input').clone();
 
     this.element = $el[0];
     this.titleElement = $el.find('.effect-title')[0];
@@ -472,14 +518,13 @@ XYInput.prototype = {
 XYInput.prototype.constructor = XYInput;
 XYInput.prototype.__proto__ = Input.prototype;
 
-
 //FuncRGBAInput
 function FuncRGBAInput(){
     Input.apply(this,arguments)
 
     this.table = [0,1];
 
-    $el = $('#temp .funcrgba-input').clone();
+    var $el = $('#temp .funcrgba-input').clone();
 
     this.element = $el[0];
     this.titleElement = $el.find('.effect-title')[0];
@@ -766,7 +811,7 @@ FuncRGBAInput.prototype.__proto__ = Input.prototype;
 function ImageInput(){
     Input.apply(this,arguments)
 
-    $el = $('#temp .image-input').clone();
+    var $el = $('#temp .image-input').clone();
 
     this.element = $el[0];
     this.titleElement = $el.find('.effect-title')[0];
@@ -811,7 +856,7 @@ ImageInput.prototype.__proto__ = Input.prototype;
 function MutiSelectInput(){
     Input.apply(this,arguments)
 
-    $el = $('#temp .muti-select-input').clone();
+    var $el = $('#temp .muti-select-input').clone();
 
     this.element = $el[0];
     this.titleElement = $el.find('.effect-title')[0];

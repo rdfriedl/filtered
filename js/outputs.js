@@ -1,3 +1,5 @@
+"use strict";
+
 //Output
 function Output(effect,opts,data){
     this.effect = effect;

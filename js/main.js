@@ -1,3 +1,5 @@
+"use strict";
+
 var editor;
 var svg = undefined;
 var filter = undefined;
@@ -72,8 +74,8 @@ function parseSearch(url){
         var search = url.indexOf('?') !== -1? url.substr(url.indexOf('?')+1,url.length+1) : '';
         var queries = search.replace(/^\?/, '').replace(/\+/g,' ').split('&');
         parseSearch.cache[url] = {};
-        for( i = 0; i < queries.length; i++ ) {
-            split = queries[i].split('=');
+        for( var i = 0; i < queries.length; i++ ) {
+            var split = queries[i].split('=');
             if(split[0] !== '') parseSearch.cache[url][split[0]] = window.unescape(split[1]);
         }
     }

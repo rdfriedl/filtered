@@ -1,5 +1,7 @@
+"use strict";
+
 //this files handles the svg for editing the (width,height,x,y) of effects
-editPosition = {
+var editPosition = {
 	svg: undefined,
 	effect: undefined,
 	size: {

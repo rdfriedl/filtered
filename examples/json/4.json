@@ -1,7 +1,7 @@
 {
   "effects": [
     {
-      "id": "Effect-7582",
+      "id": "Effect-4619",
       "type": "FloodEffect",
       "position": {},
       "style": {
@@ -10,7 +10,7 @@
       }
     },
     {
-      "id": "Effect-586",
+      "id": "Effect-9462",
       "type": "CompositeEffect",
       "position": {},
       "style": {
@@ -19,18 +19,18 @@
       },
       "inputs": {
         "in": [
-          "Effect-7582",
+          "Effect-4619",
           "result"
         ],
         "in2": [
-          "Effect-7473",
+          "Effect-1242",
           "SourceAlpha"
         ],
         "operator": "out"
       }
     },
     {
-      "id": "Effect-1714",
+      "id": "Effect-6375",
       "type": "GaussianBlurEffect",
       "position": {},
       "style": {
@@ -39,14 +39,14 @@
       },
       "inputs": {
         "in": [
-          "Effect-586",
+          "Effect-9462",
           "result"
         ],
         "blur": "3 3"
       }
     },
     {
-      "id": "Effect-198",
+      "id": "Effect-9435",
       "type": "CompositeEffect",
       "position": {},
       "style": {
@@ -55,11 +55,11 @@
       },
       "inputs": {
         "in": [
-          "Effect-7473",
+          "Effect-1242",
           "SourceGraphic"
         ],
         "in2": [
-          "Effect-1714",
+          "Effect-6375",
           "result"
         ],
         "operator": "in"
@@ -67,21 +67,21 @@
     }
   ],
   "inputEffect": {
-    "id": "Effect-7473",
+    "id": "Effect-1242",
     "type": "InputEffect",
     "position": {
-      "x": 10,
+      "x": -10,
       "y": 0,
       "width": 120,
       "height": 100
     },
     "style": {
-      "top": "98px",
+      "top": "97px",
       "left": "25px"
     }
   },
   "outputEffect": {
-    "id": "Effect-2324",
+    "id": "Effect-3273",
     "type": "OutputEffect",
     "position": {},
     "style": {
@@ -90,10 +90,10 @@
     },
     "inputs": {
       "in": [
-        "Effect-198",
+        "Effect-9435",
         "result"
       ]
     }
   },
-  "mode": "text"
+  "previewImage": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Tree_at_Golf_Course.JPG"
 }

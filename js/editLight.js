@@ -1,3 +1,5 @@
+"use strict";
+
 var editLight = {
 	scene: undefined,
 	camera: undefined,

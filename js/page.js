@@ -1,10 +1,12 @@
+"use strict";
+
 function observable(val,fn){
 	var o = ko.observable(val);
 	o.subscribe(fn);
 	return o;
 }
 
-page = {
+var page = {
 	inputEffect: undefined,
 	outputEffect: undefined,
 	effects: {
@@ -37,6 +39,10 @@ page = {
 			{
 				title: 'Bump',
 				effect: BumpEffect
+			},
+			{
+				title: 'HueRotate',
+				effect: HueRotateEffect
 			}
 		]),
 		baseEffects: ko.observableArray([

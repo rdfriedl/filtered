@@ -37,27 +37,33 @@ module.exports = function(grunt) {
 		    options: {
 		      	banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
 		        		'<%= grunt.template.today("yyyy-mm-dd") %> */ \n',
-		      	mangle: true
+	      		mangle: true,
+		        // sourceMap: true,
+		        // sourceMapName: 'dist/app.min.map'
 		    },
 		    dist: {
 		        files: {
 		        	'dist/app.min.js': [
+        				'lib/svg.js',
+        				'lib/svg.filter.min.js',
+        				'lib/svg.select.min.js',
+        				'lib/svg.resize.min.js',
+        				'lib/svg.draggable.min.js',
 		        		'lib/jquery.js',
-						'lib/jquery.mousewheel.min.js',
-						'lib/jquery.transit.min.js',
-						'lib/bootstrap.min.js',
-						'lib/knockout-min.js',
-						'lib/dom.jsPlumb-1.7.5-min.js',
-						'lib/svg.js',
-						'lib/svg.filter.min.js',
-						'lib/svg.select.min.js',
-						'lib/svg.resize.min.js',
-						'lib/svg.draggable.min.js',
-						'lib/prettify.js',
-						'lib/ZeroClipboard.Core.min.js',
-						'lib/ZeroClipboard.min.js',
+        				'lib/jquery.mousewheel.min.js',
+        				'lib/jquery.transit.min.js',
+        				'lib/bootstrap.min.js',
+        				'lib/knockout-min.js',
+        				'lib/dom.jsPlumb-1.7.5-min.js',
+        				'lib/three.min.js',
+        				'lib/threejs/controls/OrbitControls.js',
+        				'lib/threejs/controls/TransformControls.js',
+        				'lib/prettify.js',
+        				'lib/ZeroClipboard.Core.min.js',
+        				'lib/ZeroClipboard.min.js',
 
 		        		'js/main.js',
+						'js/editLight.js',
 						'js/editPosition.js',
 						'js/effects.js',
 						'js/baseEffects.js',

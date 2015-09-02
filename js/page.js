@@ -14,92 +14,114 @@ var page = {
 		effects: ko.observableArray([
 			{
 				title: 'Shadow',
+				desc: '',
 				effect: ShadowEffect
 			},
 			{
 				title: 'Stroke',
+				desc: '',
 				effect: StrokeEffect
 			},
 			{
 				title: 'Recolor',
+				desc: '',
 				effect: RecolorEffect
 			},
 			{
 				title: 'Blur',
+				desc: '',
 				effect: GaussianBlurEffect
 			},
 			{
 				title: 'Sepiatone',
+				desc: '',
 				effect: SepiatoneEffect
 			},
 			{
 				title: 'GreyScale',
+				desc: '',
 				effect: GreyScaleEffect
 			},
 			{
 				title: 'Bump',
+				desc: '',
 				effect: BumpEffect
 			},
 			{
 				title: 'HueRotate',
+				desc: '',
 				effect: HueRotateEffect
 			}
 		]),
 		baseEffects: ko.observableArray([
 			{
 				title: 'Blend',
+				desc: '',
 				effect: BlendEffect
 			},
 			{
 				title: 'ColorMatrix',
+				desc: '',
 				effect: ColorMatrixEffect
 			},
 			{
 				title: 'ComponentTransfer',
+				desc: '',
 				effect: ComponentTransferEffect
 			},
 			{
 				title: 'Composite',
+				desc: '',
 				effect: CompositeEffect
 			},
 			{
 				title: 'ConvolveMatrix',
+				desc: '',
 				effect: ConvolveMatrixEffect
 			},
 			{
 				title: 'DisplacementMap',
+				desc: '',
 				effect: DisplacementMapEffect
 			},
 			{
 				title: 'Flood',
+				desc: '',
 				effect: FloodEffect
 			},
 			{
 				title: 'GaussianBlur',
+				desc: '',
 				effect: GaussianBlurEffect
 			},
 			{
 				title: 'Image',
+				desc: '',
 				effect: ImageEffect
 			},
 			{
 				title: 'Merge',
+				desc: '',
 				effect: MergeEffect
 			},
 			{
 				title: 'Morphology',
+				desc: '',
 				effect: MorphologyEffect
 			},
 			{
 				title: 'Offset',
+				desc: '',
 				effect: OffsetEffect
 			},
 			// { this is removed because the position editor only support %
 			// 	title: 'Tile',
+			//  desc: '',
 			// 	effect: TileEffect
 			// },
 			{
 				title: 'Turbulence',
+				desc: '',
 				effect: TurbulenceEffect
 			},
 		]),
@@ -494,4 +516,7 @@ var page = {
 
 $(document).ready(function() {
 	ko.applyBindings(page)
+
+	//add tool tips
+    $('[data-toggle="tooltip"]').tooltip()
 });

@@ -1,7 +1,7 @@
 {
   "effects": [
     {
-      "id": "Effect-4619",
+      "id": "Effect-6585",
       "type": "FloodEffect",
       "position": {},
       "style": {
@@ -10,7 +10,7 @@
       }
     },
     {
-      "id": "Effect-9462",
+      "id": "Effect-4740",
       "type": "CompositeEffect",
       "position": {},
       "style": {
@@ -19,18 +19,18 @@
       },
       "inputs": {
         "in": [
-          "Effect-4619",
+          "Effect-6585",
           "result"
         ],
         "in2": [
-          "Effect-1242",
+          "Effect-6015",
           "SourceAlpha"
         ],
         "operator": "out"
       }
     },
     {
-      "id": "Effect-6375",
+      "id": "Effect-4587",
       "type": "GaussianBlurEffect",
       "position": {},
       "style": {
@@ -39,14 +39,14 @@
       },
       "inputs": {
         "in": [
-          "Effect-9462",
+          "Effect-4740",
           "result"
         ],
         "blur": "3 3"
       }
     },
     {
-      "id": "Effect-9435",
+      "id": "Effect-5770",
       "type": "CompositeEffect",
       "position": {},
       "style": {
@@ -55,11 +55,11 @@
       },
       "inputs": {
         "in": [
-          "Effect-1242",
+          "Effect-6015",
           "SourceGraphic"
         ],
         "in2": [
-          "Effect-6375",
+          "Effect-4587",
           "result"
         ],
         "operator": "in"
@@ -67,7 +67,7 @@
     }
   ],
   "inputEffect": {
-    "id": "Effect-1242",
+    "id": "Effect-6015",
     "type": "InputEffect",
     "position": {
       "x": -10,
@@ -81,7 +81,7 @@
     }
   },
   "outputEffect": {
-    "id": "Effect-3273",
+    "id": "Effect-3432",
     "type": "OutputEffect",
     "position": {},
     "style": {
@@ -90,7 +90,7 @@
     },
     "inputs": {
       "in": [
-        "Effect-9435",
+        "Effect-5770",
         "result"
       ]
     }

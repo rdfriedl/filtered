@@ -188,7 +188,7 @@ var page = {
 		},
 		arange: function(){
 			for (var i = 0; i < page.effects._effects.length; i++) {
-				page.effects._effects[i].hide();
+				page.effects._effects[i].show();
 			};
 			page.outputEffect.arange();
 		},

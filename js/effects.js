@@ -138,6 +138,7 @@ Effect.prototype = {
         editor.removeAllEndpoints(this.element);
         jsPlumb.remove(this.element);
         page.effects.removeEffect(this);
+        this.hide();
     },
 
     change: function(){
@@ -152,16 +153,13 @@ Effect.prototype = {
     },
     arange: function(){
         this.show();
+        if(this.filter) this.filter.back();
         
         for (var i in this.inputs) {
             if(this.inputs[i] instanceof EffectInput){
                 this.inputs[i].arange();
             }
         };
-
-        if(this.filter){
-            this.filter.front();
-        }
     },
 
     select: function(){
@@ -210,7 +208,7 @@ Effect.prototype = {
 
         if(data.inputs){
             for(var k in this.inputs){
-                if(!data.inputs[k]) continue;
+                if(data.inputs[k] == null) continue;
                 this.inputs[k].fromJSON(data.inputs[k]);
             }
         }
@@ -386,17 +384,17 @@ MultiEffect.prototype = {
 	},
 	arange: function(){
         this.show();
+
+        var a = Object.keys(this.filter);
+        for (var i = a.length - 1; i >= 0; i--) {
+            this.filter[a[i]].back();
+        }
         
         for (var i in this.inputs) {
             if(this.inputs[i] instanceof EffectInput){
                 this.inputs[i].arange();
             }
         };
-
-        var a = Object.keys(this.filter);
-        for (var i = 0; i < a.length; i++) {
-            this.filter[a[i]].front();
-        }
 	},
     select: function(){
         $('.effect').removeClass('selected');

@@ -11,10 +11,7 @@ Simple Svg Filter builder
 - Opera 30+
 
 ### To-Do
- - Add [SpecularLighting](http://www.w3.org/TR/SVG/filters.html#feSpecularLightingElement) Effect
- - Add [DiffuseLighting](http://www.w3.org/TR/SVG/filters.html#feDiffuseLightingElement) Effect
  - Add [Tile](http://www.w3.org/TR/SVG/filters.html#feTileElement) Effect
- - Add [Image](http://www.w3.org/TR/SVG/filters.html#feImageElement) Effect
  - Improve position editor, allow for "PX" and "EM" not just "%"
  - Improve ComponentTransfer.render
  - Add panning to editor, right now it just has zoom

@@ -80,6 +80,11 @@ var page = {
 				effect: ConvolveMatrixEffect
 			},
 			{
+				title: 'DiffuseLighting',
+				desc: '',
+				effect: DiffuseLightingEffect
+			},
+			{
 				title: 'DisplacementMap',
 				desc: '',
 				effect: DisplacementMapEffect
@@ -113,6 +118,11 @@ var page = {
 				title: 'Offset',
 				desc: '',
 				effect: OffsetEffect
+			},
+			{
+				title: 'SpecularLighting',
+				desc: '',
+				effect: SpecularLightingEffect
 			},
 			// { this is removed because the position editor only support %
 			// 	title: 'Tile',
@@ -193,6 +203,7 @@ var page = {
 			};
 			page.outputEffect.arange();
 			page.outputEffect.filter.front(); //bring the output to the front
+			$($(filter.node).find('desc')).insertBefore($(filter.node).children().eq(0));
 		},
 		preview: {
 			mode: observable('text',function(val){
@@ -470,6 +481,8 @@ var page = {
 			//if theres something selected deselect it
 			$('.effect').removeClass('selected');
 			page.outputEffect.update();
+			
+			$($(filter.node).find('desc')).insertBefore($(filter.node).children().eq(0));
 			
 			page.exportFilter.filter(page.export.xml());
 			page.exportFilter.json(JSON.stringify(page.export.json(true), null, 2));

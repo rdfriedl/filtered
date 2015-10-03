@@ -86,6 +86,7 @@
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
+                            <li><a data-toggle="modal" data-bind="attr:{href: location.origin+location.pathname}"><i class="fa fa-plus"></i> New</a></li>
                             <li><a data-toggle="modal" href="#import"><i class="fa fa-folder-open"></i> Import</a></li>
                             <li><a data-toggle="modal" href="#export" data-bind="click: exportFilter.export"><i class="fa fa-check"></i> Export</a></li>
                             <li><a data-toggle="modal" href="#examples"><i class="fa fa-flask"></i> Examples</a></li>
@@ -106,7 +107,15 @@
                     <div class="panel-body">
                         <button type="button" class="btn btn-default image-change" data-bind="visible: mode() == 'image', click: image.change">Change</button>
 
-                        <svg id="preview-svg"></svg>
+                        <svg id="preview-svg">
+                            <defs>
+                                <filter id="goo">
+                                    <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+                                    <feBlend in="SourceGraphic" in2="goo" />
+                                </filter>
+                            </defs>
+                        </svg>
 
                         <div class="btn-group btn-group-justified">
                             <a class="btn btn-default" data-bind="click: $root.set(mode,'text'), css:{active: mode() == 'text'}">Text</a>
@@ -179,6 +188,12 @@
             </div>
         </div>
 
+        <!-- goo effect -->
+        <div id="gooEffect" class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert"><i class="fa fa-times"></i></button>
+            <a href="#" data-bind="click: addGoo" data-dismiss="alert"><strong>Goo Effect</strong></a>
+        </div>
+
         <div class="modal fade" id="export" data-bind="with: exportFilter">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -234,7 +249,7 @@
         </div>
 
         <div class="modal fade" id="examples" data-bind="with: examples">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>

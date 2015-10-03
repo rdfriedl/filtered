@@ -191,6 +191,7 @@ var page = {
 				page.effects._effects[i].show();
 			};
 			page.outputEffect.arange();
+			page.outputEffect.filter.front(); //bring the output to the front
 		},
 		preview: {
 			mode: observable('text',function(val){
@@ -299,7 +300,7 @@ var page = {
 				inputEffect: page.inputEffect.toJSON(),
 				outputEffect: page.outputEffect.toJSON(),
 				previewImage: (page.editor.preview.image.url() !== '' && exportPreview)? page.editor.preview.image.url() : undefined,
-				mode: (page.editor.preview.mode() !== 'text' && exportPreview)? page.editor.preview.mode() : undefined
+				mode: page.editor.preview.mode()
 			};
 			var effects = page.effects._effects;
 
@@ -483,6 +484,10 @@ var page = {
 		if(parseSearch().previewImage){
 			page.editor.preview.image.url(parseSearch().previewImage || page.editor.preview.image.url());
 		}
+	},
+
+	addGoo: function(){
+		$('#editor').toggleClass('goo');
 	},
 
 	toggle: function(observable){

@@ -230,3 +230,19 @@ path, ._jsPlumb_endpoint {
     width: 100% !important;
     height: auto !important;
 }
+
+.goo{
+    -webkit-filter: url(#goo);
+    filter: url(#goo);
+}
+#gooEffect{
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    margin: 0px;
+    height: 32px;
+    padding: 5px 30px 5px 10px;
+}
+.goo ._jsPlumb_connector:not(._jsPlumb_hover)>path {
+    stroke: #485563;
+}

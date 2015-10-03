@@ -14,7 +14,7 @@ var connectorPaintStyle = {
         strokeStyle: "#485563",
         joinstyle: "round",
         outlineColor: "#2b3e50",
-        outlineWidth: 3
+        outlineWidth: 2
     },
     connectorHoverStyle = {
         lineWidth: 4,

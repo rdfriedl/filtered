@@ -1,0 +1,72 @@
+{
+  "effects": [
+    {
+      "id": "Effect-2761",
+      "type": "ConvolveMatrixEffect",
+      "position": {},
+      "style": {
+        "top": "333px",
+        "left": "109px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-7413",
+          "SourceGraphic"
+        ],
+        "order": "3 3",
+        "matrix": {
+          "width": 3,
+          "height": 3,
+          "matrix": "1 1 1 1 -8 1 1 1 1"
+        },
+        "preserveAlpha": "true"
+      }
+    },
+    {
+      "id": "Effect-9978",
+      "type": "ColorMatrixEffect",
+      "position": {},
+      "style": {
+        "top": "53px",
+        "left": "500px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-2761",
+          "result"
+        ],
+        "matrix": {
+          "width": 5,
+          "height": 4,
+          "matrix": "-0.15 -0.3 -0.05 0 1 -0.15 -0.3 -0.05 0 1 -0.15 -0.3 -0.05 0 1 0 0 0 1 0"
+        }
+      }
+    }
+  ],
+  "inputEffect": {
+    "id": "Effect-7413",
+    "type": "InputEffect",
+    "position": {},
+    "style": {
+      "top": "54px",
+      "left": "53px"
+    }
+  },
+  "outputEffect": {
+    "id": "Effect-5125",
+    "type": "OutputEffect",
+    "position": {},
+    "style": {
+      "top": "163px",
+      "left": "856px"
+    },
+    "inputs": {
+      "in": [
+        "Effect-9978",
+        "result"
+      ]
+    }
+  },
+  "previewImage": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Ellen_H._Swallow_Richards_House_Boston_MA_01.jpg",
+  "mode": "image"
+}

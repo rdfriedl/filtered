@@ -253,9 +253,10 @@ $(document).ready(function(){
         editor.repaintEverything();
 
         //load filter after editor loads
-        page.editor.start();
-        page.loadFilter();
-        page.loadSearch();
+        page.editor.start(function(){
+            page.loadFilter();
+            page.loadSearch();
+        });
     });
 
     $(document).on('click','[href="#"]',function(event){

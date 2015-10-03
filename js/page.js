@@ -154,7 +154,7 @@ var page = {
 		}
 	},
 	editor: {
-		start: function(){
+		start: function(cb){
 			page.inputEffect = new InputEffect();
 			page.outputEffect = new OutputEffect();
 
@@ -167,6 +167,7 @@ var page = {
 
 			$.getJSON('examples/examples.json', function(json) {
 				page.examples.examples(json);
+				cb && cb();
 			});
 		},
 		zoom: {
@@ -295,12 +296,17 @@ var page = {
 	},
 	export:{
 		json: function(exportPreview){
+			var textData = ko.toJS(page.editor.preview.text);
+			delete textData.font.fonts;
+			delete textData.font.weights;
+
 			var json = {
 				effects: [],
 				inputEffect: page.inputEffect.toJSON(),
 				outputEffect: page.outputEffect.toJSON(),
 				previewImage: (page.editor.preview.image.url() !== '' && exportPreview)? page.editor.preview.image.url() : undefined,
-				mode: page.editor.preview.mode()
+				mode: page.editor.preview.mode(),
+				text: textData
 			};
 			var effects = page.effects._effects;
 
@@ -382,6 +388,19 @@ var page = {
 			}
 			if(json.previewImage && importPreview){
 				page.editor.preview.image.url(json.previewImage || page.editor.preview.image.url());
+			}
+			if(json.text && importPreview){
+				var func = function(obj,modal){
+					for(var i in obj){
+						if(typeof modal[i] == 'function'){
+							modal[i](obj[i]);
+						}
+						else if(typeof modal[i] == 'object'){
+							func(obj[i],modal[i]);
+						}
+					}
+				}
+				func(json.text,page.editor.preview.text)
 			}
 
 			page.editor.arange();
@@ -468,7 +487,7 @@ var page = {
 			page.importFilter.data('');
 		}
 	},
-	loadFilter: function(){ //load filter to url
+	loadFilter: function(){ //load filter from url
 		try{
 			page.import.url(location.href);
 		}
@@ -483,6 +502,12 @@ var page = {
 		}
 		if(parseSearch().previewImage){
 			page.editor.preview.image.url(parseSearch().previewImage || page.editor.preview.image.url());
+		}
+		if(parseSearch().example){
+			if(page.examples.examples()[parseInt(parseSearch().example)])
+				page.examples.select.call(page.examples.examples()[parseInt(parseSearch().example)]);
+			else
+				console.error('example: '+parseSearch().example+' dose not exsist');
 		}
 	},
 

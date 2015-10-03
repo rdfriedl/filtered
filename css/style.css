@@ -246,3 +246,6 @@ path, ._jsPlumb_endpoint {
 .goo ._jsPlumb_connector:not(._jsPlumb_hover)>path {
     stroke: #485563;
 }
+.goo .effect{
+    box-shadow: none !important;
+}

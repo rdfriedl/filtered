@@ -183,5 +183,18 @@
       ]
     }
   },
-  "mode": "text"
+  "mode": "text",
+  "text": {
+    "text": "Text",
+    "color": "#000000",
+    "font": {
+      "font": "Georgia, serif",
+      "weight": "normal",
+      "size": 120
+    },
+    "stroke": {
+      "color": "#000000",
+      "size": 0
+    }
+  }
 }

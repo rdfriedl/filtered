@@ -199,16 +199,16 @@ function CompositeEffect(){
 		value: 'over',
 		options: ['over','in','out','atop','xor','arithmetic']
 	});
-	this.addInput('K1',NumberInput,{
+	this.addInput('k1',NumberInput,{
 		value: 0
 	});
-	this.addInput('K2',NumberInput,{
+	this.addInput('k2',NumberInput,{
 		value: 0
 	});
-	this.addInput('K3',NumberInput,{
+	this.addInput('k3',NumberInput,{
 		value: 0
 	});
-	this.addInput('K4',NumberInput,{
+	this.addInput('k4',NumberInput,{
 		value: 0
 	});
 	this.addOutput('result',EffectOutput);
@@ -226,28 +226,28 @@ CompositeEffect.prototype = {
 	},
 	update: function(inputs){
 		if(this.inputs.operator.getAttrValue() == 'arithmetic'){
-			this.inputs.K1.show();
-			this.inputs.K2.show();
-			this.inputs.K3.show();
-			this.inputs.K4.show();
+			this.inputs.k1.show();
+			this.inputs.k2.show();
+			this.inputs.k3.show();
+			this.inputs.k4.show();
 			this.filter.attr({
-				K1: this.inputs.K1.getAttrValue(),
-				K2: this.inputs.K2.getAttrValue(),
-				K3: this.inputs.K3.getAttrValue(),
-				K4: this.inputs.K4.getAttrValue()
+				k1: this.inputs.k1.getAttrValue(),
+				k2: this.inputs.k2.getAttrValue(),
+				k3: this.inputs.k3.getAttrValue(),
+				k4: this.inputs.k4.getAttrValue()
 			})
 			this.updateEndpoints();
 		}
 		else{
-			this.inputs.K1.hide();
-			this.inputs.K2.hide();
-			this.inputs.K3.hide();
-			this.inputs.K4.hide();
+			this.inputs.k1.hide();
+			this.inputs.k2.hide();
+			this.inputs.k3.hide();
+			this.inputs.k4.hide();
 			this.filter.attr({
-				K1: null,
-				K2: null,
-				K3: null,
-				K4: null
+				k1: null,
+				k2: null,
+				k3: null,
+				k4: null
 			})
 			this.updateEndpoints();
 		}

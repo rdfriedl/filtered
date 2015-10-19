@@ -1,0 +1,134 @@
+{
+  "effects": [
+    {
+      "id": "Effect-3650",
+      "type": "ConvolveMatrixEffect",
+      "position": {},
+      "style": {
+        "top": "283px",
+        "left": "63px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-7286",
+          "SourceAlpha"
+        ],
+        "order": "8 8",
+        "matrix": {
+          "width": 8,
+          "height": 8,
+          "matrix": "1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1"
+        }
+      }
+    },
+    {
+      "id": "Effect-8242",
+      "type": "ColorMatrixEffect",
+      "position": {},
+      "style": {
+        "top": "587px",
+        "left": "433px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-3650",
+          "result"
+        ],
+        "matrix": {
+          "width": 5,
+          "height": 4,
+          "matrix": "1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 8 0"
+        }
+      }
+    },
+    {
+      "id": "Effect-9998",
+      "type": "OffsetEffect",
+      "position": {},
+      "style": {
+        "top": "631px",
+        "left": "789px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-8242",
+          "result"
+        ],
+        "x": 4,
+        "y": 4
+      }
+    },
+    {
+      "id": "Effect-5127",
+      "type": "RecolorEffect",
+      "position": {},
+      "style": {
+        "top": "322px",
+        "left": "586px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-9998",
+          "result"
+        ]
+      }
+    },
+    {
+      "id": "Effect-5409",
+      "type": "MergeEffect",
+      "position": {},
+      "style": {
+        "top": "87px",
+        "left": "464px"
+      },
+      "inputs": {
+        "in 1": [
+          "Effect-5127",
+          "result"
+        ],
+        "in 2": [
+          "Effect-7286",
+          "SourceGraphic"
+        ]
+      }
+    }
+  ],
+  "inputEffect": {
+    "id": "Effect-7286",
+    "type": "InputEffect",
+    "position": {},
+    "style": {
+      "top": "38px",
+      "left": "41px"
+    }
+  },
+  "outputEffect": {
+    "id": "Effect-7049",
+    "type": "OutputEffect",
+    "position": {},
+    "style": {
+      "top": "264px",
+      "left": "879px"
+    },
+    "inputs": {
+      "in": [
+        "Effect-5409",
+        "result"
+      ]
+    }
+  },
+  "mode": "text",
+  "text": {
+    "text": "Text",
+    "color": "#ffffff",
+    "font": {
+      "font": "\"Arial Black\", Gadget, sans-serif",
+      "weight": "bold",
+      "size": 120
+    },
+    "stroke": {
+      "color": "#800000",
+      "size": "3"
+    }
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "effects": [
+    {
+      "id": "Effect-3257",
+      "type": "FloodEffect",
+      "position": {},
+      "style": {
+        "top": "-9.47545px",
+        "left": "52.7225px"
+      },
+      "inputs": {
+        "color": "#880000"
+      }
+    },
+    {
+      "id": "Effect-5007",
+      "type": "TurbulenceEffect",
+      "position": {},
+      "style": {
+        "top": "512.633px",
+        "left": "52.2753px"
+      },
+      "inputs": {
+        "baseFrequency": "0.05 0.004",
+        "numOctaves": 4,
+        "type": "fractalNoise"
+      }
+    },
+    {
+      "id": "Effect-2173",
+      "type": "ColorMatrixEffect",
+      "position": {},
+      "style": {
+        "top": "589.255px",
+        "left": "316.234px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-5007",
+          "result"
+        ],
+        "matrix": {
+          "width": 5,
+          "height": 4,
+          "matrix": "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.2 1.1"
+        }
+      }
+    },
+    {
+      "id": "Effect-3051",
+      "type": "MorphologyEffect",
+      "position": {},
+      "style": {
+        "top": "50.8952px",
+        "left": "274.926px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-7793",
+          "SourceAlpha"
+        ],
+        "operator": "dilate",
+        "radius": "4 4"
+      }
+    },
+    {
+      "id": "Effect-5776",
+      "type": "ConvolveMatrixEffect",
+      "position": {},
+      "style": {
+        "top": "274.204px",
+        "left": "560.857px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-3051",
+          "result"
+        ],
+        "order": "8 8",
+        "matrix": {
+          "width": 8,
+          "height": 8,
+          "matrix": "1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1"
+        }
+      }
+    },
+    {
+      "id": "Effect-2193",
+      "type": "OffsetEffect",
+      "position": {},
+      "style": {
+        "top": "-2.80709px",
+        "left": "562.882px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-5776",
+          "result"
+        ],
+        "x": 4,
+        "y": 4
+      }
+    },
+    {
+      "id": "Effect-7781",
+      "type": "CompositeEffect",
+      "position": {},
+      "style": {
+        "top": "371.082px",
+        "left": "930.367px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-2193",
+          "result"
+        ],
+        "in2": [
+          "Effect-5776",
+          "result"
+        ],
+        "operator": "out"
+      }
+    },
+    {
+      "id": "Effect-7198",
+      "type": "CompositeEffect",
+      "position": {},
+      "style": {
+        "top": "665.337px",
+        "left": "902.418px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-3257",
+          "result"
+        ],
+        "in2": [
+          "Effect-7781",
+          "result"
+        ],
+        "operator": "in"
+      }
+    },
+    {
+      "id": "Effect-3381",
+      "type": "MergeEffect",
+      "position": {},
+      "style": {
+        "top": "6.99493px",
+        "left": "843.03px"
+      },
+      "inputs": {
+        "in 1": [
+          "Effect-7198",
+          "result"
+        ],
+        "in 2": [
+          "Effect-7793",
+          "SourceGraphic"
+        ]
+      }
+    },
+    {
+      "id": "Effect-3610",
+      "type": "CompositeEffect",
+      "position": {},
+      "style": {
+        "top": "348.133px",
+        "left": "301.673px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-3381",
+          "result"
+        ],
+        "in2": [
+          "Effect-2173",
+          "result"
+        ],
+        "operator": "in"
+      }
+    }
+  ],
+  "inputEffect": {
+    "id": "Effect-7793",
+    "type": "InputEffect",
+    "position": {},
+    "style": {
+      "top": "255px",
+      "left": "37px"
+    }
+  },
+  "outputEffect": {
+    "id": "Effect-9517",
+    "type": "OutputEffect",
+    "position": {},
+    "style": {
+      "top": "199.133px",
+      "left": "931.571px"
+    },
+    "inputs": {
+      "in": [
+        "Effect-3610",
+        "result"
+      ]
+    }
+  },
+  "mode": "text",
+  "text": {
+    "text": "Text",
+    "color": "#003e00",
+    "font": {
+      "font": "\"Arial Black\", Gadget, sans-serif",
+      "weight": "bold",
+      "size": 120
+    },
+    "stroke": {
+      "color": "#000000",
+      "size": 0
+    }
+  }
+}

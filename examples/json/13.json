@@ -1,0 +1,194 @@
+{
+  "effects": [
+    {
+      "id": "Effect-8587",
+      "type": "ColorMatrixEffect",
+      "position": {},
+      "style": {
+        "top": "544.03px",
+        "left": "20.7071px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-7897",
+          "SourceGraphic"
+        ],
+        "matrix": {
+          "width": 5,
+          "height": 4,
+          "matrix": "0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0"
+        }
+      }
+    },
+    {
+      "id": "Effect-442",
+      "type": "ColorMatrixEffect",
+      "position": {},
+      "style": {
+        "top": "576.141px",
+        "left": "330.788px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-7897",
+          "SourceGraphic"
+        ],
+        "matrix": {
+          "width": 5,
+          "height": 4,
+          "matrix": "0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0"
+        }
+      }
+    },
+    {
+      "id": "Effect-5224",
+      "type": "ColorMatrixEffect",
+      "position": {},
+      "style": {
+        "top": "231.869px",
+        "left": "137.394px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-7897",
+          "SourceGraphic"
+        ],
+        "matrix": {
+          "width": 5,
+          "height": 4,
+          "matrix": "1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"
+        }
+      }
+    },
+    {
+      "id": "Effect-5482",
+      "type": "CompositeEffect",
+      "position": {},
+      "style": {
+        "top": "-12.8687px",
+        "left": "695.818px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-7799",
+          "result"
+        ],
+        "in2": [
+          "Effect-8782",
+          "result"
+        ],
+        "operator": "arithmetic",
+        "k2": 1,
+        "k3": 1
+      }
+    },
+    {
+      "id": "Effect-7476",
+      "type": "CompositeEffect",
+      "position": {},
+      "style": {
+        "top": "425px",
+        "left": "836px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-5482",
+          "result"
+        ],
+        "in2": [
+          "Effect-8179",
+          "result"
+        ],
+        "operator": "arithmetic",
+        "k2": 1,
+        "k3": 1
+      }
+    },
+    {
+      "id": "Effect-7799",
+      "type": "OffsetEffect",
+      "position": {},
+      "style": {
+        "top": "-2.82828px",
+        "left": "390.556px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-5224",
+          "result"
+        ],
+        "x": -6
+      }
+    },
+    {
+      "id": "Effect-8782",
+      "type": "OffsetEffect",
+      "position": {},
+      "style": {
+        "top": "279.394px",
+        "left": "416.333px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-8587",
+          "result"
+        ]
+      }
+    },
+    {
+      "id": "Effect-8179",
+      "type": "OffsetEffect",
+      "position": {},
+      "style": {
+        "top": "568.394px",
+        "left": "587.061px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-442",
+          "result"
+        ],
+        "x": 6
+      }
+    }
+  ],
+  "inputEffect": {
+    "id": "Effect-7897",
+    "type": "InputEffect",
+    "position": {},
+    "style": {
+      "top": "-1.77778px",
+      "left": "19.0101px"
+    }
+  },
+  "outputEffect": {
+    "id": "Effect-3876",
+    "type": "OutputEffect",
+    "position": {},
+    "style": {
+      "top": "60px",
+      "left": "944px"
+    },
+    "inputs": {
+      "in": [
+        "Effect-7476",
+        "result"
+      ]
+    }
+  },
+  "previewImage": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Ash_Tree_-_geograph.org.uk_-_590710.jpg",
+  "mode": "image",
+  "text": {
+    "text": "Text",
+    "color": "#ffffff",
+    "font": {
+      "font": "\"Arial Black\", Gadget, sans-serif",
+      "weight": "bold",
+      "size": 120
+    },
+    "stroke": {
+      "color": "#000000",
+      "size": 0
+    }
+  }
+}

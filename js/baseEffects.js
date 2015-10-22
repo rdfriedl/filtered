@@ -322,7 +322,7 @@ ConvolveMatrixEffect.prototype = {
 			divisor: this.inputs.divisor.getAttrValue(),
 			bias: this.inputs.bias.getAttrValue(),
 			edgeMode: this.inputs.edgeMode.getAttrValue(),
-			preserveAlpha: this.inputs.preserveAlpha.getAttrValue()
+			preserveAlpha: this.inputs.preserveAlpha.getValue()
 		});
 	}
 }

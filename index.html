@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Filterd</title>
+        <title>Filtered</title>
+        <!-- css lib -->
         <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/prettify.css">
         <link rel="stylesheet" href="css/svg.select.min.css">
+        <!-- css -->
         <link rel="stylesheet" href="css/style.css">
 
+        <!-- lib -->
         <script src="lib/jquery.js"></script>
         <script src="lib/jquery.mousewheel.min.js"></script>
         <script src="lib/jquery.transit.min.js"></script>
@@ -21,18 +24,16 @@
         <script src="lib/svg.select.min.js"></script>
         <script src="lib/svg.resize.min.js"></script>
         <script src="lib/svg.draggable.min.js"></script>
-
-        <!-- <script src="lib/three.min.js"></script> -->
-        <!-- <script src="lib/threejs/controls/OrbitControls.js"></script> -->
-        <!-- <script src="lib/threejs/controls/TransformControls.js"></script> -->
         
         <script src="lib/prettify.js"></script>
         <script src="lib/ZeroClipboard.Core.min.js"></script>
         <script src="lib/ZeroClipboard.min.js"></script>
 
+        <script src="lib/Dexie.min.js"></script>
+
+        <!-- js -->
         <script src="js/main.js"></script>
         <script src="js/editPosition.js"></script>
-        <!-- <script src="js/editLight.js"></script> -->
         <script src="js/effects.js"></script>
         <script src="js/baseEffects.js"></script>
         <script src="js/inputs.js"></script>
@@ -68,6 +69,22 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-ex1-collapse">
                         <ul class="nav navbar-nav">
+                            <!-- load/save -->
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">File <b class="caret"></b></a>
+                                <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                    <li><a href="#" data-bind="click: $root.set(filters.newFilter,false)"><i class="fa fa-plus"></i> New</a></li>
+                                    <li><a href="#" data-bind="click: $root.set(filters.loadFilter,false)"><i class="fa fa-folder-open-o"></i> Load</a></li>
+                                    <li><a href="#" data-bind="click: $root.filters.saveFilter"><i class="fa fa-floppy-o"></i> Save</a></li>
+                                    <li><a data-toggle="modal" href="#save-as"><i class="fa fa-floppy-o"></i> Save As</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a data-toggle="modal" href="#export" data-bind="click: exportFilter.export"><i class="fa fa-check"></i> Export</a></li>
+                                    <li><a data-toggle="modal" href="#examples"><i class="fa fa-flask"></i> Examples</a></li>
+                                    <li><a data-toggle="modal" href="#help"><i class="fa fa-question"></i> Help</a></li>
+                                </ul>
+                            </li>
+
+                            <!-- add -->
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add <b class="caret"></b></a>
                                 <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
@@ -76,6 +93,8 @@
                                     <!-- /ko -->
                                 </ul>
                             </li>
+
+                            <!-- add basic -->
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add Basic <b class="caret"></b></a>
                                 <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
@@ -86,8 +105,7 @@
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a data-toggle="modal" data-bind="attr:{href: location.origin+location.pathname}"><i class="fa fa-plus"></i> New</a></li>
-                            <li><a data-toggle="modal" href="#import"><i class="fa fa-folder-open"></i> Import</a></li>
+                            <!-- <li><a data-toggle="modal" href="#import"><i class="fa fa-folder-open"></i> Import</a></li> -->
                             <li><a data-toggle="modal" href="#export" data-bind="click: exportFilter.export"><i class="fa fa-check"></i> Export</a></li>
                             <li><a data-toggle="modal" href="#examples"><i class="fa fa-flask"></i> Examples</a></li>
                             <li><a data-toggle="modal" href="#help"><i class="fa fa-question"></i> Help</a></li>
@@ -371,18 +389,96 @@
             </div>
         </div>
 
-        <div class="modal fade" id="edit-light" data-backdrop="static">
-            <div class="modal-dialog modal-lg">
+        <div class="modal fade" id="load-filter">
+            <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
-                        <a href="#" class="btn btn-success btn-sm pull-right save" data-dismiss="modal">Save</a>
-                        <h4 class="modal-title">Edit Light</h4>
+                        <h4 class="modal-title">Load</h4>
                     </div>
                     <div class="modal-body">
-                        <div id="container">
-                            
-                        </div>
+                        <ul class="list-group" data-bind="foreach: $root.filters.filters">
+                            <li href="#" class="list-group-item">
+                                <div class="pull-right">
+                                    <small data-bind="text: new Date(saved).toDateString()"></small>
+                                    <div class="btn-group btn-group-xs">
+                                        <button type="button" class="btn btn-success" data-bind="click: $root.filters.load.bind(undefined,$data)" data-dismiss="modal">Load</button>
+                                        <button type="button" class="btn btn-danger" data-bind="click: $root.set($root.filters.removeID,id)" data-toggle="modal" data-target="#remove-confirm">Remove</button>
+                                    </div>
+                                </div>
+                                <h3 class="list-group-item-heading" style="cursor: pointer" data-bind="text: name, click: $root.filters.load.bind(undefined,$data)" data-dismiss="modal"></h3>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="load-confirm">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Confirm</h4>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to load a Filter.
+                        You have unsaved data
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal" data-bind="click: $root.set(filters.loadFilter,true)">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="remove-confirm">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Confirm</h4>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to remove this filter?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal" data-bind="click: $root.filters.removeFilter">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="new-confirm">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Confirm</h4>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to create a new Filter.
+                        You have unsaved data
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal" data-bind="click: $root.set($root.filters.newFilter,true)">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="save-as">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Save As</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label>Name</label>
+                        <input type="text" class="form-control" data-bind="value: $root.filters.save.name">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-success btn-sm" data-bind="click: $root.filters.save.save" data-dismiss="modal">Save</button>
                     </div>
                 </div>
             </div>

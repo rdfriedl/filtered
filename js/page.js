@@ -1,8 +1,12 @@
 "use strict";
 
-function observable(val,fn){
-	var o = ko.observable(val);
-	o.subscribe(fn);
+function observable(){
+	var val = Array.prototype.shift.call(arguments);
+	var o = val instanceof Array? ko.observableArray(val) : ko.observable(val);
+	
+	for(var i = 0; i < arguments.length; i++){
+		o.subscribe(arguments[i]);
+	}
 	return o;
 }
 
@@ -144,6 +148,7 @@ var page = {
 					top: '30%'
 				}));
 				page.editor.arange();
+				page.filters.saved(false);
 			}
 		},
 		getEffect: function(type){
@@ -466,6 +471,126 @@ var page = {
 			for(var i in effects){
 				effects[i].effect.fromElement(effects[i].el);
 			}
+		}
+	},
+	filters: {
+		loaded: observable(-1,function(){
+			page.filters.updateTitle();
+		}),
+		saved: observable(true,function(){
+			page.filters.updateTitle();
+		}),
+		removeID: observable(-1),
+		filters: observable([]),
+		update: function(){
+			page.filters.filters([]);
+			return db.filters.each(function(data,cursor){
+				page.filters.filters.push(data);
+			});
+		},
+		updateTitle: function(){
+			var a = page.filters.filters();
+			$('title').text('Filtered');
+			for(var i in a){
+				if(page.filters.loaded() == a[i].id){
+					$('title').text('Filtered - '+a[i].name+(page.filters.saved()?'':'*'));
+				}
+			}
+		},
+		load: function(filter){
+			//set the save properties
+			page.filters.save.name(filter.name);
+			page.filters.loaded(filter.id);
+
+			page.editor.clear();
+			page.import.json(filter.data,true);
+
+			page.filters.saved(true);
+			page.filters.updateTitle();
+		},
+		save: {
+			name: observable(''),
+			save: function(){
+				db.filters.get(page.filters.loaded()).then(function(data){
+					if(data){
+						//update it
+						db.filters.update(page.filters.loaded(),{
+							name: page.filters.save.name(),
+							data: page.export.json(true),
+							saved: Date()
+						}).then(function(saved){
+							if(saved){
+								page.filters.update().then(function(){
+									page.filters.saved(true);
+									page.filters.updateTitle();
+								});
+								console.info('filter updated')
+							}
+						})
+					}
+					else{
+						//save a new one
+						db.filters.add({
+							name: page.filters.save.name(),
+							data: page.export.json(true),
+							saved: Date()
+						}).then(function(data){
+							page.filters.loaded(data);
+							page.filters.update().then(function(){
+								page.filters.saved(true);
+								page.filters.updateTitle();
+							});
+							console.info('created new filter')
+						})
+					}
+				})
+			}
+		},
+		saveFilter: function(){
+			db.filters.get(page.filters.loaded()).then(function(data){
+				if(data){
+					//save
+					page.filters.save.save();
+				}
+				else{
+					//show save as modal
+					$('#save-as').modal('show');
+				}
+			});
+		},
+		newFilter: function(confirm){
+			if(!confirm && !page.filters.saved()){
+				$('#new-confirm').modal('show');
+			}
+			else{
+				page.editor.clear();
+
+				//create new
+				page.filters.save.name('');
+				page.filters.loaded(-1);
+
+				page.filters.saved(true);
+				page.filters.updateTitle();
+
+				console.info('new filter');
+			}
+		},
+		loadFilter: function(confirm){
+			if(!confirm && !page.filters.saved()){
+				$('#load-confirm').modal('show');
+			}
+			else{
+				//show load modal
+				$('#load-filter').modal('show');
+			}
+		},
+		removeFilter: function(confirm){
+			db.filters.delete(page.filters.removeID()).then(function(){
+				console.info('filter removed');
+				page.filters.update();
+			}).catch(function(){
+				console.error('failed to remove filter')
+			})
 		}
 	},
 	exportFilter: {

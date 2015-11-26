@@ -8,6 +8,7 @@ var previewText, previewImage;
 // The Browser API key obtained from the Google Developers Console.
 var pickerApiLoaded = false;
 var picker;
+var db;
 
 var connectorPaintStyle = {
         lineWidth: 4,
@@ -48,10 +49,9 @@ var connectorPaintStyle = {
         anchor: [0, 0],
         paintStyle: { fillStyle: "#528705", radius: 11 },
         hoverPaintStyle: endpointHoverStyle,
-        maxConnections: -1,
+        maxConnections: 1,
         dropOptions: { hoverClass: "hover", activeClass: "active" },
-        isTarget: true,
-        maxConnections: 1
+        isTarget: true
     };
 
 function onApiLoad() {
@@ -163,7 +163,7 @@ function initEditor(){
     })
     previewText.filter(filter);
 
-    previewImage = svg.image('').loaded(function(img){
+    previewImage = /*(new SVG.Image())*/svg.image().loaded(function(img){
         updateImageSize(img.width/img.height);
         updatePreviewPosition();
         page.editor.preview.mode.valueHasMutated()
@@ -180,6 +180,22 @@ function initEditor(){
         ],
         Container: "editor"
     });
+}
+
+function initDB(){
+    db = new Dexie('Filtered');
+
+    // Define a schema
+    db.version(1)
+        .stores({
+            filters: '++id, name, saved, data'
+        });
+
+    // Open the database
+    db.open()
+        .catch(function(error){
+            console.error('DB: ' + error);
+        });
 }
 
 var pickerCallbackFunction = undefined;
@@ -217,7 +233,9 @@ function updateImageSize(r){
 $(document).ready(function(){
 
     initEditor();
+    initDB();
     editPosition.init();
+    page.filters.update();
     //editLight.init();
 
     // suspend drawing and initialise.
@@ -231,6 +249,7 @@ $(document).ready(function(){
                 info.targetEndpoint.getParameter('this').connectionEvent(info.sourceEndpoint.getParameter('this'));
             }
             page.editor.arange();
+            page.filters.saved(false);
         })
 
         editor.bind('connectionDetached',function(info){
@@ -238,6 +257,7 @@ $(document).ready(function(){
                 info.targetEndpoint.getParameter('this').connectionDetachedEvent();
             }
             page.editor.arange();
+            page.filters.saved(false);
         })
 
         editor.bind('connectionMoved',function(info){
@@ -248,6 +268,7 @@ $(document).ready(function(){
                 info.newTargetEndpoint.getParameter('this').connectionDetachedEvent(info.newSourceEndpoint.getParameter('this'));
             }
             // page.editor.arange(); dont need to arange
+            page.filters.saved(false);
         })
 
         editor.repaintEverything();

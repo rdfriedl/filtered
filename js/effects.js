@@ -221,10 +221,10 @@ Effect.prototype = {
         }
 
         if(data.position){
-            if(data.position.x){ this.position.x = data.position.x } else { delete this.position.x};
-            if(data.position.y){ this.position.y = data.position.y } else { delete this.position.y};
-            if(data.position.width){ this.position.width = data.position.width } else { delete this.position.width};
-            if(data.position.height){ this.position.height = data.position.height } else { delete this.position.height};
+            if(data.position.x != null){ this.position.x = data.position.x } else { delete this.position.x};
+            if(data.position.y != null){ this.position.y = data.position.y } else { delete this.position.y};
+            if(data.position.width != null){ this.position.width = data.position.width } else { delete this.position.width};
+            if(data.position.height != null){ this.position.height = data.position.height } else { delete this.position.height};
             this.updatePostion();
         }
 

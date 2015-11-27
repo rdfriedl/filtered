@@ -54,11 +54,11 @@ var connectorPaintStyle = {
         isTarget: true
     };
 
-function onApiLoad() {
+window.onApiLoad = function() {
     gapi.load('picker', {'callback': onPickerApiLoad});
 }
 
-function onPickerApiLoad() {
+window.onPickerApiLoad = function() {
     pickerApiLoaded = true;
     
     picker = new google.picker.PickerBuilder().

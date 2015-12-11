@@ -52,8 +52,7 @@ function ColorMatrixEffect(){
 		height: 4
 	});
 	this.addInput('saturate',NumberInput,{
-		min: 0,
-		step: 1,
+		step: 0.1,
 		value: 1
 	});
 	this.addInput('hueRotate',NumberInput,{

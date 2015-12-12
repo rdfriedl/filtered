@@ -317,6 +317,12 @@ $(document).ready(function(){
     })
     $(window).trigger('resize');
 
+    $(window).on('beforeunload',function(){
+        if(!page.filters.saved()){
+            return ''
+        }
+    })
+
     if(!localStorage.welcome){
         $('#README').modal('show');
         localStorage.welcome = true;

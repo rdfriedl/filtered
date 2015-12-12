@@ -637,6 +637,11 @@ FuncRGBAInput.prototype = {
 
         this.type = data.type || this.type;
         this.table = data.tableValues || this.table;
+        this.amplitude = data.amplitude || this.amplitude;
+        this.exponent = data.exponent || this.exponent;
+        this.offset = data.offset || this.offset;
+        this.slope = data.slope || this.slope;
+        this.intercept = data.intercept || this.intercept;
 
         this.updateElement();
     },

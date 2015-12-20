@@ -68,5 +68,10 @@
 		"title": "",
 		"imageURL": "examples/screenshots/14.png",
 		"json": "examples/json/14.json"
+	},
+	{
+		"title": "",
+		"imageURL": "examples/screenshots/15.png",
+		"json": "examples/json/15.json"
 	}
 ]

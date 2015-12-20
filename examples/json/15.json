@@ -1,0 +1,211 @@
+{
+  "effects": [
+    {
+      "id": "Effect-4090",
+      "type": "ConvolveMatrixEffect",
+      "position": {},
+      "style": {
+        "top": "357.96px",
+        "left": "17.1313px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-9766",
+          "SourceAlpha"
+        ],
+        "order": "8 8",
+        "matrix": {
+          "width": 8,
+          "height": 8,
+          "matrix": "1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1"
+        },
+        "target": "7 7",
+        "divisor": 2
+      }
+    },
+    {
+      "id": "Effect-7620",
+      "type": "CompositeEffect",
+      "position": {},
+      "style": {
+        "top": "32.2323px",
+        "left": "295.081px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-9766",
+          "SourceGraphic"
+        ],
+        "in2": [
+          "Effect-7217",
+          "result"
+        ]
+      }
+    },
+    {
+      "id": "Effect-4816",
+      "type": "ConvolveMatrixEffect",
+      "position": {},
+      "style": {
+        "top": "494.616px",
+        "left": "18.6162px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-560",
+          "result"
+        ],
+        "order": "8 8",
+        "matrix": {
+          "width": 8,
+          "height": 8,
+          "matrix": "0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 0"
+        },
+        "target": "0 0",
+        "divisor": 2
+      }
+    },
+    {
+      "id": "Effect-560",
+      "type": "OffsetEffect",
+      "position": {},
+      "style": {
+        "top": "16.1111px",
+        "left": "594.343px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-9766",
+          "SourceAlpha"
+        ],
+        "x": 7,
+        "y": 14
+      }
+    },
+    {
+      "id": "Effect-7148",
+      "type": "FloodEffect",
+      "position": {},
+      "style": {
+        "top": "624.566px",
+        "left": "78.7273px"
+      },
+      "inputs": {
+        "opacity": 0.5
+      }
+    },
+    {
+      "id": "Effect-4890",
+      "type": "CompositeEffect",
+      "position": {},
+      "style": {
+        "top": "642.03px",
+        "left": "435.636px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-7148",
+          "result"
+        ],
+        "in2": [
+          "Effect-4816",
+          "result"
+        ],
+        "operator": "in"
+      }
+    },
+    {
+      "id": "Effect-9765",
+      "type": "MergeEffect",
+      "position": {},
+      "style": {
+        "top": "327.131px",
+        "left": "424.253px"
+      },
+      "inputs": {
+        "in 1": [
+          "Effect-1046",
+          "result"
+        ],
+        "in 2": [
+          "Effect-7620",
+          "result"
+        ],
+        "in3": [
+          "Effect-9766",
+          "SourceGraphic"
+        ]
+      }
+    },
+    {
+      "id": "Effect-7217",
+      "type": "RecolorEffect",
+      "position": {},
+      "style": {
+        "top": "604.081px",
+        "left": "835.828px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-4090",
+          "result"
+        ],
+        "color": "#800000"
+      }
+    },
+    {
+      "id": "Effect-1046",
+      "type": "GaussianBlurEffect",
+      "position": {},
+      "style": {
+        "top": "385.182px",
+        "left": "778.505px"
+      },
+      "inputs": {
+        "in": [
+          "Effect-4890",
+          "result"
+        ],
+        "blur": "1 1"
+      }
+    }
+  ],
+  "inputEffect": {
+    "id": "Effect-9766",
+    "type": "InputEffect",
+    "position": {},
+    "style": {
+      "top": "17.4848px",
+      "left": "16.7273px"
+    }
+  },
+  "outputEffect": {
+    "id": "Effect-619",
+    "type": "OutputEffect",
+    "position": {},
+    "style": {
+      "top": "235.949px",
+      "left": "857.253px"
+    },
+    "inputs": {
+      "in": [
+        "Effect-9765",
+        "result"
+      ]
+    }
+  },
+  "mode": "text",
+  "text": {
+    "text": "Text",
+    "color": "#ff0000",
+    "font": {
+      "font": "Georgia, serif",
+      "weight": "bold",
+      "size": 120
+    },
+    "stroke": {
+      "color": "#660000",
+      "size": "-1"
+    }
+  }
+}

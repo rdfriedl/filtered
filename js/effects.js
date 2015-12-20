@@ -352,7 +352,7 @@ Effect.prototype = {
 }
 Effect.prototype.constructor = Effect;
 
-//muti filter
+//multi filter
 function MultiEffect(){
 	Effect.apply(this,arguments);
 
@@ -571,7 +571,6 @@ function RecolorEffect(){
 		in: this.filter.color,
 		operator: 'in'
 	})
-	this.filter.merge = new SVG.MergeEffect();
 
     this.render();
     this.update();
@@ -584,14 +583,6 @@ RecolorEffect.prototype = {
 	},
 	update: function(){
 		this.filter.composite.attr('in2',this.inputs.in.getValue());
-
-		this.filter.merge.clear();
-		this.filter.merge.add(new SVG.MergeNode({
-			in:this.inputs.in.getValue()
-		}));
-		this.filter.merge.add(new SVG.MergeNode({
-			in: this.filter.composite
-		}));
 
 		this.filter.color.attr({
 			'flood-color': this.inputs.color.getValue(),

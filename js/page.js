@@ -188,19 +188,16 @@ var page = {
 		zoom: {
 			zoomLevel: observable(1,function(val){
 				editor.setZoom(val);
-				$('#editor').transition({
+				$('#editor').css({
 					scale: val
-				},0)
+				})
 			}),
 			zoomIn: function(){
-				this.zoomLevel(this.zoomLevel() * 1.1)
+				this.zoomLevel(Math.round(this.zoomLevel() * 1.1 * 100)/100)
 			},
 			zoomOut: function(){
-				this.zoomLevel(this.zoomLevel() * 0.9)
+				this.zoomLevel(Math.round(this.zoomLevel() * 0.9 * 100)/100)
 			}
-		},
-		pan: {
-
 		},
 		arange: function(){
 			for (var i = 0; i < page.effects._effects.length; i++) {
@@ -343,7 +340,7 @@ var page = {
 					mode: (page.editor.preview.mode() !== 'text')? page.editor.preview.mode() : undefined
 				});
 			}
-			return location.origin+location.pathname
+			else return '(Error: url to long)'
 		},
 		xml: function(){
 			var str = filter.node.outerHTML
@@ -649,9 +646,10 @@ var page = {
 		}
 	},
 
-	addGoo: function(){
-		$('#editor').toggleClass('goo');
-	},
+	gooEnabled: observable(false,function(val){
+		if(val) $('#editor').addClass('goo');
+		if(!val) $('#editor').removeClass('goo');
+	}),
 
 	toggle: function(observable){
 		return function(){

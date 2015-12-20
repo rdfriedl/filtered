@@ -51,77 +51,81 @@
         </script>
     </head>
     
-    <body>
-        <div class="row">
-            <div class="col-xs-8 full-height editor-controls">
-                <nav class="navbar navbar-default" role="navigation">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header" data-toggle="tooltip" data-placement="bottom" title="Show Welcome modal">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" data-toggle="modal" href="#README">Filtered</a>
-                    </div>
-                
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse navbar-ex1-collapse">
-                        <ul class="nav navbar-nav">
-                            <!-- load/save -->
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">File <b class="caret"></b></a>
-                                <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-                                    <li><a href="#" data-bind="click: $root.set(filters.newFilter,false)"><i class="fa fa-plus"></i> New</a></li>
-                                    <li><a href="#" data-bind="click: $root.set(filters.loadFilter,false)"><i class="fa fa-folder-open-o"></i> Load</a></li>
-                                    <li><a href="#" data-bind="click: $root.filters.saveFilter"><i class="fa fa-floppy-o"></i> Save</a></li>
-                                    <li><a data-toggle="modal" href="#save-as"><i class="fa fa-floppy-o"></i> Save As</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a data-toggle="modal" href="#export" data-bind="click: exportFilter.export"><i class="fa fa-check"></i> Export</a></li>
-                                    <li><a data-toggle="modal" href="#examples"><i class="fa fa-flask"></i> Examples</a></li>
-                                    <li><a data-toggle="modal" href="#help"><i class="fa fa-question"></i> Help</a></li>
-                                </ul>
-                            </li>
-
-                            <!-- add -->
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add <b class="caret"></b></a>
-                                <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-                                    <!-- ko foreach: effects.effects -->
-                                    <li data-toggle="tooltip" data-placement="right" data-bind="attr: {title: desc}"><a href="#" data-bind="click: create, text: title"></a></li>
-                                    <!-- /ko -->
-                                </ul>
-                            </li>
-
-                            <!-- add basic -->
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add Basic <b class="caret"></b></a>
-                                <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-                                    <!-- ko foreach: effects.baseEffects -->
-                                    <li data-toggle="tooltip" data-placement="right" data-bind="attr: {title: desc}"><a href="#" data-bind="click: create, text: title"></a></li>
-                                    <!-- /ko -->
-                                </ul>
-                            </li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <!-- <li><a data-toggle="modal" href="#import"><i class="fa fa-folder-open"></i> Import</a></li> -->
-                            <li><a data-toggle="modal" href="#export" data-bind="click: exportFilter.export"><i class="fa fa-check"></i> Export</a></li>
-                            <li><a data-toggle="modal" href="#examples"><i class="fa fa-flask"></i> Examples</a></li>
-                            <li><a data-toggle="modal" href="#help"><i class="fa fa-question"></i> Help</a></li>
-                        </ul>
-                    </div><!-- /.navbar-collapse -->
-                </nav>
-                <div class="editor full-height" id="editor">
-                    <!-- effects -->
-                </div>
+    <body style="opacity: 0;"> <!-- hide it, and then show it when the page loads -->
+        <div id="editor-position" class="full-height editor-controls">
+            <div class="editor full-height" id="editor">
+                <!-- effects -->
             </div>
-            <div class="col-xs-4">
-                <div id="preview" class="panel panel-default" data-bind="with: editor.preview">
-                    <div class="panel-heading">
-                        Preview
-                        <a class="btn btn-info btn-xs pull-right" href="http://rdfriedl.github.io/" target="_blank">Created by Rdfriedl</a>
-                    </div>
+        </div>
+
+        <!-- header -->
+        <div id="top-left" style="padding-right: 0;">
+            <nav class="navbar navbar-default" role="navigation" style="margin: 0px;">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header" data-toggle="tooltip" data-placement="bottom" title="Show Welcome modal">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" data-toggle="modal" href="#README">Filtered</a>
+                </div>
+            
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav">
+                        <!-- load/save -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">File <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                <li><a href="#" data-bind="click: $root.set(filters.newFilter,false)"><i class="fa fa-plus"></i> New</a></li>
+                                <li><a href="#" data-bind="click: $root.set(filters.loadFilter,false)"><i class="fa fa-folder-open-o"></i> Load</a></li>
+                                <li><a href="#" data-bind="click: $root.filters.saveFilter"><i class="fa fa-floppy-o"></i> Save</a></li>
+                                <li><a data-toggle="modal" href="#save-as"><i class="fa fa-floppy-o"></i> Save As</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a data-toggle="modal" href="#export" data-bind="click: exportFilter.export"><i class="fa fa-check"></i> Export</a></li>
+                                <li><a data-toggle="modal" href="#examples"><i class="fa fa-flask"></i> Examples</a></li>
+                                <li><a data-toggle="modal" href="#help"><i class="fa fa-question"></i> Help</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- add -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                <!-- ko foreach: effects.effects -->
+                                <li data-toggle="tooltip" data-placement="right" data-bind="attr: {title: desc}"><a href="#" data-bind="click: create, text: title"></a></li>
+                                <!-- /ko -->
+                            </ul>
+                        </li>
+
+                        <!-- add basic -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add Basic <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                <!-- ko foreach: effects.baseEffects -->
+                                <li data-toggle="tooltip" data-placement="right" data-bind="attr: {title: desc}"><a href="#" data-bind="click: create, text: title"></a></li>
+                                <!-- /ko -->
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <!-- <li><a data-toggle="modal" href="#import"><i class="fa fa-folder-open"></i> Import</a></li> -->
+                        <li><a data-toggle="modal" href="#export" data-bind="click: exportFilter.export"><i class="fa fa-check"></i> Export</a></li>
+                        <li><a data-toggle="modal" href="#examples"><i class="fa fa-flask"></i> Examples</a></li>
+                        <li><a data-toggle="modal" href="#help"><i class="fa fa-question"></i> Help</a></li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+        </div>
+        <div id="top-right" style="padding-left: 0;">
+            <div id="preview" class="panel panel-default" data-bind="with: editor.preview">
+                <div class="panel-heading">
+                    <a class="btn btn-info btn-xs pull-right" href="http://rdfriedl.github.io/" target="_blank">Created by Rdfriedl</a>
+                    <h4 class="panel-title"><a data-toggle="collapse" href="#preview-collapse">Preview</a></h4>
+                </div>
+                <div id="preview-collapse" class="panel-collapse collapse in">
                     <div class="panel-body">
                         <button type="button" class="btn btn-default image-change" data-bind="visible: mode() == 'image', click: image.change">Change</button>
 
@@ -155,6 +159,7 @@
                             <div class="panel panel-default" data-bind="with: font">
                                 <div class="panel-heading" id="headingOne">
                                     <h4 class="panel-title">
+                                        <i class="fa fa-minus pull-right"></i>
                                         <a data-toggle="collapse" href="#font-collapse">Font</a>
                                     </h4>
                                 </div>
@@ -184,6 +189,7 @@
                             <div class="panel panel-default" data-bind="with: stroke">
                                 <div class="panel-heading" id="headingOne">
                                     <h4 class="panel-title">
+                                        <i class="fa fa-minus pull-right"></i>
                                         <a data-toggle="collapse" href="#stroke-collapse">Stroke</a>
                                     </h4>
                                 </div>
@@ -203,14 +209,25 @@
                         </div>
                     </div>
                 </div>
+                <button id="preview-toggle-button" class="btn btn-default" data-toggle="collapse" data-target="#preview-collapse"><i class="fa fa-angle-double-up"></i></button>
             </div>
         </div>
 
-        <!-- goo effect -->
-        <div id="gooEffect" class="alert alert-dismissible alert-success">
-            <button type="button" class="close" data-dismiss="alert"><i class="fa fa-times"></i></button>
-            <a href="#" data-bind="click: addGoo" data-dismiss="alert"><strong>Goo Effect</strong></a>
-        </div>
+        <!-- footer -->
+        <nav id="footer" class="navbar navbar-default" role="navigation">
+            <ul class="nav navbar-nav">
+                <li data-bind="click: $root.toggle(gooEnabled), css: {active: gooEnabled}"><a href="#">Goo Effect</a></li>
+                <li><a id="center-view" href="#"><i class="fa fa-plus-square-o"></i> Center View</a></li>
+            </ul>
+            <!-- <div class="navbar-form navbar-right">
+                <div class="form-group">
+                    <div class="input-group" style="margin: 3px;">
+                        <span class="input-group-addon">Zoom</span>
+                        <input type="number" class="form-control" step="0.01" data-bind="value: editor.zoom.zoomLevel, valueUpdate: 'input'">
+                    </div>
+                </div>
+            </div> -->
+        </nav>
 
         <div class="modal fade" id="export" data-bind="with: exportFilter">
             <div class="modal-dialog modal-lg">
@@ -313,28 +330,26 @@
 
                         <h3 id="browser-support">Browser Support</h3>
                         <ul>
-                        <li>Chrome 31+</li>
-                        <li>FireFox 38+</li>
-                        <li>Safari 7.1+</li>
-                        <li>Internet Exporer 10+</li>
-                        <li>Opera 30+</li>
+                            <li><i class="fa fa-chrome"></i> Chrome 31+</li>
+                            <li><i class="fa fa-firefox"></i> FireFox 38+</li>
+                            <li><i class="fa fa-edge"></i> Edge</li>
+                            <li><i class="fa fa-safari"></i> Safari 7.1+</li>
+                            <li><i class="fa fa-internet-explorer"></i> Internet Explorer 10+</li>
+                            <li><i class="fa fa-opera"></i> Opera 30+</li>
                         </ul>
 
                         <h2 id="to-do">To-Do</h2>
 
                         <ul>
-                        <li>Add <a target="_blank" href="http://www.w3.org/TR/SVG/filters.html#feTileElement">Tile</a> Effect</li>
-                        <li>Improve position editor, allow for "PX" and "EM" not just "%"</li>
-                        <li>Improve ComponentTransfer.render</li>
-                        <li>Add panning to editor, right now it just has zoom</li>
-                        <li>Add a function for loading filters in the form of xml</li>
+                            <li>Add <a target="_blank" href="http://www.w3.org/TR/SVG/filters.html#feTileElement">Tile</a> Effect</li>
+                            <li>Add a function for loading filters in the form of xml</li>
                         </ul>
 
                         <h2>SVG Filter Documentations</h2>
                         <ul>
-                        <li><a href="http://www.w3.org/TR/SVG/filters.html" target="_blank">S3C</a></li>
-                        <li><a href="https://docs.webplatform.org/wiki/svg/tutorials/smarter_svg_filters" target="_blank">WebPlatform</a></li>
-                        <li><a href="http://tutorials.jenkov.com/svg/filters.html" target="_blank">jenkov.com</a></li>
+                            <li><a href="http://www.w3.org/TR/SVG/filters.html" target="_blank">S3C</a></li>
+                            <li><a href="https://docs.webplatform.org/wiki/svg/tutorials/smarter_svg_filters" target="_blank">WebPlatform</a></li>
+                            <li><a href="http://tutorials.jenkov.com/svg/filters.html" target="_blank">jenkov.com</a></li>
                         </ul>
                     </div>
                 </div>

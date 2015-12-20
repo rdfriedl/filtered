@@ -232,11 +232,31 @@ function updateImageSize(r){
 
 $(document).ready(function(){
 
+    //show page on load
+    $(window).load(function(){
+        $('body').animate({'opacity':1},500);
+
+        //animate zoom
+        $('#editor').transition({
+            scale: 0.1
+        },0).transition({
+            scale: 1
+        },500)
+
+        //show welcome messages
+        if(!localStorage.welcome || parseSearch().welcome){
+            $('#README').modal('show');
+            localStorage.welcome = true;
+        }
+        else if(parseSearch().examples){
+            $('#examples').modal('show');
+        }
+    })
+
     initEditor();
     initDB();
     editPosition.init();
     page.filters.update();
-    //editLight.init();
 
     // suspend drawing and initialise.
     editor.batch(function () {
@@ -285,18 +305,64 @@ $(document).ready(function(){
     })
 
     $('.panel-heading a[data-toggle="collapse"]').parent().parent().click(function(){
-        $($(this).find('a').attr('href')).collapse('toggle');
+        $($(this).find('a[data-toggle="collapse"]').attr('href')).collapse('toggle');
     });
 
     //zoom
-    var editorScale = 1;
-    $('.editor-controls').mousewheel(function(event){
-        if(event.deltaY > 0){
-            page.editor.zoom.zoomIn();
+    // $('.editor-controls').mousewheel(function(event){
+    //     var oldZoom = page.editor.zoom.zoomLevel();
+    //     if(event.deltaY > 0){
+    //         page.editor.zoom.zoomIn();
+    //     }
+    //     else{
+    //         page.editor.zoom.zoomOut();
+    //     }
+    //     var zoom = page.editor.zoom.zoomLevel();
+
+    //     //zoom to cursor
+    //     $('#editor').css({
+    //         x: parseFloat($('#editor').css('x').replace('px','')) + (((window.outerWidth*oldZoom) - (window.outerWidth*zoom))/2)*((event.pageX - window.outerWidth/2) / (window.outerWidth/2)),
+    //         y: parseFloat($('#editor').css('y').replace('px','')) + (((window.outerHeight*oldZoom) - (window.outerHeight*zoom))/2)*((event.pageY - window.outerHeight/2) / (window.outerHeight/2))
+    //     })
+    // })
+
+    //pan
+    var startOffset, pos, startPos, dragging;
+    $('.editor-controls').mousedown(function(event){
+        startPos = {
+            x: parseFloat($('#editor').css('x').slice(0,-2)),
+            y: parseFloat($('#editor').css('y').slice(0,-2))
+        };
+        startOffset = {
+            x: event.pageX,
+            y: event.pageY
         }
-        else{
-            page.editor.zoom.zoomOut();
+        dragging = true;
+    }).mousemove(function(event){
+        if(dragging){
+            $('#editor').css({
+                x: startPos.x + (event.pageX - startOffset.x),
+                y: startPos.y + (event.pageY - startOffset.y)
+            })
+            $('.editor-controls').css('cursor','move');
         }
+    }).mouseup(function(event){
+        dragging = false;
+        $('.editor-controls').css('cursor','default');
+    })
+
+    $('#center-view').click(function(){
+        $('#editor').animate({
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2
+        })
+    })
+
+    //set the transforms order
+    $('#editor').css({
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2,
+        scale: 1
     })
 
     //copy
@@ -322,11 +388,6 @@ $(document).ready(function(){
             return ''
         }
     })
-
-    if(!localStorage.welcome){
-        $('#README').modal('show');
-        localStorage.welcome = true;
-    }
 });
 
 SVG.Filter.prototype.put = function(element, i) {

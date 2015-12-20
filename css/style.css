@@ -15,7 +15,7 @@
     user-select: all;
 }
 
-html,body,body>.row,.full-height{
+html,body,.full-height{
     height: 100%;
     overflow: hidden;
 }
@@ -54,12 +54,31 @@ input[type="image"]{
     background-repeat: no-repeat;
     background-size: contain;
 }
+*:focus{
+    outline: none !important;
+}
 
-#editor {
-    /* for IE10+ touch devices */
+#top-left{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 70vw;
+}
+#top-right{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30vw;
+}
+
+#editor {/* for IE10+ touch devices */
     touch-action:none;
-    overflow: visible; 
+    overflow: visible;
     position: relative;
+    width: 0;
+    height: 0;
+    /*border: 20px solid red;
+    border-radius: 50%;*/
 }
 
 #editor .effect {
@@ -162,13 +181,13 @@ path, ._jsPlumb_endpoint {
 }
 
 #editor .effect:nth-child(1){
-    top: 20%;
-    left: 10%;
+    top: -30vh;
+    left: -45vw;
 }
 
 #editor .effect:nth-child(8){
-    top: 25%;
-    left: 75%;
+    top: -30vh;
+    left: 5vw;
 }
 
 .matrix-size-input .matrix{
@@ -204,6 +223,13 @@ path, ._jsPlumb_endpoint {
     opacity: 1;
 }
 
+#preview-toggle-button{
+    position: absolute;
+    left: 0;
+    padding: 0px 15px 5px 15px;
+    line-height: 0;
+}
+
 .funcrgba-input .input-table input[type=text]::-webkit-inner-spin-button, 
 .funcrgba-input .input-table input[type=text]::-webkit-outer-spin-button { 
     -webkit-appearance: none; 
@@ -235,17 +261,16 @@ path, ._jsPlumb_endpoint {
     -webkit-filter: url(#goo);
     filter: url(#goo);
 }
-#gooEffect{
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    margin: 0px;
-    height: 32px;
-    padding: 5px 30px 5px 10px;
-}
 .goo ._jsPlumb_connector:not(._jsPlumb_hover)>path {
     stroke: #485563;
 }
 .goo .effect{
     box-shadow: none !important;
+}
+
+#footer{
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    margin: 0px;
 }

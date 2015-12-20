@@ -274,6 +274,9 @@ function ConvolveMatrixEffect(){
 		width: 3,
 		height: 3
 	});
+	this.addInput('target',XYInput,{
+		value: 0
+	});
 	this.addInput('divisor',NumberInput,{
 		min: 0,
 		value: 1
@@ -282,6 +285,10 @@ function ConvolveMatrixEffect(){
 		min: 0,
 		value: 0,
 		step: 0.01
+	});
+	this.addInput('kernelUnitLength',XYInput,{
+		min: 1,
+		value: 1
 	});
 	this.addInput('edgeMode',SelectInput,{
 		value: 'duplicate',
@@ -318,7 +325,10 @@ ConvolveMatrixEffect.prototype = {
 			in: this.inputs.in.getValue(),
 			order: this.inputs.order.getAttrValue(),
 			kernelMatrix: this.inputs.matrix.getAttrValue(),
+			kernelUnitLength: this.inputs.kernelUnitLength.getAttrValue(),
 			divisor: this.inputs.divisor.getAttrValue(),
+			targetX: this.inputs.target.getX(),
+			targetY: this.inputs.target.getY(),
 			bias: this.inputs.bias.getAttrValue(),
 			edgeMode: this.inputs.edgeMode.getAttrValue(),
 			preserveAlpha: this.inputs.preserveAlpha.getValue()

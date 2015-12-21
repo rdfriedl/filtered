@@ -34,7 +34,7 @@ BlendEffect.prototype = {
 			mode: this.inputs.mode.getValue()
 		});
 	}
-}
+};
 BlendEffect.prototype.constructor = BlendEffect;
 BlendEffect.prototype.__proto__ = Effect.prototype;
 
@@ -106,7 +106,7 @@ ColorMatrixEffect.prototype = {
 		Effect.prototype.fromElement.apply(this,arguments);
 
 		var val = el.getAttribute('values');
-		if(val == undefined || val == null) return;
+		if(val === undefined || val === null) return;
 		switch(this.inputs.type.getValue()){
 			case 'matrix':
 				this.inputs.matrix.fromAttr(val);
@@ -120,7 +120,7 @@ ColorMatrixEffect.prototype = {
 		}
 		this.update();
 	}
-}
+};
 ColorMatrixEffect.prototype.constructor = ColorMatrixEffect;
 ColorMatrixEffect.prototype.__proto__ = Effect.prototype;
 
@@ -178,9 +178,9 @@ ComponentTransferEffect.prototype = {
 					this.attr(_this.inputs.A.getAttrValue());
 					break;
 			}
-		})
+		});
 	}
-}
+};
 ComponentTransferEffect.prototype.constructor = ComponentTransferEffect;
 ComponentTransferEffect.prototype.__proto__ = Effect.prototype;
 
@@ -234,7 +234,7 @@ CompositeEffect.prototype = {
 				k2: this.inputs.k2.getAttrValue(),
 				k3: this.inputs.k3.getAttrValue(),
 				k4: this.inputs.k4.getAttrValue()
-			})
+			});
 			this.updateEndpoints();
 		}
 		else{
@@ -247,7 +247,7 @@ CompositeEffect.prototype = {
 				k2: null,
 				k3: null,
 				k4: null
-			})
+			});
 			this.updateEndpoints();
 		}
 
@@ -257,7 +257,7 @@ CompositeEffect.prototype = {
 			operator: this.inputs.operator.getValue()
 		});
 	}
-}
+};
 CompositeEffect.prototype.constructor = CompositeEffect;
 CompositeEffect.prototype.__proto__ = Effect.prototype;
 
@@ -334,7 +334,7 @@ ConvolveMatrixEffect.prototype = {
 			preserveAlpha: this.inputs.preserveAlpha.getValue()
 		});
 	}
-}
+};
 ConvolveMatrixEffect.prototype.constructor = ConvolveMatrixEffect;
 ConvolveMatrixEffect.prototype.__proto__ = Effect.prototype;
 
@@ -345,7 +345,7 @@ function DiffuseLightingEffect(){
 	this.addInput('in',EffectInput,{
 		title: 'in'
 	});
-	this.addInput('color',ColorInput)
+	this.addInput('color',ColorInput);
 	this.addInput('surfaceScale',RangeInput,{
 		min: -5,
 		max: 5,
@@ -405,11 +405,11 @@ function DiffuseLightingEffect(){
 	this.addInput('specularExponent',NumberInput,{
 		step: 1,
 		value: 1
-	})
+	});
 	this.addInput('limitingConeAngle',NumberInput,{
 		step: 10,
 		value: 0
-	})
+	});
 	this.addInput('pointsAtX',NumberInput,{
 		step: 5,
 		value: 0
@@ -513,7 +513,7 @@ DiffuseLightingEffect.prototype = {
 			in: this.inputs.in.getValue()
 		});
 	}
-}
+};
 DiffuseLightingEffect.prototype.constructor = DiffuseLightingEffect;
 DiffuseLightingEffect.prototype.__proto__ = Effect.prototype;
 
@@ -563,7 +563,7 @@ DisplacementMapEffect.prototype = {
 			yChannelSelector: this.inputs.yChannelSelector.getAttrValue()
 		});
 	}
-}
+};
 DisplacementMapEffect.prototype.constructor = DisplacementMapEffect;
 DisplacementMapEffect.prototype.__proto__ = Effect.prototype;
 
@@ -575,7 +575,7 @@ function FloodEffect(){
 	this.addInput('opacity',NumberInput,{
 		min: 0,
 		max: 1,
-		step: .1,
+		step: 0.1,
 		value: 1
 	});
 	this.addOutput('result',EffectOutput);
@@ -597,7 +597,7 @@ FloodEffect.prototype = {
 			'flood-opacity': this.inputs.opacity.getAttrValue(),
 		});
 	}
-}
+};
 FloodEffect.prototype.constructor = FloodEffect;
 FloodEffect.prototype.__proto__ = Effect.prototype;
 
@@ -631,7 +631,7 @@ GaussianBlurEffect.prototype = {
 			'stdDeviation': this.inputs.blur.getValue()
 		});
 	}
-}
+};
 GaussianBlurEffect.prototype.constructor = GaussianBlurEffect;
 GaussianBlurEffect.prototype.__proto__ = Effect.prototype;
 
@@ -674,9 +674,9 @@ ImageEffect.prototype = {
 		this.filter.attr({
 			'xlink:href': this.inputs.image.getAttrValue(),
 			preserveAspectRatio: this.inputs.preserveAspectRatio.getValue(),
-		})
+		});
 	}
-}
+};
 ImageEffect.prototype.constructor = ImageEffect;
 ImageEffect.prototype.__proto__ = Effect.prototype;
 
@@ -777,7 +777,7 @@ MergeEffect.prototype = {
 			if(this.inputs[i].getAttrValue()) this.filter.add(new SVG.MergeNode(this.inputs[i].getAttrValue()));
 		}
 	}
-}
+};
 MergeEffect.prototype.constructor = MergeEffect;
 MergeEffect.prototype.__proto__ = Effect.prototype;
 
@@ -825,7 +825,7 @@ MorphologyEffect.prototype = {
 			radius: this.inputs.radius.getValue()
 		});
 	}
-}
+};
 MorphologyEffect.prototype.constructor = MorphologyEffect;
 MorphologyEffect.prototype.__proto__ = Effect.prototype;
 
@@ -860,9 +860,9 @@ OffsetEffect.prototype = {
 			in: this.inputs.in.getValue(),
 			dx: this.inputs.x.getAttrValue(),
 			dy: this.inputs.y.getAttrValue(),
-		})
+		});
 	}
-}
+};
 OffsetEffect.prototype.constructor = OffsetEffect;
 OffsetEffect.prototype.__proto__ = Effect.prototype;
 
@@ -873,7 +873,7 @@ function SpecularLightingEffect(){
 	this.addInput('in',EffectInput,{
 		title: 'in'
 	});
-	this.addInput('color',ColorInput)
+	this.addInput('color',ColorInput);
 	this.addInput('surfaceScale',RangeInput,{
 		min: -5,
 		max: 5,
@@ -933,11 +933,11 @@ function SpecularLightingEffect(){
 	this.addInput('specularExponent',NumberInput,{
 		step: 1,
 		value: 1
-	})
+	});
 	this.addInput('limitingConeAngle',NumberInput,{
 		step: 10,
 		value: 0
-	})
+	});
 	this.addInput('pointsAtX',NumberInput,{
 		step: 5,
 		value: 0
@@ -1041,7 +1041,7 @@ SpecularLightingEffect.prototype = {
 			in: this.inputs.in.getValue()
 		});
 	}
-}
+};
 SpecularLightingEffect.prototype.constructor = SpecularLightingEffect;
 SpecularLightingEffect.prototype.__proto__ = Effect.prototype;
 
@@ -1069,9 +1069,9 @@ TileEffect.prototype = {
 	update: function(){
 		this.filter.attr({
 			in: this.inputs.in.getValue()
-		})
+		});
 	}
-}
+};
 TileEffect.prototype.constructor = TileEffect;
 TileEffect.prototype.__proto__ = Effect.prototype;
 
@@ -1123,7 +1123,7 @@ TurbulenceEffect.prototype = {
 			type: this.inputs.type.getValue()
 		});
 	}
-}
+};
 TurbulenceEffect.prototype.constructor = TurbulenceEffect;
 TurbulenceEffect.prototype.__proto__ = Effect.prototype;
 
@@ -1194,12 +1194,12 @@ InputEffect.prototype = {
 	],
 	toggleButton: false,
 	updatePostion: function(){ //use filter and not this.filter
-        if(this.position.hasOwnProperty('x')){ filter.x(this.position.x + '%') } else { filter.attr('x',null) };
-        if(this.position.hasOwnProperty('y')){ filter.y(this.position.y + '%') } else { filter.attr('y',null) };
-        if(this.position.hasOwnProperty('width')){ filter.width(this.position.width + '%') } else { filter.attr('width',null) };
-        if(this.position.hasOwnProperty('height')){ filter.height(this.position.height + '%') } else { filter.attr('height',null) };
+        if(this.position.hasOwnProperty('x')){ filter.x(this.position.x + '%') } else { filter.attr('x',null) }
+        if(this.position.hasOwnProperty('y')){ filter.y(this.position.y + '%') } else { filter.attr('y',null) }
+        if(this.position.hasOwnProperty('width')){ filter.width(this.position.width + '%') } else { filter.attr('width',null) }
+        if(this.position.hasOwnProperty('height')){ filter.height(this.position.height + '%') } else { filter.attr('height',null) }
 	}
-}
+};
 InputEffect.prototype.constructor = InputEffect;
 InputEffect.prototype.__proto__ = Effect.prototype;
 
@@ -1232,6 +1232,6 @@ OutputEffect.prototype = {
 
 		this.arange();
 	}
-}
+};
 OutputEffect.prototype.constructor = OutputEffect;
 OutputEffect.prototype.__proto__ = Effect.prototype;

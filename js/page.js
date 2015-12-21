@@ -175,14 +175,14 @@ var page = {
 
 			for (var i = 0; i < page.effects.effects().length; i++) {
 				page.effects.effects()[i].create = page.effects.createEffect.bind(undefined,page.effects.effects()[i].title);
-			};
-			for (var i = 0; i < page.effects.baseEffects().length; i++) {
-				page.effects.baseEffects()[i].create = page.effects.createEffect.bind(undefined,page.effects.baseEffects()[i].title);
-			};
+			}
+			for (var k = 0; k < page.effects.baseEffects().length; k++) {
+				page.effects.baseEffects()[k].create = page.effects.createEffect.bind(undefined,page.effects.baseEffects()[k].title);
+			}
 
 			$.getJSON('examples/examples.json', function(json) {
 				page.examples.examples(json);
-				cb && cb();
+				if(cb) cb();
 			});
 		},
 		zoom: {
@@ -190,19 +190,19 @@ var page = {
 				editor.setZoom(val);
 				$('#editor').css({
 					scale: val
-				})
+				});
 			}),
 			zoomIn: function(){
-				this.zoomLevel(Math.round(this.zoomLevel() * 1.1 * 100)/100)
+				this.zoomLevel(Math.round(this.zoomLevel() * 1.1 * 100)/100);
 			},
 			zoomOut: function(){
-				this.zoomLevel(Math.round(this.zoomLevel() * 0.9 * 100)/100)
+				this.zoomLevel(Math.round(this.zoomLevel() * 0.9 * 100)/100);
 			}
 		},
 		arange: function(){
 			for (var i = 0; i < page.effects._effects.length; i++) {
 				page.effects._effects[i].show();
-			};
+			}
 			page.outputEffect.arange();
 			page.outputEffect.filter.front(); //bring the output to the front
 			$($(filter.node).find('desc')).insertBefore($(filter.node).children().eq(0));
@@ -258,13 +258,13 @@ var page = {
 					weight: observable(false,function(val){
 						previewText.font({
 							'font-weight': val
-						})
+						});
 						updatePreviewPosition();
 					}),
 					size: observable(120,function(val){
 						previewText.font({
 							'font-size': val+'px'
-						})
+						});
 						updatePreviewPosition();
 					}),
 				},
@@ -282,10 +282,10 @@ var page = {
 					previewImage.load(url);
 				}),
 				change: function(){
-    				pickerCallbackFunction = function(url){
+    				window.pickerCallbackFunction = function(url){
     					page.editor.preview.image.url(url);
     				};
-					pickerApiLoaded && picker.setVisible(true);
+					if(window.pickerApiLoaded) picker.setVisible(true);
 				}
 			}
 		},
@@ -340,7 +340,7 @@ var page = {
 					mode: (page.editor.preview.mode() !== 'text')? page.editor.preview.mode() : undefined
 				});
 			}
-			else return '(Error: url to long)'
+			else return '(Error: url to long)';
 		},
 		xml: function(){
 			var str = filter.node.outerHTML
@@ -361,10 +361,10 @@ var page = {
 						obj[i] = replaceWith;
 					}
 				}
-			}
+			};
 
-			for(var i = 0; i < json.effects.length; i++){
-				var data = json.effects[i];
+			for(var j = 0; j < json.effects.length; j++){
+				var data = json.effects[j];
 
 				var effectType = page.effects.getEffect(data.type);
 				if(!effectType) continue;
@@ -386,8 +386,7 @@ var page = {
 
 			//import data
 			for(var i = 0; i < json.effects.length; i++){
-				var effect = effects[json.effects[i].id];
-				if(effect) effect.fromJSON(json.effects[i]);
+				if(effects[json.effects[i].id]) effects[json.effects[i].id].fromJSON(json.effects[i]);
 			}
 			if(json.outputEffect){
 				page.outputEffect.fromJSON(json.outputEffect);
@@ -412,8 +411,8 @@ var page = {
 							func(obj[i],modal[i]);
 						}
 					}
-				}
-				func(json.text,page.editor.preview.text)
+				};
+				func(json.text,page.editor.preview.text);
 			}
 
 			page.editor.arange();
@@ -421,7 +420,7 @@ var page = {
 		url: function(url){
 			var json = parseSearch(url).save;
 
-			if(!json || json == '') return;
+			if(!json || json === '') return;
 
 			json = atob(json);
 			json = JSON.parse(json);
@@ -431,7 +430,7 @@ var page = {
 		xml: function(xml){
 			var $xml = $(xml);
 			var filterEl = $xml.is('filter')? $xml[0] : $xml.find('filter')[0];
-			var filters = page.effects.effects();
+			// var filters = page.effects.effects();
 			var effects = {};
 			var replaceID = function(el,id,replaceWith){
 				if(el.getAttribute('id') == id){
@@ -440,7 +439,7 @@ var page = {
 				for(var i = 0; i < el.children.length; i++) {
 					replaceID(el.children[i]);
 				}
-			}
+			};
 
 			for (var i = 0; i < filterEl.children.length; i++) {
 			 	var el = filterEl.children[i];
@@ -462,11 +461,11 @@ var page = {
 				}
 				page.effects._effects.push(effect);
 				//cant import the data yet because not all the effects have been created
-			};
+			}
 
 			//import
-			for(var i in effects){
-				effects[i].effect.fromElement(effects[i].el);
+			for(var k in effects){
+				effects[k].effect.fromElement(effects[k].el);
 			}
 		}
 	},
@@ -481,7 +480,7 @@ var page = {
 		filters: observable([]),
 		update: function(){
 			page.filters.filters([]);
-			return db.filters.each(function(data,cursor){
+			return db.filters.each(function(data){
 				page.filters.filters.push(data);
 			});
 		},
@@ -521,9 +520,9 @@ var page = {
 									page.filters.saved(true);
 									page.filters.updateTitle();
 								});
-								console.info('filter updated')
+								console.info('filter updated');
 							}
-						})
+						});
 					}
 					else{
 						//save a new one
@@ -537,10 +536,10 @@ var page = {
 								page.filters.saved(true);
 								page.filters.updateTitle();
 							});
-							console.info('created new filter')
-						})
+							console.info('created new filter');
+						});
 					}
-				})
+				});
 			}
 		},
 		saveFilter: function(){
@@ -586,8 +585,8 @@ var page = {
 				console.info('filter removed');
 				page.filters.update();
 			}).catch(function(){
-				console.error('failed to remove filter')
-			})
+				console.error('failed to remove filter');
+			});
 		}
 	},
 	exportFilter: {
@@ -678,11 +677,11 @@ var page = {
 			}
 		}.bind(undefined,ob,amount);
 	},
-}
+};
 
 $(document).ready(function() {
-	ko.applyBindings(page)
+	ko.applyBindings(page);
 
 	//add tool tips
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
 });

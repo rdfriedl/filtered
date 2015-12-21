@@ -9,8 +9,8 @@ function Output(effect,opts,data){
         this.options[i] = opts[i];
     }
 
-    for(var i in data){
-        this[i] = data[i];
+    for(var k in data){
+        this[k] = data[k];
     }
 }
 Output.prototype = {
@@ -46,9 +46,9 @@ Output.prototype = {
 
     },
     _remove: function(){
-        editor.deleteEndpoint(this.endpoint)
+        editor.deleteEndpoint(this.endpoint);
     }
-}
+};
 Output.prototype.constructor = Output;
 
 //EffectOutput
@@ -57,7 +57,7 @@ function EffectOutput(){
 
     this.element = $('#temp .effect-output').clone().get(0);
 
-    this.initEndpoint()
+    this.initEndpoint();
 }
 EffectOutput.prototype = {
     endpoint: undefined,
@@ -96,6 +96,6 @@ EffectOutput.prototype = {
         if(!this.effect) return;
         this.effect.arange();
     }
-}
+};
 EffectOutput.prototype.constructor = EffectOutput;
 EffectOutput.prototype.__proto__ = Output.prototype;

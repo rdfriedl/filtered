@@ -102,7 +102,8 @@ Effect.prototype = {
         data.id = data.id || name;
         opts.title = opts.title || name;
 
-        return this.inputs[name] = new (inputType)(this,opts,data);
+        this.inputs[name] = new (inputType)(this,opts,data);
+        return this.inputs[name];
     },
     addOutput: function(name,outputType,opts,data){
         opts = opts || {};
@@ -111,7 +112,8 @@ Effect.prototype = {
         data.id = data.id || name;
         opts.title = opts.title || name;
 
-        return this.outputs[name] = new (outputType)(this,opts,data);
+        this.outputs[name] = new (outputType)(this,opts,data);
+        return this.outputs[name];
     },
     removeInput: function(name){
         this.inputs[name]._remove();
@@ -159,7 +161,7 @@ Effect.prototype = {
             if(this.inputs[i] instanceof EffectInput){
                 this.inputs[i].arange();
             }
-        };
+        }
     },
 
     select: function(){
@@ -196,7 +198,7 @@ Effect.prototype = {
             if(val !== undefined && val !== null) data.inputs[k] = val;
         }
 
-        var empty = function(o){return Object.keys(o).length==0};   
+        var empty = function(o){return Object.keys(o).length === 0;};
         
         if(empty(data.inputs)) delete data.inputs;
         if(empty(data.position)) delete data.position;
@@ -208,7 +210,7 @@ Effect.prototype = {
 
         if(data.inputs){
             for(var k in this.inputs){
-                if(data.inputs[k] == null) continue;
+                if(data.inputs[k] === null || data.inputs[k] === undefined) continue;
                 this.inputs[k].fromJSON(data.inputs[k]);
             }
         }
@@ -221,10 +223,10 @@ Effect.prototype = {
         }
 
         if(data.position){
-            if(data.position.x != null){ this.position.x = data.position.x } else { delete this.position.x};
-            if(data.position.y != null){ this.position.y = data.position.y } else { delete this.position.y};
-            if(data.position.width != null){ this.position.width = data.position.width } else { delete this.position.width};
-            if(data.position.height != null){ this.position.height = data.position.height } else { delete this.position.height};
+            if(data.position.x != null){ this.position.x = data.position.x} else { delete this.position.x}
+            if(data.position.y != null){ this.position.y = data.position.y} else { delete this.position.y}
+            if(data.position.width != null){ this.position.width = data.position.width} else { delete this.position.width}
+            if(data.position.height != null){ this.position.height = data.position.height} else { delete this.position.height}
             this.updatePostion();
         }
 
@@ -259,10 +261,10 @@ Effect.prototype = {
     setPosition: function(data){
         data = data || {};
 
-        if(!isNaN(data.x) ){ this.position.x = data.x } else { delete this.position.x };
-        if(!isNaN(data.y) ){ this.position.y = data.y } else { delete this.position.y };
-        if(!isNaN(data.width) ){ this.position.width = data.width } else { delete this.position.width };
-        if(!isNaN(data.height) ){ this.position.height = data.height } else { delete this.position.height };
+        if(!isNaN(data.x) ){ this.position.x = data.x } else { delete this.position.x }
+        if(!isNaN(data.y) ){ this.position.y = data.y } else { delete this.position.y }
+        if(!isNaN(data.width) ){ this.position.width = data.width } else { delete this.position.width }
+        if(!isNaN(data.height) ){ this.position.height = data.height } else { delete this.position.height }
         this.updatePostion();
     },
     resetPosition: function(){
@@ -273,10 +275,10 @@ Effect.prototype = {
         return this.position;
     },
     updatePostion: function(){
-        if(this.position.hasOwnProperty('x')){ this.filter.x(this.position.x + '%') } else { this.filter.attr('x',null) };
-        if(this.position.hasOwnProperty('y')){ this.filter.y(this.position.y + '%') } else { this.filter.attr('y',null) };
-        if(this.position.hasOwnProperty('width')){ this.filter.width(this.position.width + '%') } else { this.filter.attr('width',null) };
-        if(this.position.hasOwnProperty('height')){ this.filter.height(this.position.height + '%') } else { this.filter.attr('height',null) };
+        if(this.position.hasOwnProperty('x')){ this.filter.x(this.position.x + '%') } else { this.filter.attr('x',null) }
+        if(this.position.hasOwnProperty('y')){ this.filter.y(this.position.y + '%') } else { this.filter.attr('y',null) }
+        if(this.position.hasOwnProperty('width')){ this.filter.width(this.position.width + '%') } else { this.filter.attr('width',null) }
+        if(this.position.hasOwnProperty('height')){ this.filter.height(this.position.height + '%') } else { this.filter.attr('height',null) }
     },
 
     render: function(){
@@ -289,14 +291,14 @@ Effect.prototype = {
             this.inputs[i].updateElement();
             $inputs.append(this.inputs[i].render());
             if(this.inputs[i] instanceof EffectInput || this.inputs[i] instanceof EffectOutput) this.inputs[i].updateEndpointPosition();
-        };
+        }
 
         $outputs.children().remove();
-        for (var i in this.outputs) {
-            this.outputs[i].updateElement();
-            $outputs.append(this.outputs[i].render());
-            if(this.outputs[i] instanceof EffectInput || this.outputs[i] instanceof EffectOutput) this.outputs[i].updateEndpointPosition();
-        };
+        for (var k in this.outputs) {
+            this.outputs[k].updateElement();
+            $outputs.append(this.outputs[k].render());
+            if(this.outputs[k] instanceof EffectInput || this.outputs[k] instanceof EffectOutput) this.outputs[k].updateEndpointPosition();
+        }
     },
     updateElement: function(){
         var $el = $(this.element);
@@ -305,11 +307,11 @@ Effect.prototype = {
     updateEndpoints: function(){
         for (var i in this.inputs) {
             if(this.inputs[i] instanceof EffectInput || this.inputs[i] instanceof EffectOutput) this.inputs[i].updateEndpointPosition();
-        };
+        }
 
-        for (var i in this.outputs) {
-            if(this.outputs[i] instanceof EffectInput || this.outputs[i] instanceof EffectOutput) this.outputs[i].updateEndpointPosition();
-        };
+        for (var k in this.outputs) {
+            if(this.outputs[k] instanceof EffectInput || this.outputs[k] instanceof EffectOutput) this.outputs[k].updateEndpointPosition();
+        }
         editor.repaintEverything();
     },
     updateMenu: function(){
@@ -321,7 +323,7 @@ Effect.prototype = {
         //clear
         $menu.children().remove();
 
-        if(this.menu.length == 0)
+        if(this.menu.length === 0)
             $el.find('button.options').hide();
         else 
             $el.find('button.options').show();
@@ -342,14 +344,14 @@ Effect.prototype = {
                     $menu.append($separator.clone());
                     break;
             }
-        };
+        }
 
         if(this.toggleButton){
             $el.find('button.toggle').show();
         }
         else $el.find('button.toggle').hide();
     }
-}
+};
 Effect.prototype.constructor = Effect;
 
 //multi filter
@@ -390,11 +392,11 @@ MultiEffect.prototype = {
             this.filter[a[i]].back();
         }
         
-        for (var i in this.inputs) {
-            if(this.inputs[i] instanceof EffectInput){
-                this.inputs[i].arange();
+        for (var k in this.inputs) {
+            if(this.inputs[k] instanceof EffectInput){
+                this.inputs[k].arange();
             }
-        };
+        }
 	},
     select: function(){
         $('.effect').removeClass('selected');
@@ -406,13 +408,13 @@ MultiEffect.prototype = {
     },
     updatePostion: function(){
     	for(var i in this.filter){
-            if(this.position.hasOwnProperty('x')){ this.filter[i].x(this.position.x + '%') } else { this.filter[i].attr('x',null) };
-            if(this.position.hasOwnProperty('y')){ this.filter[i].y(this.position.y + '%') } else { this.filter[i].attr('y',null) };
-            if(this.position.hasOwnProperty('width')){ this.filter[i].width(this.position.width + '%') } else { this.filter[i].attr('width',null) };
-            if(this.position.hasOwnProperty('height')){ this.filter[i].height(this.position.height + '%') } else { this.filter[i].attr('height',null) };
+            if(this.position.hasOwnProperty('x')){ this.filter[i].x(this.position.x + '%') } else { this.filter[i].attr('x',null) }
+            if(this.position.hasOwnProperty('y')){ this.filter[i].y(this.position.y + '%') } else { this.filter[i].attr('y',null) }
+            if(this.position.hasOwnProperty('width')){ this.filter[i].width(this.position.width + '%') } else { this.filter[i].attr('width',null) }
+            if(this.position.hasOwnProperty('height')){ this.filter[i].height(this.position.height + '%') } else { this.filter[i].attr('height',null) }
     	}
     }
-}
+};
 MultiEffect.prototype.constructor = MultiEffect;
 MultiEffect.prototype.__proto__ = Effect.prototype;
 
@@ -420,12 +422,12 @@ MultiEffect.prototype.__proto__ = Effect.prototype;
 function ShadowEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in',EffectInput)
+	this.addInput('in',EffectInput);
 	this.addInput('color',ColorInput);
 	this.addInput('opacity',NumberInput,{
 		min: 0,
 		max: 1,
-		step: .1,
+		step: 0.1,
 		value: 1
 	});
 	this.addInput('offsetX',NumberInput,{
@@ -445,7 +447,7 @@ function ShadowEffect(){
 	this.filter.composite = new SVG.CompositeEffect({
 		in: this.filter.color,
 		operator: 'in'
-	})
+	});
 	this.filter.offset = new SVG.OffsetEffect({
 		in: this.filter.composite
 	});
@@ -477,16 +479,16 @@ ShadowEffect.prototype = {
 		this.filter.color.attr({
 			'flood-color': this.inputs.color.getValue(),
 			'flood-opacity': this.inputs.opacity.getValue()
-		})
+		});
 		this.filter.offset.attr({
 			dx: this.inputs.offsetX.getValue(),
 			dy: this.inputs.offsetY.getValue()
-		})
+		});
 		this.filter.blur.attr({
 			stdDeviation: this.inputs.blur.getValue(),
-		})
+		});
 	}
-}
+};
 ShadowEffect.prototype.constructor = ShadowEffect;
 ShadowEffect.prototype.__proto__ = MultiEffect.prototype;
 
@@ -494,12 +496,12 @@ ShadowEffect.prototype.__proto__ = MultiEffect.prototype;
 function StrokeEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in',EffectInput)
+	this.addInput('in',EffectInput);
 	this.addInput('color',ColorInput);
 	this.addInput('opacity',NumberInput,{
 		min: 0,
 		max: 1,
-		step: .1,
+		step: 0.1,
 		value: 1
 	});
 	this.addInput('size',NumberInput,{
@@ -513,7 +515,7 @@ function StrokeEffect(){
 	this.filter.composite = new SVG.CompositeEffect({
 		in: this.filter.color,
 		operator: 'in'
-	})
+	});
 	this.filter.stroke = new SVG.MorphologyEffect('dilate',{
 		in: this.filter.composite
 	});
@@ -542,12 +544,12 @@ StrokeEffect.prototype = {
 		this.filter.color.attr({
 			'flood-color': this.inputs.color.getValue(),
 			'flood-opacity': this.inputs.opacity.getValue()
-		})
+		});
 		this.filter.stroke.attr({
 			radius: this.inputs.size.getValue()
-		})
+		});
 	}
-}
+};
 StrokeEffect.prototype.constructor = StrokeEffect;
 StrokeEffect.prototype.__proto__ = MultiEffect.prototype;
 
@@ -555,12 +557,12 @@ StrokeEffect.prototype.__proto__ = MultiEffect.prototype;
 function RecolorEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in',EffectInput)
+	this.addInput('in',EffectInput);
 	this.addInput('color',ColorInput);
 	this.addInput('opacity',NumberInput,{
 		min: 0,
 		max: 1,
-		step: .1,
+		step: 0.1,
 		value: 1
 	});
 	this.addOutput('result',EffectOutput);
@@ -570,7 +572,7 @@ function RecolorEffect(){
 	this.filter.composite = new SVG.CompositeEffect({
 		in: this.filter.color,
 		operator: 'in'
-	})
+	});
 
     this.render();
     this.update();
@@ -587,9 +589,9 @@ RecolorEffect.prototype = {
 		this.filter.color.attr({
 			'flood-color': this.inputs.color.getValue(),
 			'flood-opacity': this.inputs.opacity.getValue()
-		})
+		});
 	}
-}
+};
 RecolorEffect.prototype.constructor = RecolorEffect;
 RecolorEffect.prototype.__proto__ = MultiEffect.prototype;
 
@@ -597,15 +599,16 @@ RecolorEffect.prototype.__proto__ = MultiEffect.prototype;
 function SepiatoneEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in',EffectInput)
+	this.addInput('in',EffectInput);
 	this.addOutput('result',EffectOutput);
 
 	this.filter = {};
-	this.filter.matrix = new SVG.ColorMatrixEffect('matrix', 
-		[ .343, .669, .119, 0, 0 
-        , .249, .626, .130, 0, 0
-        , .172, .334, .111, 0, 0
-        , .000, .000, .000, 1, 0 ]);
+	this.filter.matrix = new SVG.ColorMatrixEffect('matrix', [ 
+        0.343, 0.669, 0.119, 0, 0,
+        0.249, 0.626, 0.130, 0, 0,
+        0.172, 0.334, 0.111, 0, 0,
+        0.000, 0.000, 0.000, 1, 0
+    ]);
 
     this.render();
     this.update();
@@ -619,7 +622,7 @@ SepiatoneEffect.prototype = {
 	update: function(){
 
 	}
-}
+};
 SepiatoneEffect.prototype.constructor = SepiatoneEffect;
 SepiatoneEffect.prototype.__proto__ = MultiEffect.prototype;
 
@@ -627,15 +630,16 @@ SepiatoneEffect.prototype.__proto__ = MultiEffect.prototype;
 function GreyScaleEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in',EffectInput)
+	this.addInput('in',EffectInput);
 	this.addOutput('result',EffectOutput);
 
 	this.filter = {};
-	this.filter.matrix = new SVG.ColorMatrixEffect('matrix', 
-		[ .333, .333, .333, 0, 0 
-        , .333, .333, .333, 0, 0
-        , .333, .333, .333, 0, 0
-        , .000, .000, .000, 1, 0 ]);
+	this.filter.matrix = new SVG.ColorMatrixEffect('matrix', [
+        0.333, 0.333, 0.333, 0, 0,
+        0.333, 0.333, 0.333, 0, 0,
+        0.333, 0.333, 0.333, 0, 0,
+        0.000, 0.000, 0.000, 1, 0
+    ]);
 
     this.render();
     this.update();
@@ -649,7 +653,7 @@ GreyScaleEffect.prototype = {
 	update: function(){
 
 	}
-}
+};
 GreyScaleEffect.prototype.constructor = GreyScaleEffect;
 GreyScaleEffect.prototype.__proto__ = MultiEffect.prototype;
 
@@ -657,11 +661,11 @@ GreyScaleEffect.prototype.__proto__ = MultiEffect.prototype;
 function BumpEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in',EffectInput)
+	this.addInput('in',EffectInput);
 	this.addInput('amount',NumberInput,{
 		min: 0,
 		step: 1
-	})
+	});
 	this.addOutput('result',EffectOutput);
 
 	this.filter = {};
@@ -682,9 +686,9 @@ BumpEffect.prototype = {
             in: this.inputs.in.getValue(),
 			order: 3,
 			kernelMatrix: v+' 0 0 0 1 0 0 0 -'+v
-		})
+		});
 	}
-}
+};
 BumpEffect.prototype.constructor = BumpEffect;
 BumpEffect.prototype.__proto__ = MultiEffect.prototype;
 
@@ -698,7 +702,7 @@ function HueRotateEffect(){
         max: 360,
         value: 180,
         step: 1
-    })
+    });
     this.addOutput('result',EffectOutput);
 
     this.filter = {};
@@ -717,8 +721,8 @@ HueRotateEffect.prototype = {
         this.filter.colorMatrix.attr({
             in: this.inputs.in.getValue(),
             values: this.inputs.amount.getValue()
-        })
+        });
     }
-}
+};
 HueRotateEffect.prototype.constructor = HueRotateEffect;
 HueRotateEffect.prototype.__proto__ = MultiEffect.prototype;

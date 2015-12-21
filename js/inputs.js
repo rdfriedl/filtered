@@ -9,8 +9,8 @@ function Input(effect,opts,data){
         this.options[i] = opts[i];
     }
 
-    for(var i in data){
-        this[i] = data[i];
+    for(var k in data){
+        this[k] = data[k];
     }
 }
 Input.prototype = {
@@ -68,14 +68,14 @@ Input.prototype = {
         $(this.inputElement).val(this.getValue());
     },
     _remove: function(){
-        editor.deleteEndpoint(this.endpoint)
+        editor.deleteEndpoint(this.endpoint);
     }
-}
+};
 Input.prototype.constructor = Input;
 
 //EffectInput
 function EffectInput(){
-    Input.apply(this,arguments)
+    Input.apply(this,arguments);
 
     var $el = $('#temp .effect-input').clone();
 
@@ -83,7 +83,7 @@ function EffectInput(){
     this.titleElement = $el.find('.effect-title')[0];
     this.inputElement = $el.find('.effect-input-control')[0];
 
-    this.initEndpoint()
+    this.initEndpoint();
 }
 EffectInput.prototype = {
     endpoint: undefined,
@@ -104,8 +104,9 @@ EffectInput.prototype = {
     },
     fromJSON: function(data){
         //find the element and the output and connect to it
+        var effect;
         for(var i in page.effects._effects){
-            var effect = page.effects._effects[i];
+            effect = page.effects._effects[i];
             if(effect.id == data[0]){
                 if(effect.outputs[data[1]]){
                     this.setValue(effect.outputs[data[1]],true);
@@ -113,13 +114,13 @@ EffectInput.prototype = {
             }
         }
         if(data[0] == page.inputEffect.id){
-            var effect = page.inputEffect;
+            effect = page.inputEffect;
             if(effect.outputs[data[1]]){
                 this.setValue(effect.outputs[data[1]],true);
             }
         }
         if(data[0] == page.outputEffect.id){
-            var effect = page.outputEffect;
+            effect = page.outputEffect;
             if(effect.outputs[data[1]]){
                 this.setValue(effect.outputs[data[1]],true);
             }
@@ -154,7 +155,7 @@ EffectInput.prototype = {
         if(!this.connection) return;
         this.connection.arange();
     }
-}
+};
 EffectInput.prototype.constructor = EffectInput;
 EffectInput.prototype.__proto__ = Input.prototype;
 
@@ -180,13 +181,13 @@ ColorInput.prototype = {
         if(!this.effect) return;
         return this.element;
     }
-}
+};
 ColorInput.prototype.constructor = ColorInput;
 ColorInput.prototype.__proto__ = Input.prototype;
 
 //SelectInput
 function SelectInput(){
-    Input.apply(this,arguments)
+    Input.apply(this,arguments);
 
     var $el = $('#temp .select-input').clone();
 
@@ -213,16 +214,16 @@ SelectInput.prototype = {
         for (var i = 0; i < this.options.options.length; i++) {
             var val = this.options.options[i];
             $('<option>').text(val.title || val).attr('value',val.value || val).appendTo($el);
-        };
+        }
         $el.val(this.options.value);
     }
-}
+};
 SelectInput.prototype.constructor = SelectInput;
 SelectInput.prototype.__proto__ = Input.prototype;
 
 //NumberInput
 function NumberInput(){
-    Input.apply(this,arguments)
+    Input.apply(this,arguments);
 
     var $el = $('#temp .number-input').clone();
 
@@ -255,13 +256,13 @@ NumberInput.prototype = {
             step: this.options.step,
         }).val(this.options.value);
     }
-}
+};
 NumberInput.prototype.constructor = NumberInput;
 NumberInput.prototype.__proto__ = Input.prototype;
 
 //RangeInput
 function RangeInput(){
-    Input.apply(this,arguments)
+    Input.apply(this,arguments);
 
     var $el = $('#temp .range-input').clone();
 
@@ -299,13 +300,13 @@ RangeInput.prototype = {
             step: this.options.step,
         }).val(this.options.value);
     }
-}
+};
 RangeInput.prototype.constructor = RangeInput;
 RangeInput.prototype.__proto__ = Input.prototype;
 
 //TextInput
 function TextInput(){
-    Input.apply(this,arguments)
+    Input.apply(this,arguments);
 
     var $el = $('#temp .text-input').clone();
 
@@ -327,13 +328,13 @@ TextInput.prototype = {
         if(!this.effect) return;
         return this.element;
     }
-}
+};
 TextInput.prototype.constructor = TextInput;
 TextInput.prototype.__proto__ = Input.prototype;
 
 //MatrixInput
 function MatrixInput(){
-    Input.apply(this,arguments)
+    Input.apply(this,arguments);
 
     var $el = $('#temp .matrix-size-input').clone();
 
@@ -348,7 +349,7 @@ function MatrixInput(){
 
     for (var i = 0; i < this.options.width*this.options.height; i++) {
         this.matrix.push(this.options.value);
-    };
+    }
 }
 MatrixInput.prototype = {
     matrix: [],
@@ -369,7 +370,7 @@ MatrixInput.prototype = {
             width: this.options.width,
             height: this.options.height,
             matrix: this.getValue()
-        }
+        };
     },
     fromJSON: function(data){
         this.options.width = data.width || this.options.width;
@@ -392,7 +393,7 @@ MatrixInput.prototype = {
         return {
             width: this.options.width,
             height: this.options.height
-        }
+        };
     },
 
     render: function(){
@@ -413,8 +414,8 @@ MatrixInput.prototype = {
                 else{
                     this.matrix.push(0);
                 }
-            }.bind(this))
-        }.bind(this))
+            }.bind(this));
+        }.bind(this));
 
         this.effect.update();
     },
@@ -428,10 +429,10 @@ MatrixInput.prototype = {
             for (var col = 0; col < this.options.width; col++) {
                 var index = row*this.options.width + col;
                 var $td = $('<td>');
-                var $input = $('<input>').val((this.matrix[index] !== undefined)? this.matrix[index] : this.options.value).on('change, input',function(event){
+                var $input = $('<input>').val((this.matrix[index] !== undefined)? this.matrix[index] : this.options.value).on('change, input',function(){
                     this.change();
                 }.bind(this)).on('focus, mouseup',function(event){
-                    event.target.setSelectionRange(0,event.target.value.length)
+                    event.target.setSelectionRange(0,event.target.value.length);
                 }).change(function(){
                     if(isNaN(parseFloat($(this).val()))){
                         $(this).val(0);
@@ -440,18 +441,18 @@ MatrixInput.prototype = {
                 
                 $td.append($input);
                 $tr.append($td);
-            };
+            }
 
             $(this.inputElement).append($tr);
-        };
+        }
     }
-}
+};
 MatrixInput.prototype.constructor = MatrixInput;
 MatrixInput.prototype.__proto__ = Input.prototype;
 
 //XYInput
 function XYInput(){
-    Input.apply(this,arguments)
+    Input.apply(this,arguments);
 
     var $el = $('#temp .xy-input').clone();
 
@@ -514,13 +515,13 @@ XYInput.prototype = {
             step: this.options.step,
         });//.val(this.options.value); dont set the value since this one can be blank
     }
-}
+};
 XYInput.prototype.constructor = XYInput;
 XYInput.prototype.__proto__ = Input.prototype;
 
 //FuncRGBAInput
 function FuncRGBAInput(){
-    Input.apply(this,arguments)
+    Input.apply(this,arguments);
 
     this.table = [0,1];
 
@@ -535,13 +536,13 @@ function FuncRGBAInput(){
         this.table.push(1);
         this.updateElement();
         this.change();
-    }.bind(this))
+    }.bind(this));
 
     $(this.element).find('.remove-table-index').click(function(){
         this.table.pop();
         this.updateElement();
         this.change();
-    }.bind(this))
+    }.bind(this));
 
     $(this.element).find('.input-type').on('change',function(event){
         this.type = $(event.target).val();
@@ -549,28 +550,28 @@ function FuncRGBAInput(){
         this.updateVisible();
         this.effect.updateEndpoints();
         this.change();
-    }.bind(this))
+    }.bind(this));
 
     $(this.element).find('.input-amplitude').on('input',function(){
         this.amplitude = parseFloat($(event.target).val());
         this.change();
-    }.bind(this))
+    }.bind(this));
     $(this.element).find('.input-exponent').on('input',function(){
         this.exponent = parseFloat($(event.target).val());
         this.change();
-    }.bind(this))
+    }.bind(this));
     $(this.element).find('.input-offset').on('input',function(){
         this.offset = parseFloat($(event.target).val());
         this.change();
-    }.bind(this))
+    }.bind(this));
     $(this.element).find('.input-slope').on('input',function(){
         this.slope = parseFloat($(event.target).val());
         this.change();
-    }.bind(this))
+    }.bind(this));
     $(this.element).find('.input-intercept').on('input',function(){
         this.intercept = parseFloat($(event.target).val());
         this.change();
-    }.bind(this))
+    }.bind(this));
 }
 FuncRGBAInput.prototype = {
     options: {
@@ -592,7 +593,7 @@ FuncRGBAInput.prototype = {
             offset: undefined,
             slope: undefined,
             intercept: undefined
-        }
+        };
         switch(this.type){
             case "identity":
                 break;
@@ -619,13 +620,13 @@ FuncRGBAInput.prototype = {
         var data = this.getValue();
         var func = function(obj){
             for(var i in obj){
-                if(obj[i] == undefined) obj[i] = null;
+                if(obj[i] === undefined) obj[i] = null;
 
                 if(typeof obj[i] == 'object'){
                     func(obj[i]);
                 }
             }
-        }
+        };
         func(data);
         return data;
     },
@@ -650,17 +651,13 @@ FuncRGBAInput.prototype = {
         switch(this.options.chanel){
             case 'R':
                 return 'rgb('+Math.round(i*255)+',0,0)';
-                break;
             case 'G':
                 return 'rgb(0,'+Math.round(i*255)+',0)';
-                break;
             case 'B':
                 return 'rgb(0,0,'+Math.round(i*255)+')';
-                break;
             case 'A':
                 var val = Math.round(i*255);
                 return 'rgb('+val+','+val+','+val+')';
-                break;
         }
     },
 
@@ -705,11 +702,11 @@ FuncRGBAInput.prototype = {
                         this.updateBackground();
                     }.bind(this))
                     .on('focus, mouseup',function(event){
-                        event.target.setSelectionRange(0,event.target.value.length)
+                        event.target.setSelectionRange(0,event.target.value.length);
                     })
                     .on('update-background',function(event){
                         var $this = $(event.target);
-                        var val = parseFloat($this.val()) || 0;
+                        // var val = parseFloat($this.val()) || 0;
                         var i = $this.data('index');
                         var colors = [];
 
@@ -751,7 +748,7 @@ FuncRGBAInput.prototype = {
             .css({
                 'padding': '0px'
             })
-            .appendTo($table.find('tbody>tr'))
+            .appendTo($table.find('tbody>tr'));
         }
         this.updateBackground();
 
@@ -769,7 +766,7 @@ FuncRGBAInput.prototype = {
     },
     updateBackground: function(){
         $(this.element).find('.input-table thead th').each(function(i,el){
-            $(el).css('background', 'linear-gradient(to right, '+this._getColor(i/this.table.length)+' , '+this._getColor((i+1)/this.table.length)+')')
+            $(el).css('background', 'linear-gradient(to right, '+this._getColor(i/this.table.length)+' , '+this._getColor((i+1)/this.table.length)+')');
         }.bind(this));
         switch(this.type){
             case 'table':
@@ -808,13 +805,13 @@ FuncRGBAInput.prototype = {
         $(this.element).find('.type').hide();
         $(this.element).find('.type-'+this.type).show();
     }
-}
+};
 FuncRGBAInput.prototype.constructor = FuncRGBAInput;
 FuncRGBAInput.prototype.__proto__ = Input.prototype;
 
 //ImageInput
 function ImageInput(){
-    Input.apply(this,arguments)
+    Input.apply(this,arguments);
 
     var $el = $('#temp .image-input').clone();
 
@@ -853,13 +850,13 @@ ImageInput.prototype = {
         if(!this.effect) return;
         return this.element;
     }
-}
+};
 ImageInput.prototype.constructor = ImageInput;
 ImageInput.prototype.__proto__ = Input.prototype;
 
 //MutiSelectInput
 function MutiSelectInput(){
-    Input.apply(this,arguments)
+    Input.apply(this,arguments);
 
     var $el = $('#temp .muti-select-input').clone();
 
@@ -876,20 +873,20 @@ MutiSelectInput.prototype = {
         var values = [];
         $(this.inputElement).children().each(function(){
             if(!$(this).attr('disabled') && $(this).val() !== '') values.push($(this).val());
-        })
+        });
         return values.join(' ');
     },
     setValue: function(data){
         for (var i = 0; i < data.length; i++) {
             $(this.inputElement).children().eq(i).val(data[i]);
-        };
+        }
         this.updateDisabled();
     },
     toJSON: function(){
         var values = [];
         $(this.inputElement).children().each(function(){
             values.push($(this).val());
-        })
+        });
         return values;
     },
 
@@ -912,12 +909,12 @@ MutiSelectInput.prototype = {
                         .text(options[i].options[k].title!==undefined? options[i].options[k].title : options[i].options[k])
                         .val(options[i].options[k].value!==undefined? options[i].options[k].value : options[i].options[k])
                 );
-            };
+            }
 
             if(options[i].value) el.val(options[i].value);
             el.on('change',this.change.bind(this));
             el.appendTo(this.inputElement);
-        };
+        }
 
         this.updateDisabled();
     },
@@ -937,8 +934,8 @@ MutiSelectInput.prototype = {
                     el.removeAttr('disabled');
                 }
             }
-        };
+        }
     }
-}
+};
 MutiSelectInput.prototype.constructor = MutiSelectInput;
 MutiSelectInput.prototype.__proto__ = Input.prototype;

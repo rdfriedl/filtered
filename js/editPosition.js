@@ -15,15 +15,15 @@ var editPosition = {
 	init: function(){
 		var _svg = this.svg = new SVG('edit-position-svg');
 		_svg.size('100%','auto');
-		_svg.viewbox({width:this.size.width,height:this.size.height,x:0,y:0})
+		_svg.viewbox({width:this.size.width,height:this.size.height,x:0,y:0});
 
 		//rect
 		this.rect = _svg.rect().size(this.size.width/2,this.size.height/2).center(this.size.width/2,this.size.height/2).fill('#3D4854');
 
 		//grid
 		_svg.rect().size(this.size.width,this.size.height).fill(_svg.pattern(this.settings.gridSize, this.settings.gridSize, function(add) {
-			add.line(this.settings.gridSize, 0, this.settings.gridSize, this.settings.gridSize).stroke({width: 1})
-			add.line(0, this.settings.gridSize, this.settings.gridSize, this.settings.gridSize).stroke({width: 1})
+			add.line(this.settings.gridSize, 0, this.settings.gridSize, this.settings.gridSize).stroke({width: 1});
+			add.line(0, this.settings.gridSize, this.settings.gridSize, this.settings.gridSize).stroke({width: 1});
 		}.bind(this)));
 
 		//position
@@ -96,7 +96,7 @@ var editPosition = {
 		var offset = {
 			x: (this.size.width/4),
 			y: (this.size.height/4)
-		}
+		};
 		$('#edit-position .input-pos-x').on('input',function(){
 			pos.x(offset.x + parseFloat($(this).val()) * (gridSize / percentSize));
 		});
@@ -110,4 +110,4 @@ var editPosition = {
 			pos.height(parseFloat($(this).val()) * (gridSize / percentSize));
 		});
 	}
-}
+};

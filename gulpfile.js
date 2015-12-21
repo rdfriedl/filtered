@@ -1,3 +1,5 @@
+/* jshint node: true */
+
 var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var uglifyjs = require('gulp-uglifyjs');
@@ -73,7 +75,7 @@ gulp.task('compile-js',function(){
   		.pipe(header(banner, { pkg : pkg } ))
   		// .pipe(gulp.dest('dist/'));
 		.pipe(gulp.dest('./'));
-})
+});
 
 gulp.task('compile-lib-js',function(){
 	gulp.src('lib/*')
@@ -94,7 +96,7 @@ gulp.task('compile-css',function(){
 	    }))
   		.pipe(header(banner, { pkg : pkg } ))
 		.pipe(gulp.dest('./'));
-})
+});
 var header = require('gulp-header');
 
 gulp.task('compile-html',function(){
@@ -119,8 +121,8 @@ gulp.task('compile-html',function(){
     	// .pipe(replace(/<!--[^>]*-->/g,''))
 
 	    // .pipe(minifyHTML())
-	    .pipe(gulp.dest('./dist/'))
-})
+	    .pipe(gulp.dest('./dist/'));
+});
 
 gulp.task('compile-data',function(){
 	gulp.src('examples/*').pipe(gulp.dest('./dist/examples/'));
@@ -130,9 +132,9 @@ gulp.task('compile-data',function(){
 	gulp.src('fonts/*').pipe(gulp.dest('./dist/fonts/'));
 	gulp.src('help/*').pipe(gulp.dest('./dist/help/'));
 	gulp.src('help/help_files/*').pipe(gulp.dest('./dist/help/help_files/'));
-})
+});
 
-gulp.task('build-css',['compile-css','compile-lib-css'])
-gulp.task('build-html',['compile-html'])
-gulp.task('build-js',['compile-js','compile-lib-js'])
+gulp.task('build-css',['compile-css','compile-lib-css']);
+gulp.task('build-html',['compile-html']);
+gulp.task('build-js',['compile-js','compile-lib-js']);
 gulp.task('build',['build-js','build-css','build-html','compile-data']);

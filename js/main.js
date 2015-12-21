@@ -1,8 +1,8 @@
 "use strict";
 
 var editor;
-var svg = undefined;
-var filter = undefined;
+var svg;
+var filter;
 var previewText, previewImage;
 
 // The Browser API key obtained from the Google Developers Console.
@@ -54,10 +54,6 @@ var connectorPaintStyle = {
         isTarget: true
     };
 
-window.onApiLoad = function() {
-    gapi.load('picker', {'callback': onPickerApiLoad});
-}
-
 window.onPickerApiLoad = function() {
     pickerApiLoaded = true;
     
@@ -65,7 +61,11 @@ window.onPickerApiLoad = function() {
           addView(google.picker.ViewId.IMAGE_SEARCH).
           setCallback(pickerCallback).
           build();
-}
+};
+
+window.onApiLoad = function() {
+    gapi.load('picker', {'callback': window.onPickerApiLoad});
+};
 
 function parseSearch(url){
     url = url || location.href;
@@ -85,7 +85,7 @@ function parseSearch(url){
 function createSearch(data){
     var str = '';
     for(var i in data){
-        if(data[i] == null || data[i] == undefined) continue;
+        if(data[i] === null || data[i] === undefined) continue;
         str += i + '=' + data[i] + '&';
     }
     str = str.substr(0,str.length-1);
@@ -160,13 +160,13 @@ function initEditor(){
     previewText.font({
         size: '120px',
         'font-family': "'Ultra', serif"
-    })
+    });
     previewText.filter(filter);
 
     previewImage = /*(new SVG.Image())*/svg.image().loaded(function(img){
         updateImageSize(img.width/img.height);
         updatePreviewPosition();
-        page.editor.preview.mode.valueHasMutated()
+        page.editor.preview.mode.valueHasMutated();
     });
     previewImage.filter(filter);
 
@@ -198,14 +198,13 @@ function initDB(){
         });
 }
 
-var pickerCallbackFunction = undefined;
 function pickerCallback(data) {
     var url = '';
     if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
         var doc = data[google.picker.Response.DOCUMENTS][0];
         url = doc.thumbnails[doc.thumbnails.length-1][google.picker.Document.URL];
     }
-    if(pickerCallbackFunction) pickerCallbackFunction(url);
+    if(window.pickerCallbackFunction) window.pickerCallbackFunction(url);
 }
 
 function updatePreviewPosition(){
@@ -218,7 +217,7 @@ function updatePreviewPosition(){
 function updateImageSize(r){
     var w = $(svg.node).width();
     var h = $(svg.node).height();
-    var r = r || previewImage.width() / previewImage.height();
+    r = r || previewImage.width() / previewImage.height();
 
     if(w/h < r){
         previewImage.width(w);
@@ -241,7 +240,7 @@ $(document).ready(function(){
             scale: 0.1
         },0).transition({
             scale: 1
-        },500)
+        },500);
 
         //show welcome messages
         if(!localStorage.welcome || parseSearch().welcome){
@@ -251,7 +250,7 @@ $(document).ready(function(){
         else if(parseSearch().examples){
             $('#examples').modal('show');
         }
-    })
+    });
 
     initEditor();
     initDB();
@@ -270,7 +269,7 @@ $(document).ready(function(){
             }
             page.editor.arange();
             page.filters.saved(false);
-        })
+        });
 
         editor.bind('connectionDetached',function(info){
             if(info.targetEndpoint.getParameter('this') instanceof EffectInput){
@@ -278,7 +277,7 @@ $(document).ready(function(){
             }
             page.editor.arange();
             page.filters.saved(false);
-        })
+        });
 
         editor.bind('connectionMoved',function(info){
             if(info.originalTargetEndpoint.getParameter('this') instanceof EffectInput){
@@ -289,7 +288,7 @@ $(document).ready(function(){
             }
             // page.editor.arange(); dont need to arange
             page.filters.saved(false);
-        })
+        });
 
         editor.repaintEverything();
 
@@ -302,7 +301,7 @@ $(document).ready(function(){
 
     $(document).on('click','[href="#"]',function(event){
         event.preventDefault();
-    })
+    });
 
     $('.panel-heading a[data-toggle="collapse"]').parent().parent().click(function(){
         $($(this).find('a[data-toggle="collapse"]').attr('href')).collapse('toggle');
@@ -327,7 +326,7 @@ $(document).ready(function(){
     // })
 
     //pan
-    var startOffset, pos, startPos, dragging;
+    var startOffset, startPos, dragging;
     $('.editor-controls').mousedown(function(event){
         startPos = {
             x: parseFloat($('#editor').css('x').slice(0,-2)),
@@ -336,34 +335,34 @@ $(document).ready(function(){
         startOffset = {
             x: event.pageX,
             y: event.pageY
-        }
+        };
         dragging = true;
     }).mousemove(function(event){
         if(dragging){
             $('#editor').css({
                 x: startPos.x + (event.pageX - startOffset.x),
                 y: startPos.y + (event.pageY - startOffset.y)
-            })
+            });
             $('.editor-controls').css('cursor','move');
         }
-    }).mouseup(function(event){
+    }).mouseup(function(){
         dragging = false;
         $('.editor-controls').css('cursor','default');
-    })
+    });
 
     $('#center-view').click(function(){
         $('#editor').animate({
             x: window.innerWidth / 2,
             y: window.innerHeight / 2
-        })
-    })
+        });
+    });
 
     //set the transforms order
     $('#editor').css({
         x: window.innerWidth / 2,
         y: window.innerHeight / 2,
         scale: 1
-    })
+    });
 
     //copy
     $(".copy").each(function(i,el){
@@ -374,28 +373,28 @@ $(document).ready(function(){
         pickerCallbackFunction = function(url){
             $(this).val(url).trigger('change');
         }.bind(this);
-        pickerApiLoaded && picker.setVisible(true);
-    })
+        if(window.pickerApiLoaded) picker.setVisible(true);
+    });
 
     $(window).resize(function(){
         updatePreviewPosition();
         editor.repaintEverything();
-    })
+    });
     $(window).trigger('resize');
 
     $(window).on('beforeunload',function(){
         if(!page.filters.saved()){
-            return ''
+            return '';
         }
-    })
+    });
 });
 
 SVG.Filter.prototype.put = function(element, i) {
-    this.add(element, i)
+    this.add(element, i);
     
     if(!element.attr('result')){
         element.attr('result',element);
     }
     
     return element;
-}
+};

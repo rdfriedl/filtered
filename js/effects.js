@@ -156,7 +156,7 @@ Effect.prototype = {
     arange: function(){
         this.show();
         if(this.filter) this.filter.back();
-        
+
         for (var i in this.inputs) {
             if(this.inputs[i] instanceof EffectInput){
                 this.inputs[i].arange();
@@ -168,12 +168,16 @@ Effect.prototype = {
         $('.effect').removeClass('selected');
         $(this.element).addClass('selected');
 
-        page.outputEffect.filter.attr('in',this.filter);
+        previewFilter = this.filter;
+        page.outputEffect.update();
+        page.editor.arange()
     },
     deselect: function(){
         $('.effect').removeClass('selected');
 
+        previewFilter = undefined;
         page.outputEffect.update();
+        page.editor.arange()
     },
 
     toJSON: function(){
@@ -199,7 +203,7 @@ Effect.prototype = {
         }
 
         var empty = function(o){return Object.keys(o).length === 0;};
-        
+
         if(empty(data.inputs)) delete data.inputs;
         if(empty(data.position)) delete data.position;
 
@@ -325,7 +329,7 @@ Effect.prototype = {
 
         if(this.menu.length === 0)
             $el.find('button.options').hide();
-        else 
+        else
             $el.find('button.options').show();
 
         for (var i = 0; i < this.menu.length; i++) {
@@ -391,7 +395,7 @@ MultiEffect.prototype = {
         for (var i = a.length - 1; i >= 0; i--) {
             this.filter[a[i]].back();
         }
-        
+
         for (var k in this.inputs) {
             if(this.inputs[k] instanceof EffectInput){
                 this.inputs[k].arange();
@@ -403,8 +407,9 @@ MultiEffect.prototype = {
         $(this.element).addClass('selected');
 
     	var a = Object.keys(this.filter);
-    	var filter = this.filter[a[a.length-1]];
-        page.outputEffect.filter.attr('in',filter);
+    	previewFilter = this.filter[a[a.length-1]];
+        page.outputEffect.update();
+        page.editor.arange();
     },
     updatePostion: function(){
     	for(var i in this.filter){
@@ -603,7 +608,7 @@ function SepiatoneEffect(){
 	this.addOutput('result',EffectOutput);
 
 	this.filter = {};
-	this.filter.matrix = new SVG.ColorMatrixEffect('matrix', [ 
+	this.filter.matrix = new SVG.ColorMatrixEffect('matrix', [
         0.343, 0.669, 0.119, 0, 0,
         0.249, 0.626, 0.130, 0, 0,
         0.172, 0.334, 0.111, 0, 0,

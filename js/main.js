@@ -4,6 +4,7 @@ var editor;
 var svg;
 var filter;
 var previewText, previewImage;
+var previewFilter;
 
 // The Browser API key obtained from the Google Developers Console.
 var pickerApiLoaded = false;
@@ -56,7 +57,7 @@ var connectorPaintStyle = {
 
 window.onPickerApiLoad = function() {
     pickerApiLoaded = true;
-    
+
     picker = new google.picker.PickerBuilder().
           addView(google.picker.ViewId.IMAGE_SEARCH).
           setCallback(pickerCallback).
@@ -103,7 +104,7 @@ function formatXml(xml) {
     var indent = 0;
     var lastType = 'other';
     var tab = '  '; //'\t';
-    // 4 types of tags - single, closing, opening, other (text, doctype, comment) - 4*4 = 16 transitions 
+    // 4 types of tags - single, closing, opening, other (text, doctype, comment) - 4*4 = 16 transitions
     var transitions = {
         'single->single': 0,
         'single->closing': -1,
@@ -254,7 +255,7 @@ $(document).ready(function(){
 
     initEditor();
     initDB();
-    editPosition.init();
+    editPosition.init.call(editPosition);
     page.filters.update();
 
     // suspend drawing and initialise.
@@ -328,15 +329,17 @@ $(document).ready(function(){
     //pan
     var startOffset, startPos, dragging;
     $('.editor-controls').mousedown(function(event){
-        startPos = {
-            x: parseFloat($('#editor').css('x').slice(0,-2)),
-            y: parseFloat($('#editor').css('y').slice(0,-2))
-        };
-        startOffset = {
-            x: event.pageX,
-            y: event.pageY
-        };
-        dragging = true;
+        if(!$(event.target).is('input')){
+            startPos = {
+                x: parseFloat($('#editor').css('x').slice(0,-2)),
+                y: parseFloat($('#editor').css('y').slice(0,-2))
+            };
+            startOffset = {
+                x: event.pageX,
+                y: event.pageY
+            };
+            dragging = true;
+        }
     }).mousemove(function(event){
         if(dragging){
             $('#editor').css({
@@ -351,9 +354,21 @@ $(document).ready(function(){
     });
 
     $('#center-view').click(function(){
+        var minX, minY, maxX, maxY;
+        $('#editor').children('.effect').each(function(i,el){
+            var left = parseFloat($(el).css('left').replace('px',''));
+            var top = parseFloat($(el).css('top').replace('px',''));
+            var width = $(el).width();
+            var height = $(el).height();
+
+            minX = minX == undefined? (left) : Math.min(minX, left);
+            minY = minY == undefined? (top) : Math.min(minY, top);
+            maxX = maxX == undefined? (left + width) : Math.max(maxX, left + width);
+            maxY = maxY == undefined? (top + height) : Math.max(maxY, top + height);
+        });
         $('#editor').animate({
-            x: window.innerWidth / 2,
-            y: window.innerHeight / 2
+            x: -(minX + (maxX - minX)/2) + window.innerWidth/2,
+            y: -(minY + (maxY - minY)/2) + window.innerHeight/2
         });
     });
 
@@ -391,10 +406,10 @@ $(document).ready(function(){
 
 SVG.Filter.prototype.put = function(element, i) {
     this.add(element, i);
-    
+
     if(!element.attr('result')){
         element.attr('result',element);
     }
-    
+
     return element;
 };

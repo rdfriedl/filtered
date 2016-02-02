@@ -11,6 +11,7 @@ var replace = require('gulp-replace');
 var gulpIgnore = require('gulp-ignore');
 var order = require("gulp-order");
 var wrap = require("gulp-wrap");
+var closureCompiler = require('google-closure-compiler').gulp();
 
 var pkg = require('./package.json');
 var banner = ['/**',
@@ -72,8 +73,33 @@ gulp.task('compile-js',function(){
     		}
     	}))
 		.pipe(wrap('(function(){<%= contents %>})()'))
+		/*.pipe(closureCompiler({
+			compilation_level: 'ADVANCED',
+			warning_level: 'QUIET',
+			language_in: 'ECMASCRIPT6_STRICT',
+			language_out: 'ECMASCRIPT5_STRICT',
+			output_wrapper: '(function(){\n%output%\n}).call(this)',
+    		js_output_file: 'app.js',
+    		externs: [
+				'lib/bootstrap.min.js',
+				'lib/knockout-min.js',
+    			'lib/Dexie.min.js',
+				'lib/ZeroClipboard.Core.min.js',
+				'lib/ZeroClipboard.min.js',
+				'lib/dom.jsPlumb-1.7.5-min.js',
+				'lib/jquery.js',
+				'lib/jquery.mousewheel.min.js',
+				'lib/jquery.transit.min.js',
+				'lib/prettify.js',
+				'lib/svg.draggable.min.js',
+				'lib/svg.filter.min.js',
+				'lib/svg.js',
+				'lib/svg.resize.min.js',
+				'lib/svg.select.min.js'
+			]
+        }))*/
   		.pipe(header(banner, { pkg : pkg } ))
-  		// .pipe(gulp.dest('dist/'));
+  		//.pipe(gulp.dest('dist/'));
 		.pipe(gulp.dest('./'));
 });
 
@@ -120,7 +146,7 @@ gulp.task('compile-html',function(){
     	//remove comments
     	// .pipe(replace(/<!--[^>]*-->/g,''))
 
-	    // .pipe(minifyHTML())
+	    .pipe(minifyHTML())
 	    .pipe(gulp.dest('./dist/'));
 });
 

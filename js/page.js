@@ -2,8 +2,8 @@
 
 function observable(){
 	var val = Array.prototype.shift.call(arguments);
-	var o = val instanceof Array? ko.observableArray(val) : ko.observable(val);
-	
+	var o = val instanceof Array? ko['observableArray'](val) : ko['observable'](val); //jshint ignore: line
+
 	for(var i = 0; i < arguments.length; i++){
 		o.subscribe(arguments[i]);
 	}
@@ -15,7 +15,7 @@ var page = {
 	outputEffect: undefined,
 	effects: {
 		_effects: [],
-		effects: ko.observableArray([
+		effects: observable([
 			{
 				title: 'Shadow',
 				desc: '',
@@ -57,7 +57,7 @@ var page = {
 				effect: HueRotateEffect
 			}
 		]),
-		baseEffects: ko.observableArray([
+		baseEffects: observable([
 			{
 				title: 'Blend',
 				desc: '',
@@ -233,7 +233,7 @@ var page = {
 					previewText.attr('fill',val);
 				}),
 				font: {
-					fonts: ko.observableArray([
+					fonts: observable([
 						"Georgia, serif",
 						'"Palatino Linotype", "Book Antiqua", Palatino, serif',
 						'"Times New Roman", Times, serif',
@@ -297,7 +297,7 @@ var page = {
 		}
 	},
 	examples: {
-		examples: ko.observableArray([]),
+		examples: observable([]),
 		select: function(){
 			$.getJSON(this.json, function(json) {
 				if(!json) return;
@@ -590,9 +590,9 @@ var page = {
 		}
 	},
 	exportFilter: {
-		filter: ko.observable(''),
-		json: ko.observable(''),
-		url: ko.observable(''),
+		filter: observable(''),
+		json: observable(''),
+		url: observable(''),
 		export: function(){
 			$('.prettyprinted').children().remove();
 			page.exportFilter.filter('');
@@ -602,19 +602,19 @@ var page = {
 			//if theres something selected deselect it
 			$('.effect').removeClass('selected');
 			page.outputEffect.update();
-			
+
 			$($(filter.node).find('desc')).insertBefore($(filter.node).children().eq(0));
-			
+
 			page.exportFilter.filter(page.export.xml());
 			page.exportFilter.json(JSON.stringify(page.export.json(true), null, 2));
 			page.exportFilter.url(page.export.url());
-			
+
 			$('.prettyprinted').removeClass('prettyprinted');
 			prettyPrint();
 		}
 	},
 	importFilter: {
-		data: ko.observable(''),
+		data: observable(''),
 		importFilter: function(){
 			page.editor.clear();
 			page.import.xml(page.importFilter.data());
@@ -680,7 +680,7 @@ var page = {
 };
 
 $(document).ready(function() {
-	ko.applyBindings(page);
+	ko['applyBindings'](page); //jshint ignore: line
 
 	//add tool tips
     $('[data-toggle="tooltip"]').tooltip();

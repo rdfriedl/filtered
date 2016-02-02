@@ -179,13 +179,13 @@ path, ._jsPlumb_endpoint {
 }
 
 #editor .effect:nth-child(1){
-    top: -30vh;
-    left: -45vw;
+    top: -100px;
+    left: -200px;
 }
 
 #editor .effect:nth-child(8){
-    top: -30vh;
-    left: 5vw;
+    top: 0px;
+    left: 300px;
 }
 
 .matrix-size-input .matrix{

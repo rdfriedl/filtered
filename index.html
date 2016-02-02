@@ -17,14 +17,15 @@
         <script src="lib/jquery.transit.min.js"></script>
         <script src="lib/bootstrap.min.js"></script>
         <script src="lib/knockout-min.js"></script>
-        
+
+        <!-- // <script src="lib/jsPlumb-2.0.6-min.js"></script> -->
         <script src="lib/dom.jsPlumb-1.7.5-min.js"></script>
         <script src="lib/svg.js"></script>
         <script src="lib/svg.filter.min.js"></script>
         <script src="lib/svg.select.min.js"></script>
         <script src="lib/svg.resize.min.js"></script>
         <script src="lib/svg.draggable.min.js"></script>
-        
+
         <script src="lib/prettify.js"></script>
         <script src="lib/ZeroClipboard.Core.min.js"></script>
         <script src="lib/ZeroClipboard.min.js"></script>
@@ -52,7 +53,7 @@
             /* jshint ignore:end */
         </script>
     </head>
-    
+
     <body style="opacity: 0;"> <!-- hide it, and then show it when the page loads -->
         <div id="editor-position" class="full-height editor-controls">
             <div class="editor full-height" id="editor">
@@ -73,7 +74,7 @@
                     </button>
                     <a class="navbar-brand" data-toggle="modal" href="#README">Filtered</a>
                 </div>
-            
+
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav">
@@ -95,20 +96,16 @@
                         <!-- add -->
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add <b class="caret"></b></a>
-                            <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-                                <!-- ko foreach: effects.effects -->
+                            <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu" data-bind="foreach: effects.effects">
                                 <li data-toggle="tooltip" data-placement="right" data-bind="attr: {title: desc}"><a href="#" data-bind="click: create, text: title"></a></li>
-                                <!-- /ko -->
                             </ul>
                         </li>
 
                         <!-- add basic -->
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add Basic <b class="caret"></b></a>
-                            <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-                                <!-- ko foreach: effects.baseEffects -->
+                            <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu" data-bind="foreach: effects.baseEffects">
                                 <li data-toggle="tooltip" data-placement="right" data-bind="attr: {title: desc}"><a href="#" data-bind="click: create, text: title"></a></li>
-                                <!-- /ko -->
                             </ul>
                         </li>
                     </ul>
@@ -186,7 +183,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- stroke -->
                             <div class="panel panel-default" data-bind="with: stroke">
                                 <div class="panel-heading" id="headingOne">
@@ -246,7 +243,7 @@
                                 <li><a href="#export-json-tab" data-toggle="tab">JSON</a></li>
                                 <li><a href="#export-url-tab" data-toggle="tab">URL</a></li>
                             </ul>
-                        
+
                             <!-- Tab panes -->
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="export-filter-tab">

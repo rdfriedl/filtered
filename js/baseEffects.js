@@ -1226,7 +1226,7 @@ OutputEffect.prototype = {
 	toggleButton: false,
 	update: function(){
 		this.filter.attr({
-			in: this.inputs.in.getValue() || 'SourceGraphic',
+			in: previewFilter || this.inputs.in.getValue() || 'SourceGraphic',
 			result: 'output'
 		});
 

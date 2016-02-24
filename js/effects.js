@@ -449,17 +449,10 @@ function ShadowEffect(){
 
 	this.filter = {};
 	this.filter.color = new SVG.FloodEffect();
-	this.filter.composite = new SVG.CompositeEffect({
-		in: this.filter.color,
-		operator: 'in'
-	});
-	this.filter.offset = new SVG.OffsetEffect({
-		in: this.filter.composite
-	});
-	this.filter.blur = new SVG.GaussianBlurEffect(0,{
-		in: this.filter.offset
-	});
-	this.filter.merge = new SVG.MergeEffect();
+	this.filter.composite = new SVG.CompositeEffect(this.filter.color,"SourceAlpha",'in');
+	this.filter.offset = new SVG.OffsetEffect().in(this.filter.composite);
+	this.filter.blur = new SVG.GaussianBlurEffect(0).in(this.filter.offset);
+	this.filter.merge = new SVG.MergeEffect(this.filter.blur,"SourceGraphic");
 
     this.render();
     this.update();
@@ -471,15 +464,11 @@ ShadowEffect.prototype = {
 		title: 'Shadow'
 	},
 	update: function(){
-		this.filter.composite.attr('in2',this.inputs.in.getValue());
+		this.filter.composite.in2(this.inputs.in.getValue());
 
 		this.filter.merge.clear();
-		this.filter.merge.add(new SVG.MergeNode({
-			in: this.filter.blur
-		}));
-		this.filter.merge.add(new SVG.MergeNode({
-			in:this.inputs.in.getValue()
-		}));
+		this.filter.merge.add(new SVG.MergeNode(this.filter.blur));
+		this.filter.merge.add(new SVG.MergeNode(this.inputs.in.getValue()));
 
 		this.filter.color.attr({
 			'flood-color': this.inputs.color.getValue(),
@@ -517,13 +506,8 @@ function StrokeEffect(){
 
 	this.filter = {};
 	this.filter.color = new SVG.FloodEffect();
-	this.filter.composite = new SVG.CompositeEffect({
-		in: this.filter.color,
-		operator: 'in'
-	});
-	this.filter.stroke = new SVG.MorphologyEffect('dilate',{
-		in: this.filter.composite
-	});
+	this.filter.composite = new SVG.CompositeEffect(this.filter.color,undefined,'in');
+	this.filter.stroke = new SVG.MorphologyEffect('dilate').in(this.filter.composite);
 	this.filter.merge = new SVG.MergeEffect();
 
     this.render();
@@ -536,15 +520,11 @@ StrokeEffect.prototype = {
 		title: 'Stroke'
 	},
 	update: function(){
-		this.filter.composite.attr('in2',this.inputs.in.getValue());
+		this.filter.composite.in2(this.inputs.in.getValue());
 
 		this.filter.merge.clear();
-		this.filter.merge.add(new SVG.MergeNode({
-			in: this.filter.stroke
-		}));
-		this.filter.merge.add(new SVG.MergeNode({
-			in:this.inputs.in.getValue()
-		}));
+		this.filter.merge.add(new SVG.MergeNode(this.filter.stroke));
+		this.filter.merge.add(new SVG.MergeNode(this.inputs.in.getValue()));
 
 		this.filter.color.attr({
 			'flood-color': this.inputs.color.getValue(),
@@ -574,10 +554,7 @@ function RecolorEffect(){
 
 	this.filter = {};
 	this.filter.color = new SVG.FloodEffect();
-	this.filter.composite = new SVG.CompositeEffect({
-		in: this.filter.color,
-		operator: 'in'
-	});
+	this.filter.composite = new SVG.CompositeEffect(this.filter.color,undefined,'in');
 
     this.render();
     this.update();
@@ -589,7 +566,7 @@ RecolorEffect.prototype = {
 		title: 'Recolor'
 	},
 	update: function(){
-		this.filter.composite.attr('in2',this.inputs.in.getValue());
+		this.filter.composite.in2(this.inputs.in.getValue());
 
 		this.filter.color.attr({
 			'flood-color': this.inputs.color.getValue(),

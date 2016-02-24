@@ -1,14 +1,22 @@
 const path = require('path');
+const fs = require('fs');
 
 module.exports = {
     output: {
-        filename: "index.js"
+        filename: "index.js",
+        sourceMapFilename: "index.map"
     },
     module: {
         loaders: [
             {
                 test: /\.css$/,
                 loader: "style-loader!css-loader"
+            },
+            {
+                test: /\.js$/,
+                exclude: /(node_modules|web_modules)/,
+                loader: 'babel-loader',
+                query: JSON.parse(fs.readFileSync('./.babelrc', 'utf-8'))
             },
             {
                 test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -20,5 +28,6 @@ module.exports = {
     	root: [
     		path.resolve('./node_modules/')
     	]
-    }
+    },
+    devtool: "source-map"
 }

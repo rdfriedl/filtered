@@ -81,3 +81,5 @@ gulp.task('build',gulp.series([
 
 	'clean-stage'
 ]));
+
+/**/;module.exports = gulp;

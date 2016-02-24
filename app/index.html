@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Filtered</title>
+        <script src="index.js"></script>
+
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-62048613-3', 'auto');
+            ga('send', 'pageview');
+        </script>
+    </head>
+
+    <body style="opacity: 0;"> <!-- hide it, and then show it when the page loads -->
+        <div id="editor-position" class="full-height editor-controls">
+            <div class="editor full-height" id="editor">
+                <!-- effects -->
+            </div>
+        </div>
+
+        <!-- header -->
+        <div id="top-left" style="padding-right: 0;">
+            <nav class="navbar navbar-default" role="navigation" style="margin: 0px;">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header" data-toggle="tooltip" data-placement="bottom" title="Show Welcome modal">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" data-toggle="modal" href="#README">Filtered</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav">
+                        <!-- load/save -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">File <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                <li><a href="#" data-bind="click: $root.set(filters.newFilter,false)"><i class="fa fa-plus"></i> New</a></li>
+                                <li><a href="#" data-bind="click: $root.set(filters.loadFilter,false)"><i class="fa fa-folder-open-o"></i> Load</a></li>
+                                <li><a href="#" data-bind="click: $root.filters.saveFilter"><i class="fa fa-floppy-o"></i> Save</a></li>
+                                <li><a data-toggle="modal" href="#save-as"><i class="fa fa-floppy-o"></i> Save As</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a data-toggle="modal" href="#export" data-bind="click: exportFilter.export"><i class="fa fa-check"></i> Export</a></li>
+                                <li><a data-toggle="modal" href="#examples"><i class="fa fa-flask"></i> Examples</a></li>
+                                <li><a data-toggle="modal" href="#help"><i class="fa fa-question"></i> Help</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- add -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu" data-bind="foreach: effects.effects">
+                                <li data-toggle="tooltip" data-placement="right" data-bind="attr: {title: desc}"><a href="#" data-bind="click: create, text: title"></a></li>
+                            </ul>
+                        </li>
+
+                        <!-- add basic -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add Basic <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu" data-bind="foreach: effects.baseEffects">
+                                <li data-toggle="tooltip" data-placement="right" data-bind="attr: {title: desc}"><a href="#" data-bind="click: create, text: title"></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <!-- <li><a data-toggle="modal" href="#import"><i class="fa fa-folder-open"></i> Import</a></li> -->
+                        <li><a data-toggle="modal" href="#export" data-bind="click: exportFilter.export"><i class="fa fa-check"></i> Export</a></li>
+                        <li><a data-toggle="modal" href="#examples"><i class="fa fa-flask"></i> Examples</a></li>
+                        <li><a data-toggle="modal" href="#help"><i class="fa fa-question"></i> Help</a></li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+        </div>
+        <div id="top-right" style="padding-left: 0;">
+            <div id="preview" class="panel panel-default" data-bind="with: editor.preview">
+                <div class="panel-heading">
+                    <a class="btn btn-info btn-xs pull-right" href="http://rdfriedl.github.io/" target="_blank">Created by Rdfriedl</a>
+                    <h4 class="panel-title"><a data-toggle="collapse" href="#preview-collapse">Preview</a></h4>
+                </div>
+                <div id="preview-collapse" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <button type="button" class="btn btn-default image-change" data-bind="visible: mode() == 'image', click: image.change">Change</button>
+
+                        <svg id="preview-svg">
+                            <defs>
+                                <filter id="goo">
+                                    <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+                                    <feBlend in="SourceGraphic" in2="goo" />
+                                </filter>
+                            </defs>
+                        </svg>
+
+                        <div class="btn-group btn-group-justified">
+                            <a class="btn btn-default" data-bind="click: $root.set(mode,'text'), css:{active: mode() == 'text'}">Text</a>
+                            <a class="btn btn-default" data-bind="click: $root.set(mode,'image'), css:{active: mode() == 'image'}">Image</a>
+                        </div>
+
+                        <!-- text -->
+                        <div data-bind="with: text, visible: $root.editor.preview.mode() == 'text'">
+                            <div class="form-group">
+                                <label>Text</label>
+                                <input type="text" class="form-control" data-bind="value: text, valueUpdate: 'input'">
+                            </div>
+                            <div class="form-group">
+                                <label>Color</label>
+                                <input type="color" class="form-control" data-bind="value: color, valueUpdate: 'input'">
+                            </div>
+
+                            <!-- font -->
+                            <div class="panel panel-default" data-bind="with: font">
+                                <div class="panel-heading" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-minus pull-right"></i>
+                                        <a data-toggle="collapse" href="#font-collapse">Font</a>
+                                    </h4>
+                                </div>
+                                <div id="font-collapse" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label>Font</label>
+                                            <select class="form-control" data-bind="foreach: fonts, value: font">
+                                                <option data-bind="value: $data, text: $data"></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Weight</label>
+                                            <select class="form-control" data-bind="foreach: weights, value: weight">
+                                                <option data-bind="value: $data, text: $data"></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Size</label>
+                                            <input type="number" class="form-control" data-bind="value: size, valueUpdate: 'input'">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- stroke -->
+                            <div class="panel panel-default" data-bind="with: stroke">
+                                <div class="panel-heading" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <i class="fa fa-minus pull-right"></i>
+                                        <a data-toggle="collapse" href="#stroke-collapse">Stroke</a>
+                                    </h4>
+                                </div>
+                                <div id="stroke-collapse" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label>Color</label>
+                                            <input type="color" class="form-control" data-bind="value: color, valueUpdate: 'input'">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Size</label>
+                                            <input type="number" class="form-control" data-bind="value: size, valueUpdate: 'input'">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="preview-toggle-button" class="btn btn-default" data-toggle="collapse" data-target="#preview-collapse"><i class="fa fa-angle-double-up"></i></button>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <nav id="footer" class="navbar navbar-default" role="navigation">
+            <ul class="nav navbar-nav">
+                <li data-bind="click: $root.toggle(gooEnabled), css: {active: gooEnabled}"><a href="#">Goo Effect</a></li>
+                <li><a id="center-view" href="#"><i class="fa fa-plus-square-o"></i> Center View</a></li>
+            </ul>
+            <!-- <div class="navbar-form navbar-right">
+                <div class="form-group">
+                    <div class="input-group" style="margin: 3px;">
+                        <span class="input-group-addon">Zoom</span>
+                        <input type="number" class="form-control" step="0.01" data-bind="value: editor.zoom.zoomLevel, valueUpdate: 'input'">
+                    </div>
+                </div>
+            </div> -->
+        </nav>
+
+        <div class="modal fade" id="export" data-bind="with: exportFilter">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
+                        <h4 class="modal-title">Export</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div role="tabpanel">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#export-filter-tab" data-toggle="tab">SVG Filter</a></li>
+                                <li><a href="#export-json-tab" data-toggle="tab">JSON</a></li>
+                                <li><a href="#export-url-tab" data-toggle="tab">URL</a></li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="export-filter-tab">
+                                    <a class="btn btn-info btn-sm pull-right copy" data-clipboard-target="#export-filter-text">Copy to clipboard</a>
+                                    <pre id="export-filter-text" class="form-control prettyprint lang-html" data-bind="text: filter"></pre>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="export-json-tab">
+                                    <a class="btn btn-info btn-sm pull-right copy" data-clipboard-target="#export-json-text">Copy to clipboard</a>
+                                    <pre id="export-json-text" class="form-control prettyprint lang-js" data-bind="text: json"></pre>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="export-url-tab">
+                                    <a class="btn btn-info btn-sm pull-right copy" data-clipboard-target="#export-url-text">Copy to clipboard</a>
+                                    <pre id="export-url-text" class="form-control wrap" data-bind="text: url"></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="import" data-bind="with: importFilter">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
+                        <h4 class="modal-title">Import</h4>
+                    </div>
+                    <div class="modal-body">
+                       <textarea class="form-control" data-bind="value: data"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success btn-sm" data-bind="click: importFilter" data-dismiss="modal">Import</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="examples" data-bind="with: examples">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
+                        <h4 class="modal-title">Examples</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" data-bind="foreach: examples">
+                            <div class="col-xs-4">
+                                <a href="#" class="thumbnail" data-bind="click: $root.examples.select" data-dismiss="modal">
+                                    <img data-bind="attr:{src:imageURL}">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="help">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
+                        <a href="http://www.w3.org/TR/SVG/filters.html" target="_blank" class="btn btn-info btn-sm pull-right">Open in browser</a>
+                        <h4 class="modal-title">SVG Filter Help</h4>
+                    </div>
+                    <div class="modal-body">
+                        <iframe src="help/index.html#testing" width="100%" height="800" seamless style="border:none;" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-top-navigation"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="README">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
+                        <h2 class="modal-title"><b>Filtered<b> <small>Simple Svg Filter builder</small></h2>
+                    </div>
+                    <div class="modal-body">
+                        <img src="examples/screenshots/5.png" alt="screenshot" width="100%"></p>
+
+                        <h3 id="browser-support">Browser Support</h3>
+                        <ul>
+                            <li><i class="fa fa-chrome"></i> Chrome 31+</li>
+                            <li><i class="fa fa-firefox"></i> FireFox 38+</li>
+                            <li><i class="fa fa-edge"></i> Edge</li>
+                            <li><i class="fa fa-safari"></i> Safari 7.1+</li>
+                            <li><i class="fa fa-internet-explorer"></i> Internet Explorer 10+</li>
+                            <li><i class="fa fa-opera"></i> Opera 30+</li>
+                        </ul>
+
+                        <h2 id="to-do">To-Do</h2>
+
+                        <ul>
+                            <li>Add <a target="_blank" href="http://www.w3.org/TR/SVG/filters.html#feTileElement">Tile</a> Effect</li>
+                            <li>Add a function for loading filters in the form of xml</li>
+                        </ul>
+
+                        <h2>SVG Filter Documentations</h2>
+                        <ul>
+                            <li><a href="http://www.w3.org/TR/SVG/filters.html" target="_blank">S3C</a></li>
+                            <li><a href="https://docs.webplatform.org/wiki/svg/tutorials/smarter_svg_filters" target="_blank">WebPlatform</a></li>
+                            <li><a href="http://tutorials.jenkov.com/svg/filters.html" target="_blank">jenkov.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="edit-position" data-backdrop="static">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
+                        <a href="#" class="btn btn-success btn-sm pull-right save" data-dismiss="modal">Save</a>
+                        <a href="#" class="btn btn-info btn-sm pull-right reset" data-dismiss="modal">Reset</a>
+                        <h4 class="modal-title">Edit Position</h4>
+                    </div>
+                    <div class="modal-body">
+                        <svg id="edit-position-svg" style="width: 100%;height: auto;"></svg>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">X</span>
+                                    <input type="number" class="form-control input-pos-x">
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Width</span>
+                                    <input type="number" class="form-control input-pos-width">
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Y</span>
+                                    <input type="number" class="form-control input-pos-y">
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Height</span>
+                                    <input type="number" class="form-control input-pos-height">
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="load-filter">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Load</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group" data-bind="foreach: $root.filters.filters">
+                            <li href="#" class="list-group-item">
+                                <div class="pull-right">
+                                    <small data-bind="text: new Date(saved).toDateString()"></small>
+                                    <div class="btn-group btn-group-xs">
+                                        <button type="button" class="btn btn-success" data-bind="click: $root.filters.load.bind(undefined,$data)" data-dismiss="modal">Load</button>
+                                        <button type="button" class="btn btn-danger" data-bind="click: $root.set($root.filters.removeID,id)" data-toggle="modal" data-target="#remove-confirm">Remove</button>
+                                    </div>
+                                </div>
+                                <h3 class="list-group-item-heading" style="cursor: pointer" data-bind="text: name, click: $root.filters.load.bind(undefined,$data)" data-dismiss="modal"></h3>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="load-confirm">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Confirm</h4>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to load a Filter.
+                        You have unsaved data
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal" data-bind="click: $root.set(filters.loadFilter,true)">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="remove-confirm">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Confirm</h4>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to remove this filter?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal" data-bind="click: $root.filters.removeFilter">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="new-confirm">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Confirm</h4>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to create a new Filter.
+                        You have unsaved data
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal" data-bind="click: $root.set($root.filters.newFilter,true)">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="save-as">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Save As</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label>Name</label>
+                        <input type="text" class="form-control" data-bind="value: $root.filters.save.name">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-success btn-sm" data-bind="click: $root.filters.save.save" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="temp" style="display: none;">
+            <div class="effect panel panel-default">
+                <div class="panel-heading">
+                    <button type="button" class="btn btn-xs btn-default dropdown-toggle options pull-right" data-toggle="dropdown"><i class="fa fa-bars"></i></button>
+                    <button type="button" class="btn btn-xs btn-default toggle pull-right"><i class="fa fa-chevron-down"></i></button>
+                    <ul class="dropdown-menu"></ul>
+                    <span class="effect-title"></span>
+                </div>
+                <div class="panel-body">
+                    <!-- inputs / outputs go here -->
+                    <div class="effect-inputs"></div>
+                    <div class="effect-outputs"></div>
+                </div>
+                <a class="btn btn-warning btn-sm preview"><i class="fa fa-eye-slash"></i></a>
+            </div>
+            <div class="form-group effect-input">
+                <span class="effect-title">Input</span>
+            </div>
+            <div class="form-group effect-output">
+                <span class="effect-title">Output</span>
+            </div>
+            <div class="form-group color-input">
+                <span class="effect-title"></span>
+                <input type="color" class="form-control effect-input-control">
+            </div>
+            <div class="form-group number-input">
+                <span class="effect-title"></span>
+                <input type="number" class="form-control effect-input-control">
+            </div>
+            <div class="form-group range-input">
+                <span class="effect-title"></span> (<span class="feedback"></span>)
+                <input type="range" class="form-control effect-input-control">
+            </div>
+            <div class="form-group text-input">
+                <span class="effect-title"></span>
+                <input type="text" class="form-control effect-input-control">
+            </div>
+            <div class="form-group select-input">
+                <span class="effect-title"></span>
+                <select class="form-control effect-input-control"></select>
+            </div>
+            <div class="form-group matrix-input">
+                <span class="effect-title"></span>
+                <textarea class="form-control effect-input-control"></textarea>
+            </div>
+            <div class="form-group matrix-size-input">
+                <span class="effect-title"></span>
+                <table class="matrix">
+                    <tbody class="effect-input-control">
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group xy-input">
+                <span class="effect-title"></span>
+                <div>
+                    <input type="number" class="form-control x-input effect-input-control" style="margin-right: 5px; width: calc(50% - 10px); display: inline-block;">
+                    <input type="number" class="form-control y-input effect-input-control" style="margin-left: 5px; width: calc(50% - 10px); display: inline-block;">
+                </div>
+            </div>
+            <div class="form-group funcrgba-input">
+                <span class="effect-title"></span>
+                <select class="form-control pull-right input-type" style="width: 50%;display: inline-block;height: 22px;padding: 0px;margin: 0px;">
+                    <option value="identity">identity</option>
+                    <option value="table">table</option>
+                    <option value="discrete">discrete</option>
+                    <option value="linear">linear</option>
+                    <option value="gamma">gamma</option>
+                </select>
+                <button type="button" class="btn btn-info btn-xs pull-right type type-table type-discrete add-table-index"><i class="fa fa-plus"></i></button>
+                <button type="button" class="btn btn-info btn-xs pull-right type type-table type-discrete remove-table-index"><i class="fa fa-minus"></i></button>
+                <table class="table input-table effect-input-control type type-table type-discrete" style="margin: 0px;">
+                    <thead>
+                        <tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="type type-gamma" style="padding-top: 5px;">
+                    <div class="input-group">
+                        <span class="input-group-addon">amplitude</span>
+                        <input type="number" class="form-control input-amplitude" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">exponent</span>
+                        <input type="number" class="form-control input-exponent" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">offset</span>
+                        <input type="number" class="form-control input-offset" step="0.1">
+                    </div>
+                </div>
+                <div class="type type-linear" style="padding-top: 5px;">
+                    <div class="input-group">
+                        <span class="input-group-addon">slope</span>
+                        <input type="number" class="form-control input-slope" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">intercept</span>
+                        <input type="number" class="form-control input-intercept" step="0.1">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group image-input">
+                <span class="effect-title"></span>
+                <input class="form-control effect-input-control" type="image">
+            </div>
+            <div class="form-group muti-select-input">
+                <span class="effect-title"></span>
+                <div class="effect-input-control"></div>
+            </div>
+        </div>
+        <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+    </body>
+</html>

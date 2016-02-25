@@ -4,7 +4,8 @@
 		"babel-plugin-transform-class-properties",
 		"babel-plugin-transform-es2015-modules-commonjs",
 		"babel-plugin-transform-merge-sibling-variables",
-		"babel-plugin-transform-minify-booleans"
+		"babel-plugin-transform-minify-booleans",
+		"babel-plugin-transform-runtime"
 	],
 	"comments": false
 }

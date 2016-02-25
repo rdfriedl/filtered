@@ -3,43 +3,44 @@ import * as inputs from '../inputs.js';
 import * as outputs from '../outputs.js';
 
 //ColorMatrix
-export default function ColorMatrixEffect(){
-	Effect.apply(this,arguments);
+export default class ColorMatrixEffect extends Effect{
+	constructor(){
+		super();
 
-	this.addInput('in',inputs.EffectInput);
-	this.addInput('type',inputs.SelectInput,{
-		value: 'matrix',
-		options: ["matrix",'saturate','hueRotate','luminanceToAlpha']
-	});
-	this.addInput('matrix',inputs.MatrixInput,{
-		width: 5,
-		height: 4
-	});
-	this.addInput('saturate',inputs.NumberInput,{
-		step: 0.1,
-		value: 1
-	});
-	this.addInput('hueRotate',inputs.NumberInput,{
-		min: 0,
-		max: 360,
-		step: 10,
-		value: 0
-	});
+		this.addInput('in',inputs.EffectInput);
+		this.addInput('type',inputs.SelectInput,{
+			value: 'matrix',
+			options: ["matrix",'saturate','hueRotate','luminanceToAlpha']
+		});
+		this.addInput('matrix',inputs.MatrixInput,{
+			width: 5,
+			height: 4
+		});
+		this.addInput('saturate',inputs.NumberInput,{
+			step: 0.1,
+			value: 1
+		});
+		this.addInput('hueRotate',inputs.NumberInput,{
+			min: 0,
+			max: 360,
+			step: 10,
+			value: 0
+		});
 
-	this.addOutput('result',outputs.EffectOutput);
+		this.addOutput('result',outputs.EffectOutput);
 
-	this.filter = new SVG.ColorMatrixEffect();
+		this.filter = new SVG.ColorMatrixEffect();
 
-	this.render();
-	this.update();
-	this.updateEndpoints();
-    this.updatePostion();
-}
-ColorMatrixEffect.prototype = {
-	options: {
+		this.render();
+		this.update();
+		this.updateEndpoints();
+	    this.updatePostion();
+	    this.updateElement();
+	}
+	options = {
 		title: 'ColorMatrix'
-	},
-	update: function(inputs){
+	}
+	update(inputs){
 		this.inputs.matrix.hide();
 		this.inputs.saturate.hide();
 		this.inputs.hueRotate.hide();
@@ -65,8 +66,8 @@ ColorMatrixEffect.prototype = {
 			in: this.inputs.in.getValue(),
 			type: this.inputs.type.getValue(),
 		});
-	},
-	fromElement: function(el){
+	}
+	fromElement(el){
 		Effect.prototype.fromElement.apply(this,arguments);
 
 		var val = el.getAttribute('values');
@@ -84,6 +85,4 @@ ColorMatrixEffect.prototype = {
 		}
 		this.update();
 	}
-};
-ColorMatrixEffect.prototype.constructor = ColorMatrixEffect;
-ColorMatrixEffect.prototype.__proto__ = Effect.prototype;
+}

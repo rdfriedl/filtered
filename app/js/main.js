@@ -1,6 +1,5 @@
 import 'svg.js';
-import 'svg.filter.js/dist/svg.filter.js';
-// import ZeroClipboard from 'zeroclipboard';
+import 'svg.filter.js';
 import Clipboard from 'clipboard';
 
 import DataBase from './dataBase.js';
@@ -207,8 +206,10 @@ $(document).ready(function(){
     // editPosition.init.call(editPosition);
     page.filters.update();
 
+    console.info('editor started');
+
     // suspend drawing and initialise.
-    // editor.batch(function () {
+    editor.batch(function () {
 
         // make all the effect divs draggable
         editor.draggable(jsPlumb.getSelector("#editor .effect"));
@@ -247,7 +248,7 @@ $(document).ready(function(){
             page.loadFilter();
             page.loadSearch();
         });
-    // });
+    });
 
     $(document).on('click','[href="#"]',function(event){
         event.preventDefault();

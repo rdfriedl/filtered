@@ -1,15 +1,17 @@
 import MultiEffect from '../multiEffect.js';
+import * as inputs from '../inputs.js';
+import * as outputs from '../outputs.js';
 
 //Bump
 export default function BumpEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in',EffectInput);
-	this.addInput('amount',NumberInput,{
+	this.addInput('in',inputs.EffectInput);
+	this.addInput('amount',inputs.NumberInput,{
 		min: 0,
 		step: 1
 	});
-	this.addOutput('result',EffectOutput);
+	this.addOutput('result',outputs.EffectOutput);
 
 	this.filter = {};
 	this.filter.matrix = new SVG.ConvolveMatrixEffect('');

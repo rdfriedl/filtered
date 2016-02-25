@@ -3,31 +3,30 @@ import * as inputs from '../inputs.js';
 import * as outputs from '../outputs.js';
 
 //Tile
-export default function TileEffect(){
-	Effect.apply(this,arguments);
+export default class TileEffect extends Effect{
+	constructor(){
+		super();
 
-	this.addInput('in',inputs.EffectInput,{
-		title: "in"
-	});
+		this.addInput('in',inputs.EffectInput,{
+			title: "in"
+		});
 
-	this.addOutput('result',outputs.EffectOutput);
+		this.addOutput('result',outputs.EffectOutput);
 
-	this.filter = new SVG.TileEffect();
+		this.filter = new SVG.TileEffect();
 
-	this.render();
-	this.update();
-	this.updateEndpoints();
-    this.updatePostion();
-}
-TileEffect.prototype = {
-	options: {
+		this.render();
+		this.update();
+		this.updateEndpoints();
+	    this.updatePostion();
+	    this.updateElement();
+	}
+	options = {
 		title: 'Tile'
-	},
-	update: function(){
+	}
+	update(){
 		this.filter.attr({
 			in: this.inputs.in.getValue()
 		});
 	}
 };
-TileEffect.prototype.constructor = TileEffect;
-TileEffect.prototype.__proto__ = Effect.prototype;

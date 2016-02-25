@@ -1,14 +1,14 @@
 const gulp = require('gulp');
 const uglify = require('gulp-uglify');
 const clean = require('gulp-clean');
-const webpack = require('gulp-webpack');
+const gulpWebpack = require('gulp-webpack');
 
 gulp.task('build-webpack',() => {
 	return gulp.src('app/index.js')
-		.pipe(webpack(require('./webpack.config.js')))
+		.pipe(gulpWebpack(require('./webpack.config.js')))
 		// .pipe(uglify())
 		.pipe(gulp.dest('dist/'))
-})
+});
 
 gulp.task('build-html',() => {
 	return gulp.src('app/index.html').pipe(gulp.dest('dist/'));
@@ -33,3 +33,7 @@ gulp.task('build',gulp.series([
 	'build-res',
 	'build-examples'
 ]));
+
+gulp.task('default', () => {
+	gulp.watch('app/**/*', gulp.series('build-webpack'))
+})

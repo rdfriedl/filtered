@@ -3,43 +3,44 @@ import * as inputs from '../inputs.js';
 import * as outputs from '../outputs.js';
 
 //Morphology
-export default function MorphologyEffect(){
-	Effect.apply(this,arguments);
+export default class MorphologyEffect extends Effect{
+	constructor(){
+		super();
 
-	this.addInput('in',inputs.EffectInput,{
-		title: "in"
-	});
-	this.addInput('operator',inputs.SelectInput,{
-		value: 'erode',
-		options: [
-			{
-				title: 'out',
-				value: 'dilate'
-			},
-			{
-				title: 'in',
-				value: 'erode'
-			}
-		]
-	});
-	this.addInput('radius',inputs.XYInput,{
-		min: 0,
-		value: 0
-	});
-	this.addOutput('result',outputs.EffectOutput);
+		this.addInput('in',inputs.EffectInput,{
+			title: "in"
+		});
+		this.addInput('operator',inputs.SelectInput,{
+			value: 'erode',
+			options: [
+				{
+					title: 'out',
+					value: 'dilate'
+				},
+				{
+					title: 'in',
+					value: 'erode'
+				}
+			]
+		});
+		this.addInput('radius',inputs.XYInput,{
+			min: 0,
+			value: 0
+		});
+		this.addOutput('result',outputs.EffectOutput);
 
-	this.filter = new SVG.MorphologyEffect();
+		this.filter = new SVG.MorphologyEffect();
 
-	this.render();
-	this.update();
-	this.updateEndpoints();
-    this.updatePostion();
-}
-MorphologyEffect.prototype = {
-	options: {
+		this.render();
+		this.update();
+		this.updateEndpoints();
+	    this.updatePostion();
+	    this.updateElement();
+	}
+	options = {
 		title: 'Morphology'
-	},
-	update: function(){
+	}
+	update(){
 		this.filter.attr({
 			in: this.inputs.in.getValue(),
 			operator: this.inputs.operator.getValue(),
@@ -47,5 +48,3 @@ MorphologyEffect.prototype = {
 		});
 	}
 };
-MorphologyEffect.prototype.constructor = MorphologyEffect;
-MorphologyEffect.prototype.__proto__ = Effect.prototype;

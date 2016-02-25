@@ -3,45 +3,46 @@ import * as inputs from '../inputs.js';
 import * as outputs from '../outputs.js';
 
 //Turbulence
-export default function TurbulenceEffect(){
-	Effect.apply(this,arguments);
+export default class TurbulenceEffect extends Effect{
+	constructor(){
+		super();
 
-	this.addInput('baseFrequency',inputs.XYInput,{
-		min: 0,
-		step: 0.01,
-		value: 0
-	});
-	this.addInput('numOctaves',inputs.NumberInput,{
-		min: 0,
-		value: 1
-	});
-	this.addInput('seed',inputs.NumberInput,{
-		min: 0,
-		value: 0
-	});
-	this.addInput('stitchTiles',inputs.SelectInput,{
-		value: 'noStitch',
-		options: ['stitch','noStitch']
-	});
-	this.addInput('type',inputs.SelectInput,{
-		value: 'turbulence',
-		options: ['turbulence','fractalNoise']
-	});
+		this.addInput('baseFrequency',inputs.XYInput,{
+			min: 0,
+			step: 0.01,
+			value: 0
+		});
+		this.addInput('numOctaves',inputs.NumberInput,{
+			min: 0,
+			value: 1
+		});
+		this.addInput('seed',inputs.NumberInput,{
+			min: 0,
+			value: 0
+		});
+		this.addInput('stitchTiles',inputs.SelectInput,{
+			value: 'noStitch',
+			options: ['stitch','noStitch']
+		});
+		this.addInput('type',inputs.SelectInput,{
+			value: 'turbulence',
+			options: ['turbulence','fractalNoise']
+		});
 
-	this.addOutput('result',outputs.EffectOutput);
+		this.addOutput('result',outputs.EffectOutput);
 
-	this.filter = new SVG.TurbulenceEffect();
+		this.filter = new SVG.TurbulenceEffect();
 
-	this.render();
-	this.update();
-	this.updateEndpoints();
-    this.updatePostion();
-}
-TurbulenceEffect.prototype = {
-	options: {
+		this.render();
+		this.update();
+		this.updateEndpoints();
+	    this.updatePostion();
+	    this.updateElement();
+	}
+	options = {
 		title: 'Turbulence'
-	},
-	update: function(){
+	}
+	update(){
 		this.filter.attr({
 			baseFrequency: this.inputs.baseFrequency.getAttrValue(),
 			numOctaves: this.inputs.numOctaves.getAttrValue(),
@@ -51,5 +52,3 @@ TurbulenceEffect.prototype = {
 		});
 	}
 };
-TurbulenceEffect.prototype.constructor = TurbulenceEffect;
-TurbulenceEffect.prototype.__proto__ = Effect.prototype;

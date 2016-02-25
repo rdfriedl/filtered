@@ -1,17 +1,19 @@
 import MultiEffect from '../multiEffect.js';
+import * as inputs from '../inputs.js';
+import * as outputs from '../outputs.js';
 
 //HueRotate
 export default function HueRotateEffect(){
     MultiEffect.apply(this,arguments);
 
-    this.addInput('in',EffectInput);
-    this.addInput('amount',RangeInput,{
+    this.addInput('in',inputs.EffectInput);
+    this.addInput('amount',inputs.RangeInput,{
         min: 0,
         max: 360,
         value: 180,
         step: 1
     });
-    this.addOutput('result',EffectOutput);
+    this.addOutput('result',outputs.EffectOutput);
 
     this.filter = {};
     this.filter.colorMatrix = new SVG.ColorMatrixEffect('hueRotate');

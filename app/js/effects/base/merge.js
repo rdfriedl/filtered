@@ -3,62 +3,63 @@ import * as inputs from '../inputs.js';
 import * as outputs from '../outputs.js';
 
 //Merge
-export default function MergeEffect(){
-	Effect.apply(this,arguments);
+export default class MergeEffect extends Effect{
+	constructor(){
+		super();
 
-	this.addInput('in 1',inputs.EffectInput,{
-		title: "in 1"
-	});
-	this.addInput('in 2',inputs.EffectInput,{
-		title: "in 2"
-	});
-	this.addOutput('result',outputs.EffectOutput);
+		this.addInput('in 1',inputs.EffectInput,{
+			title: "in 1"
+		});
+		this.addInput('in 2',inputs.EffectInput,{
+			title: "in 2"
+		});
+		this.addOutput('result',outputs.EffectOutput);
 
-	this.filter = new SVG.MergeEffect();
+		this.filter = new SVG.MergeEffect();
 
-	this.menu = [
-		{
-			type: 'item',
-			icon: 'plus',
-			title: 'Add Input',
-			action: function(){
-				var a = Object.keys(this.inputs);
-				this.addInput('in'+(a.length+1),inputs.EffectInput,{
-					title: 'in '+(a.length+1)
-				});
-				this.render();
-				this.updateEndpoints();
-			}
-		},
-		{
-			type: 'item',
-			icon: 'minus',
-			title: 'Remove Input',
-			action: function(){
-				var a = Object.keys(this.inputs);
-				if(a.length > 0){
-					this.removeInput(a[a.length-1]);
+		this.menu = [
+			{
+				type: 'item',
+				icon: 'plus',
+				title: 'Add Input',
+				action: function(){
+					var a = Object.keys(this.inputs);
+					this.addInput('in'+(a.length+1),inputs.EffectInput,{
+						title: 'in '+(a.length+1)
+					});
 					this.render();
 					this.updateEndpoints();
 				}
+			},
+			{
+				type: 'item',
+				icon: 'minus',
+				title: 'Remove Input',
+				action: function(){
+					var a = Object.keys(this.inputs);
+					if(a.length > 0){
+						this.removeInput(a[a.length-1]);
+						this.render();
+						this.updateEndpoints();
+					}
+				}
+			},
+			{
+				type: 'separator'
 			}
-		},
-		{
-			type: 'separator'
-		}
-	].concat(this.menu);
-	this.updateMenu();
+		].concat(this.menu);
+		this.updateMenu();
 
-	this.render();
-	this.update();
-	this.updateEndpoints();
-    this.updatePostion();
-}
-MergeEffect.prototype = {
-	options: {
+		this.render();
+		this.update();
+		this.updateEndpoints();
+	    this.updatePostion();
+	    this.updateElement();
+	}
+	options = {
 		title: 'Merge'
-	},
-	fromJSON: function(data,dontUpdate){
+	}
+	fromJSON(data,dontUpdate){
 		data = data || {};
 
 		if(data.inputs){
@@ -92,13 +93,11 @@ MergeEffect.prototype = {
 			this.updateEndpoints();
 			this.update();
 		}
-	},
-	update: function(){
+	}
+	update(){
 		this.filter.clear();
 		for(var i in this.inputs){
 			if(this.inputs[i].getAttrValue()) this.filter.add(new SVG.MergeNode(this.inputs[i].getAttrValue()));
 		}
 	}
 };
-MergeEffect.prototype.constructor = MergeEffect;
-MergeEffect.prototype.__proto__ = Effect.prototype;

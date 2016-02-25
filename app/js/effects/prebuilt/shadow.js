@@ -1,28 +1,30 @@
 import MultiEffect from '../multiEffect.js';
+import * as inputs from '../inputs.js';
+import * as outputs from '../outputs.js';
 
 //Shadow
 export default function ShadowEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in',EffectInput);
-	this.addInput('color',ColorInput);
-	this.addInput('opacity',NumberInput,{
+	this.addInput('in',inputs.EffectInput);
+	this.addInput('color',inputs.ColorInput);
+	this.addInput('opacity',inputs.NumberInput,{
 		min: 0,
 		max: 1,
 		step: 0.1,
 		value: 1
 	});
-	this.addInput('offsetX',NumberInput,{
+	this.addInput('offsetX',inputs.NumberInput,{
 		value: 8
 	});
-	this.addInput('offsetY',NumberInput,{
+	this.addInput('offsetY',inputs.NumberInput,{
 		value: 8
 	});
-	this.addInput('blur',NumberInput,{
+	this.addInput('blur',inputs.NumberInput,{
 		min: 0,
 		value: 3
 	});
-	this.addOutput('result',EffectOutput);
+	this.addOutput('result',outputs.EffectOutput);
 
 	this.filter = {};
 	this.filter.color = new SVG.FloodEffect();

@@ -3,39 +3,40 @@ import * as inputs from '../inputs.js';
 import * as outputs from '../outputs.js';
 
 //ComponentTransfer
-export default function ComponentTransferEffect(){
-	Effect.apply(this,arguments);
+export default class ComponentTransferEffect extends Effect{
+	constructor(){
+	super();
 
-	this.addInput('in',inputs.EffectInput);
-	this.addInput('R',inputs.FuncRGBAInput,{
-		chanel: "R"
-	});
-	this.addInput('G',inputs.FuncRGBAInput,{
-		chanel: "G"
-	});
-	this.addInput('B',inputs.FuncRGBAInput,{
-		chanel: "B"
-	});
-	this.addInput('A',inputs.FuncRGBAInput,{
-		chanel: "A"
-	});
-	this.addOutput('result',putputs.EffectOutput);
+		this.addInput('in',inputs.EffectInput);
+		this.addInput('R',inputs.FuncRGBAInput,{
+			chanel: "R"
+		});
+		this.addInput('G',inputs.FuncRGBAInput,{
+			chanel: "G"
+		});
+		this.addInput('B',inputs.FuncRGBAInput,{
+			chanel: "B"
+		});
+		this.addInput('A',inputs.FuncRGBAInput,{
+			chanel: "A"
+		});
+		this.addOutput('result',putputs.EffectOutput);
 
-	this.filter = new SVG.ComponentTransferEffect();
+		this.filter = new SVG.ComponentTransferEffect();
 
-	this.render();
-	this.update();
-	this.updateEndpoints();
-    this.updatePostion();
-}
-ComponentTransferEffect.prototype = {
-	options: {
+		this.render();
+		this.update();
+		this.updateEndpoints();
+	    this.updatePostion();
+	    this.updateElement();
+	}
+	options = {
 		title: 'ComponentTransfer'
-	},
-	style: {
+	}
+	style = {
 		width: '300px'
-	},
-	update: function(inputs){
+	}
+	update(inputs){
 		this.filter.attr({
 			in: this.inputs.in.getValue()
 		});
@@ -59,5 +60,3 @@ ComponentTransferEffect.prototype = {
 		});
 	}
 };
-ComponentTransferEffect.prototype.constructor = ComponentTransferEffect;
-ComponentTransferEffect.prototype.__proto__ = Effect.prototype;

@@ -1,22 +1,24 @@
 import MultiEffect from '../multiEffect.js';
+import * as inputs from '../inputs.js';
+import * as outputs from '../outputs.js';
 
 //Stroke
 export default function StrokeEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in',EffectInput);
-	this.addInput('color',ColorInput);
-	this.addInput('opacity',NumberInput,{
+	this.addInput('in',inputs.EffectInput);
+	this.addInput('color',inputs.ColorInput);
+	this.addInput('opacity',inputs.NumberInput,{
 		min: 0,
 		max: 1,
 		step: 0.1,
 		value: 1
 	});
-	this.addInput('size',NumberInput,{
+	this.addInput('size',inputs.NumberInput,{
 		min: 0,
 		value: 2
 	});
-	this.addOutput('result',EffectOutput);
+	this.addOutput('result',outputs.EffectOutput);
 
 	this.filter = {};
 	this.filter.color = new SVG.FloodEffect();

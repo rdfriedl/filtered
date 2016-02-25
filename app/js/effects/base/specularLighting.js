@@ -3,107 +3,108 @@ import * as inputs from '../inputs.js';
 import * as outputs from '../outputs.js';
 
 //SpecularLighting
-export default function SpecularLightingEffect(){
-	Effect.apply(this,arguments);
+export default class SpecularLightingEffect extends Effect{
+	constructor(){
+		super();
 
-	this.addInput('in',inputs.EffectInput,{
-		title: 'in'
-	});
-	this.addInput('color',inputs.ColorInput);
-	this.addInput('surfaceScale',inputs.RangeInput,{
-		min: -5,
-		max: 5,
-		step: 0.1,
-		value: 1
-	});
-	this.addInput('specularConstant',inputs.NumberInput,{
-		min: 1,
-		max: 128,
-		step: 1,
-		value: 1
-	});
-	this.addInput('kernelUnitLength',inputs.XYInput,{
-		min: 0,
-		step: 0.1,
-		value: 0
-	});
+		this.addInput('in',inputs.EffectInput,{
+			title: 'in'
+		});
+		this.addInput('color',inputs.ColorInput);
+		this.addInput('surfaceScale',inputs.RangeInput,{
+			min: -5,
+			max: 5,
+			step: 0.1,
+			value: 1
+		});
+		this.addInput('specularConstant',inputs.NumberInput,{
+			min: 1,
+			max: 128,
+			step: 1,
+			value: 1
+		});
+		this.addInput('kernelUnitLength',inputs.XYInput,{
+			min: 0,
+			step: 0.1,
+			value: 0
+		});
 
-	//light
-	this.addInput('lightSource',inputs.SelectInput,{
-		value: 'DistantLight',
-		options: ['DistantLight', 'PointLight', 'SpotLight']
-	});
+		//light
+		this.addInput('lightSource',inputs.SelectInput,{
+			value: 'DistantLight',
+			options: ['DistantLight', 'PointLight', 'SpotLight']
+		});
 
-	//DistantLight
-	this.DistantLight = new SVG.DistantLight();
-	this.addInput('azimuth',inputs.NumberInput,{
-		min: 0,
-		max: 360,
-		step: 5,
-		value: 0
-	});
-	this.addInput('elevation',inputs.NumberInput,{
-		min: 0,
-		max: 360,
-		step: 5,
-		value: 0
-	});
+		//DistantLight
+		this.DistantLight = new SVG.DistantLight();
+		this.addInput('azimuth',inputs.NumberInput,{
+			min: 0,
+			max: 360,
+			step: 5,
+			value: 0
+		});
+		this.addInput('elevation',inputs.NumberInput,{
+			min: 0,
+			max: 360,
+			step: 5,
+			value: 0
+		});
 
-	//PointLight
-	this.PointLight = new SVG.PointLight();
-	this.addInput('x',inputs.NumberInput,{
-		step: 5,
-		value: 0
-	});
-	this.addInput('y',inputs.NumberInput,{
-		step: 5,
-		value: 0
-	});
-	this.addInput('z',inputs.NumberInput,{
-		step: 5,
-		value: 0
-	});
+		//PointLight
+		this.PointLight = new SVG.PointLight();
+		this.addInput('x',inputs.NumberInput,{
+			step: 5,
+			value: 0
+		});
+		this.addInput('y',inputs.NumberInput,{
+			step: 5,
+			value: 0
+		});
+		this.addInput('z',inputs.NumberInput,{
+			step: 5,
+			value: 0
+		});
 
-	//SpotLight
-	this.SpotLight = new SVG.SpotLight();
-	this.addInput('specularExponent',inputs.NumberInput,{
-		step: 1,
-		value: 1
-	});
-	this.addInput('limitingConeAngle',inputs.NumberInput,{
-		step: 10,
-		value: 0
-	});
-	this.addInput('pointsAtX',inputs.NumberInput,{
-		step: 5,
-		value: 0
-	});
-	this.addInput('pointsAtY',inputs.NumberInput,{
-		step: 5,
-		value: 0
-	});
-	this.addInput('pointsAtZ',inputs.NumberInput,{
-		step: 5,
-		value: 0
-	});
+		//SpotLight
+		this.SpotLight = new SVG.SpotLight();
+		this.addInput('specularExponent',inputs.NumberInput,{
+			step: 1,
+			value: 1
+		});
+		this.addInput('limitingConeAngle',inputs.NumberInput,{
+			step: 10,
+			value: 0
+		});
+		this.addInput('pointsAtX',inputs.NumberInput,{
+			step: 5,
+			value: 0
+		});
+		this.addInput('pointsAtY',inputs.NumberInput,{
+			step: 5,
+			value: 0
+		});
+		this.addInput('pointsAtZ',inputs.NumberInput,{
+			step: 5,
+			value: 0
+		});
 
-	this.addOutput('result',outputs.EffectOutput);
+		this.addOutput('result',outputs.EffectOutput);
 
-	this.filter = new SVG.SpecularLightingEffect();
+		this.filter = new SVG.SpecularLightingEffect();
 
-	this.render();
-	this.update();
-	this.updateEndpoints();
-    this.updatePostion();
-}
-SpecularLightingEffect.prototype = {
-	options: {
+		this.render();
+		this.update();
+		this.updateEndpoints();
+	    this.updatePostion();
+	    this.updateElement();
+	}
+	options = {
 		title: 'SpecularLighting'
-	},
-	style: {
+	}
+	style = {
 		width: '300px'
-	},
-	update: function(){
+	}
+	update(){
 		//hide inputs
 		this.inputs.azimuth.hide();
 		this.inputs.elevation.hide();
@@ -178,5 +179,3 @@ SpecularLightingEffect.prototype = {
 		});
 	}
 };
-SpecularLightingEffect.prototype.constructor = SpecularLightingEffect;
-SpecularLightingEffect.prototype.__proto__ = Effect.prototype;

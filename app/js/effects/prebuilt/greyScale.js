@@ -1,11 +1,13 @@
 import MultiEffect from '../multiEffect.js';
+import * as inputs from '../inputs.js';
+import * as outputs from '../outputs.js';
 
 //GreyScale
 export default function GreyScaleEffect(){
 	MultiEffect.apply(this,arguments);
 
-	this.addInput('in',EffectInput);
-	this.addOutput('result',EffectOutput);
+	this.addInput('in',inputs.EffectInput);
+	this.addOutput('result',outputs.EffectOutput);
 
 	this.filter = {};
 	this.filter.matrix = new SVG.ColorMatrixEffect('matrix', [

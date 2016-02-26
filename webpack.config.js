@@ -21,6 +21,11 @@ module.exports = {
             {
                 test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
                 loader: 'base64-font-loader'
+            },
+            {
+                test: /\.html$/,
+                exclude: /(node_modules|web_modules)/,
+                loader: 'html-loader'
             }
         ]
     },

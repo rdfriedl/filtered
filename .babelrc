@@ -1,11 +1,13 @@
 {
 	"presets": ["es2015"],
 	"plugins": [
-		"babel-plugin-transform-class-properties",
-		"babel-plugin-transform-es2015-modules-commonjs",
-		"babel-plugin-transform-merge-sibling-variables",
-		"babel-plugin-transform-minify-booleans",
-		"babel-plugin-transform-runtime"
+		"transform-runtime",
+    	"angular2-annotations",
+    	"transform-decorators-legacy",
+		"transform-class-properties",
+		"transform-merge-sibling-variables",
+		"transform-minify-booleans",
+		"transform-es2015-modules-commonjs"
 	],
 	"comments": false
 }

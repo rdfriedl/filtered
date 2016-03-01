@@ -1,7 +1,7 @@
 # Filtered
 Simple Svg Filter builder
 
-![screenshot](./screenshot.png)
+![example](/examples/screenshots/10.png)
 
 ### Browser Support
 - Chrome 31+
@@ -16,7 +16,3 @@ Simple Svg Filter builder
  - Improve ComponentTransfer.render
  - Add panning to editor, right now it just has zoom
  - Add a function for loading filters in the form of xml
-
-### Contributing
-Try to keep your code clean.
-other then that, contribution is more then welcome.

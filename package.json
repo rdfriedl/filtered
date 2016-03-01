@@ -32,6 +32,7 @@
     "json-loader": "^0.5.4",
     "markdown-loader": "^0.1.7",
     "merge2": "^1.0.1",
+    "raw-loader": "^0.5.1",
     "script-loader": "^0.6.1",
     "style-loader": "^0.13.0"
   },

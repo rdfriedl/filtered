@@ -6,60 +6,7 @@
 
 <!-- header -->
 <div id="top-left" style="padding-right: 0;">
-    <nav class="navbar navbar-default" role="navigation" style="margin: 0px;">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header" data-toggle="tooltip" data-placement="bottom" title="Show Welcome modal">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" data-toggle="modal" href="#welcome">Filtered</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                <!-- load/save -->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">File <b class="caret"></b></a>
-                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-                        <li><a href="#" data-bind="click: $root.set(filters.newFilter,false)"><i class="fa fa-plus"></i> New</a></li>
-                        <li><a href="#" data-bind="click: $root.set(filters.loadFilter,false)"><i class="fa fa-folder-open-o"></i> Load</a></li>
-                        <li><a href="#" data-bind="click: $root.filters.saveFilter"><i class="fa fa-floppy-o"></i> Save</a></li>
-                        <li><a data-toggle="modal" href="#save-as"><i class="fa fa-floppy-o"></i> Save As</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a data-toggle="modal" href="#export" data-bind="click: exportFilter.export"><i class="fa fa-check"></i> Export</a></li>
-                        <li><a data-toggle="modal" href="#examples"><i class="fa fa-flask"></i> Examples</a></li>
-                        <li><a data-toggle="modal" href="#help"><i class="fa fa-question"></i> Help</a></li>
-                    </ul>
-                </li>
-
-                <!-- add -->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add <b class="caret"></b></a>
-                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu" data-bind="foreach: effects.effects">
-                        <li data-toggle="tooltip" data-placement="right" data-bind="attr: {title: desc}"><a href="#" data-bind="click: create, text: title"></a></li>
-                    </ul>
-                </li>
-
-                <!-- add basic -->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add Basic <b class="caret"></b></a>
-                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu" data-bind="foreach: effects.baseEffects">
-                        <li data-toggle="tooltip" data-placement="right" data-bind="attr: {title: desc}"><a href="#" data-bind="click: create, text: title"></a></li>
-                    </ul>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <!-- <li><a data-toggle="modal" href="#import"><i class="fa fa-folder-open"></i> Import</a></li> -->
-                <li><a data-toggle="modal" href="#export" data-bind="click: exportFilter.export"><i class="fa fa-check"></i> Export</a></li>
-                <li><a data-toggle="modal" href="#examples"><i class="fa fa-flask"></i> Examples</a></li>
-                <li><a data-toggle="modal" href="#help"><i class="fa fa-question"></i> Help</a></li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </nav>
+    <toolbar></toolbar>
 </div>
 <div id="top-right" style="padding-left: 0;">
     <preview></preview>
@@ -81,43 +28,6 @@
     </div> -->
 </nav>
 
-<div class="modal fade" id="export" data-bind="with: exportFilter">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
-                <h4 class="modal-title">Export</h4>
-            </div>
-            <div class="modal-body">
-                <div role="tabpanel">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#export-filter-tab" data-toggle="tab">SVG Filter</a></li>
-                        <li><a href="#export-json-tab" data-toggle="tab">JSON</a></li>
-                        <li><a href="#export-url-tab" data-toggle="tab">URL</a></li>
-                    </ul>
-
-                    <!-- Tab panes -->
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="export-filter-tab">
-                            <a class="btn btn-info btn-sm pull-right copy" data-clipboard-target="#export-filter-text">Copy to clipboard</a>
-                            <pre id="export-filter-text" class="form-control prettyprint lang-html" data-bind="text: filter"></pre>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="export-json-tab">
-                            <a class="btn btn-info btn-sm pull-right copy" data-clipboard-target="#export-json-text">Copy to clipboard</a>
-                            <pre id="export-json-text" class="form-control prettyprint lang-js" data-bind="text: json"></pre>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="export-url-tab">
-                            <a class="btn btn-info btn-sm pull-right copy" data-clipboard-target="#export-url-text">Copy to clipboard</a>
-                            <pre id="export-url-text" class="form-control wrap" data-bind="text: url"></pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="import" data-bind="with: importFilter">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -135,26 +45,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="examples" data-bind="with: examples">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
-                <h4 class="modal-title">Examples</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row" data-bind="foreach: examples">
-                    <div class="col-xs-4">
-                        <a href="#" class="thumbnail" data-bind="click: $root.examples.select" data-dismiss="modal">
-                            <img data-bind="attr:{src:imageURL}">
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="help">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -165,20 +55,6 @@
             </div>
             <div class="modal-body">
                 <iframe src="help/index.html#testing" width="100%" height="800" seamless style="border:none;" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-top-navigation"></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="welcome">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
-                <h2 class="modal-title"><b>Filtered</b> <small>Simple Svg Filter builder</small></h2>
-            </div>
-            <div class="modal-body">
-                <welcome [title]="false"></welcome>
             </div>
         </div>
     </div>

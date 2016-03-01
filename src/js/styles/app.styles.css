@@ -1,0 +1,27 @@
+*{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#top-left{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 70vw;
+}
+#top-right{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30vw;
+}
+
+#footer{
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    margin: 0px;
+}

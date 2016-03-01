@@ -18,8 +18,8 @@ import AppComponent from './js/components/app.component.js';
 bootstrap(AppComponent);
 
 //css
-import 'style!jsplumb/dist/css/jsplumb.css';
-import 'style!bootstrap/dist/css/bootstrap.css';
-import 'style!bootswatch/superhero/bootstrap.css';
-import 'style!font-awesome/css/font-awesome.css';
-import 'style!./css/style.css';
+import 'jsplumb/dist/css/jsplumb.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootswatch/cosmo/bootstrap.css';
+import 'font-awesome/css/font-awesome.css';
+// import 'style!./css/style.css';

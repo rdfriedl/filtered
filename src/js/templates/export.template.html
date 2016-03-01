@@ -1,0 +1,24 @@
+<div role="tabpanel">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#export-filter-tab" data-toggle="tab">SVG Filter</a></li>
+        <li><a href="#export-json-tab" data-toggle="tab">JSON</a></li>
+        <li><a href="#export-url-tab" data-toggle="tab">URL</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="export-filter-tab">
+            <a class="btn btn-info btn-sm pull-right copy" data-clipboard-target="#export-filter-text">Copy to clipboard</a>
+            <pre id="export-filter-text" class="form-control prettyprint lang-html" data-bind="text: filter"></pre>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="export-json-tab">
+            <a class="btn btn-info btn-sm pull-right copy" data-clipboard-target="#export-json-text">Copy to clipboard</a>
+            <pre id="export-json-text" class="form-control prettyprint lang-js" data-bind="text: json"></pre>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="export-url-tab">
+            <a class="btn btn-info btn-sm pull-right copy" data-clipboard-target="#export-url-text">Copy to clipboard</a>
+            <pre id="export-url-text" class="form-control wrap" data-bind="text: url"></pre>
+        </div>
+    </div>
+</div>

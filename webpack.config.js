@@ -16,10 +16,10 @@ module.exports = {
             'angular2/platform/browser',
 
             // css
-            'style!jsplumb/dist/css/jsplumb.css',
-            'style!bootstrap/dist/css/bootstrap.css',
-            'style!bootswatch/superhero/bootstrap.css',
-            'style!font-awesome/css/font-awesome.css'
+            'jsplumb/dist/css/jsplumb.css',
+            'bootstrap/dist/css/bootstrap.css',
+            'bootswatch/cosmo/bootstrap.css',
+            'font-awesome/css/font-awesome.css'
         ]
     },
     output: {
@@ -32,7 +32,7 @@ module.exports = {
         loaders: [
             {
                 test: /\.css$/,
-                loader: "css"
+                loader: ['style','css']
             },
             {
                 test: /\.js$/,

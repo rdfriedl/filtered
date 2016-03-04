@@ -1,8 +1,6 @@
-import $ from 'jquery';
 import Effect from './effect.js';
 import * as inputs from './inputs.js';
 import * as outputs from './outputs.js';
-import page from '../page.js';
 
 //multi filter
 export default class MultiEffect extends Effect{

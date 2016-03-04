@@ -1,0 +1,12 @@
+<ul class="list-group" data-bind="foreach: $root.filters.filters">
+    <li class="list-group-item">
+        <div class="pull-right">
+            <small data-bind="text: new Date(saved).toDateString()"></small>
+            <div class="btn-group btn-group-xs">
+                <button type="button" class="btn btn-success" data-bind="click: $root.filters.load.bind(undefined,$data)" data-dismiss="modal">Load</button>
+                <button type="button" class="btn btn-danger" data-bind="click: $root.set($root.filters.removeID,id)" data-toggle="modal" data-target="#remove-confirm">Remove</button>
+            </div>
+        </div>
+        <h3 class="list-group-item-heading" style="cursor: pointer" data-bind="text: name, click: $root.filters.load.bind(undefined,$data)" data-dismiss="modal"></h3>
+    </li>
+</ul>

@@ -1,7 +1,7 @@
 # Filtered
 Simple Svg Filter builder
 
-![example](/examples/screenshots/10.png)
+![example](src/examples/screenshots/10.png)
 
 ### Browser Support
 - Chrome 31+

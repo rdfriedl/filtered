@@ -4,23 +4,23 @@ import {Component, View, Input, ElementRef} from 'angular2/core';
 	selector: 'welcome'
 })
 @View({
-	template: require('../../../README.md')
+	template: require('!html?root=.!markdown!../../../README.md')
 })
 export default class WelcomeComponent{
 	constructor(_element: ElementRef){
 		this._element = _element;
-		this.$el = $(this._element.nativeElement);
+		this.$element = $(this._element.nativeElement);
 	}
 
 	@Input() title = true;
 
 	ngOnInit(){
-		this.$el.find('img').css('width','100%');
+		this.$element.find('img').css('width','100%');
 
 		//remove the title and the subtitle
 		if(!this.title){
-			this.$el.find('h1').first().remove();
-			this.$el.find('p').first().remove();
+			this.$element.find('h1').first().remove();
+			this.$element.find('p').first().remove();
 		}
 	}
 }

@@ -1,9 +1,7 @@
-import $ from 'jquery';
 import 'svg.js';
 import 'svg.filter.js';
 import * as inputs from './inputs.js';
 import * as outputs from './outputs.js';
-import page from '../page.js';
 
 //Effect
 export default class Effect{

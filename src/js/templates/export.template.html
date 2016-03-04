@@ -10,15 +10,15 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="export-filter-tab">
             <a class="btn btn-info btn-sm pull-right copy" data-clipboard-target="#export-filter-text">Copy to clipboard</a>
-            <pre id="export-filter-text" class="form-control prettyprint lang-html" data-bind="text: filter"></pre>
+            <pre class="form-control prettyprint lang-html yes-select">{{xml}}</pre>
         </div>
         <div role="tabpanel" class="tab-pane" id="export-json-tab">
             <a class="btn btn-info btn-sm pull-right copy" data-clipboard-target="#export-json-text">Copy to clipboard</a>
-            <pre id="export-json-text" class="form-control prettyprint lang-js" data-bind="text: json"></pre>
+            <pre class="form-control prettyprint lang-js yes-select">{{json}}</pre>
         </div>
         <div role="tabpanel" class="tab-pane" id="export-url-tab">
             <a class="btn btn-info btn-sm pull-right copy" data-clipboard-target="#export-url-text">Copy to clipboard</a>
-            <pre id="export-url-text" class="form-control wrap" data-bind="text: url"></pre>
+            <pre class="form-control wrap yes-select">{{url}}</pre>
         </div>
     </div>
 </div>

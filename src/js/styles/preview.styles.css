@@ -1,23 +1,14 @@
-#preview svg{
+svg{
     background-color: #485563;
 }
-#preview a[data-toggle="collapse"]:hover, #preview a[data-toggle="collapse"]:focus{
+a[data-toggle="collapse"]:hover, a[data-toggle="collapse"]:focus{
     text-decoration: none;
 }
-#preview .panel-heading{
+.panel-heading{
     cursor: pointer;
 }
-#preview .panel {
+.panel {
     margin: 0px 0px 5px 0px;
-}
-#preview .image-change{
-    position: absolute;
-    right: 30px;
-    transition: all .2s;
-    opacity: 0;
-}
-#preview:hover .image-change{
-    opacity: 1;
 }
 
 #toggle-button{

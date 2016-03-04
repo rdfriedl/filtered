@@ -1,36 +1,26 @@
-<div id="preview" class="panel panel-default">
+<div class="panel panel-default">
     <div class="panel-heading">
         <a class="btn btn-info btn-xs pull-right" href="http://rdfriedl.github.io/" target="_blank">Created by Rdfriedl</a>
         <h4 class="panel-title"><a data-toggle="collapse" href="#preview-collapse">Preview</a></h4>
     </div>
     <div id="preview-collapse" class="panel-collapse collapse in">
         <div class="panel-body">
-            <button type="button" class="btn btn-default image-change" data-bind="visible: mode() == 'image', click: image.change">Change</button>
-
-            <svg id="preview-svg">
-                <defs>
-                    <filter id="goo">
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-                        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
-                        <feBlend in="SourceGraphic" in2="goo" />
-                    </filter>
-                </defs>
-            </svg>
+            <svg class="preview-svg"></svg>
 
             <div class="btn-group btn-group-justified">
-                <a class="btn btn-default" data-bind="click: $root.set(mode,'text'), css:{active: mode() == 'text'}">Text</a>
-                <a class="btn btn-default" data-bind="click: $root.set(mode,'image'), css:{active: mode() == 'image'}">Image</a>
+                <a class="btn btn-default" (click)="mode = MODE_TEXT" [class.active]="mode == MODE_TEXT">Text</a>
+                <a class="btn btn-default" (click)="mode = MODE_IMAGE" [class.active]="mode == MODE_IMAGE">Image</a>
             </div>
 
             <!-- text -->
-            <div data-bind="with: text, visible: $root.editor.preview.mode() == 'text'">
+            <div [hidden]="mode != MODE_TEXT">
                 <div class="form-group">
                     <label>Text</label>
-                    <input type="text" class="form-control" data-bind="value: text, valueUpdate: 'input'">
+                    <input type="text" class="form-control yes-select" [(ngModel)]="textValue">
                 </div>
                 <div class="form-group">
                     <label>Color</label>
-                    <input type="color" class="form-control" data-bind="value: color, valueUpdate: 'input'">
+                    <input type="color" class="form-control" [(ngModel)]="textColor">
                 </div>
 
                 <!-- font -->
@@ -45,19 +35,25 @@
                         <div class="panel-body">
                             <div class="form-group">
                                 <label>Font</label>
-                                <select class="form-control" data-bind="foreach: fonts, value: font">
-                                    <option data-bind="value: $data, text: $data"></option>
+                                <select class="form-control" [(ngModel)]="textFontFamily">
+                                    <option *ngFor="#font of textFontFamilies" [value]="font">{{ font }}</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Weight</label>
-                                <select class="form-control" data-bind="foreach: weights, value: weight">
-                                    <option data-bind="value: $data, text: $data"></option>
-                                </select>
+                                <label>Styles</label>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default" (click)="textFontBold = !textFontBold" [class.active]="textFontBold"><i class="fa fa-bold"></i></button>
+                                    <button type="button" class="btn btn-default" (click)="textFontItalic = !textFontItalic" [class.active]="textFontItalic"><i class="fa fa-italic"></i></button>
+                                    <button type="button" class="btn btn-default" (click)="textFontUnderline = !textFontUnderline" [class.active]="textFontUnderline"><i class="fa fa-underline"></i></button>
+                                    <button type="button" class="btn btn-default" (click)="textFontStrikethrough = !textFontStrikethrough" [class.active]="textFontStrikethrough"><i class="fa fa-strikethrough"></i></button>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Size</label>
-                                <input type="number" class="form-control" data-bind="value: size, valueUpdate: 'input'">
+                                <div class="input-group">
+                                    <input type="range" class="form-control" [min]="textSizeMin" [max]="textSizeMax" [(ngModel)]="textSize">
+                                    <div class="input-group-addon">{{ textSize }}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -75,15 +71,23 @@
                         <div class="panel-body">
                             <div class="form-group">
                                 <label>Color</label>
-                                <input type="color" class="form-control" data-bind="value: color, valueUpdate: 'input'">
+                                <input type="color" class="form-control" [(ngModel)]="textStrokeColor">
                             </div>
                             <div class="form-group">
                                 <label>Size</label>
-                                <input type="number" class="form-control" data-bind="value: size, valueUpdate: 'input'">
+                                <div class="input-group">
+                                    <input type="range" class="form-control" [min]="textStrokeSizeMin" [max]="textStrokeSizeMax" [(ngModel)]="textStrokeSize">
+                                    <div class="input-group-addon">{{ textStrokeSize }}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- image -->
+            <div [hidden]="mode != MODE_IMAGE">
+                <h3>Image Settings</h3>
             </div>
         </div>
     </div>

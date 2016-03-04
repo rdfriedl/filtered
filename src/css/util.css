@@ -1,0 +1,13 @@
+.no-select, .no-select *{
+    -webkit-user-select: none;
+    -moz-user-select: -moz-none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.yes-select, .yes-select *{
+    -webkit-user-select: initial;
+    -moz-user-select: -moz-initial;
+    -ms-user-select: initial;
+    user-select: initial;
+}

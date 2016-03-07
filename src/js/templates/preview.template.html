@@ -87,7 +87,16 @@
 
             <!-- image -->
             <div [hidden]="mode != MODE_IMAGE">
-                <h3>Image Settings</h3>
+                <label>Image Url</label>
+                <div class="input-group">
+                    <!-- <span class="input-group-btn">
+                        <button type="button" class="btn btn-primary" (click)="showGoogleImages()">Google Images</button>
+                    </span> -->
+                    <input type="url" class="form-control" [(ngModel)]="imageURLTmp">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-info" (click)="imageURL = imageURLTmp">Set</button>
+                    </span>
+                </div>
             </div>
         </div>
     </div>

@@ -8,6 +8,7 @@ const replace = require('gulp-replace');
 const webpack = require('gulp-webpack');
 const merge2 = require('merge2');
 const babel = require('gulp-babel');
+const gutil = require('gulp-util');
 
 gulp.task('webpack',() => {
 	return gulp.src('src/index.js')
@@ -50,7 +51,6 @@ gulp.task('serve', () => {
 gulp.task('watch',() => {
 	gulp.watch('src/**/*.html',gulp.parallel('html'));
 })
-
 
 gulp.task('dev',gulp.parallel('webpack-watch','watch','serve'));
 

@@ -4,7 +4,7 @@ import {Component, View, Input, ElementRef} from 'angular2/core';
 	selector: 'welcome'
 })
 @View({
-	template: require('!html?root=.!markdown!../../../README.md')
+	template: require('../../../README.md')
 })
 export default class WelcomeComponent{
 	constructor(_element: ElementRef){

@@ -43,20 +43,24 @@ module.exports = {
         filename: "[name].js"
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js"),
-        // new webpack.optimize.UglifyJsPlugin({minimize: true})
+        new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js")
     ],
     module: {
         loaders: [
             {
-                test: /\.css$/,
-                loaders: ['style','css']
-            },
-            {
-                test: /\.js$/,
+                test: /.*src.*\.js$/,
                 exclude: /(node_modules|web_modules)/,
                 loader: 'babel',
                 query: require('./babel.config.js')
+            },
+            {
+                test: /\.css$/,
+                exclude: /\.styles\.css/,
+                loaders: ['style','css']
+            },
+            {
+                test: /\.styles\.css$/,
+                loader: 'raw'
             },
             {
                 test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -82,6 +86,12 @@ module.exports = {
             {
                 test: /\.json$/,
                 loader: 'json'
+            },
+
+            // file loaders
+            {
+                test: 'README.md',
+                loader: 'html?root=.!markdown'
             }
         ]
     },

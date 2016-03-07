@@ -13,6 +13,6 @@ var _examples = [];
 for(let i = 1; i <= 15; i++){
 	_examples.push({
 		data: require('../../examples/json/'+i+'.json'),
-		imageURL: require('../../examples/screenshots/'+i+'.png')
+		src: require('../../examples/screenshots/'+i+'.png')
 	});
 }

@@ -7,7 +7,7 @@ import 'svg.filter.js';
 })
 @View({
 	template: require('../templates/preview.template.html'),
-	styles: [require('!raw!../styles/preview.styles.css')]
+	styles: [require('../styles/preview.styles.css')]
 })
 export default class PreviewComponent{
 	constructor(_element: ElementRef){
@@ -36,7 +36,6 @@ export default class PreviewComponent{
 	textColor = '#000000';
 	textValue = 'Text';
 	textFontFamilies = [
-		"'Ultra', serif",
 		"Georgia, serif",
 		'"Palatino Linotype", "Book Antiqua", Palatino, serif',
 		'"Times New Roman", Times, serif',
@@ -51,7 +50,7 @@ export default class PreviewComponent{
 		'"Courier New", Courier, monospace',
 		'"Lucida Console", Monaco, monospace'
 	];
-	textFontFamily = "'Ultra', serif";
+	textFontFamily = "Impact, Charcoal, sans-serif";
 	textFontBold = false;
 	textFontItalic = false;
 	textFontLineThrough = false;
@@ -65,6 +64,9 @@ export default class PreviewComponent{
 	textStrokeSize = 5;
 	textStrokeSizeMin = 0;
 	textStrokeSizeMax = 50;
+
+	imageURL = '';
+	imageURLTmp = '';
 
 	MODE_TEXT = 'text';
 	MODE_IMAGE = 'image';
@@ -96,5 +98,9 @@ export default class PreviewComponent{
 			color: this.textStrokeColor,
 			width: this.textStrokeSize
 		}).text(this.textValue).fill(this.textColor).center(0,0);
+	}
+
+	showGoogleImages(){
+
 	}
 }

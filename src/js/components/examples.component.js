@@ -10,14 +10,20 @@ import ExamplesService from '../services/examples.service.js';
 export default class ExamplesComponent{
 	constructor(_examplesService: ExamplesService){
 		this._examplesService = _examplesService;
-		this.getExamples();
 	}
 
 	examples = []
 
+	ngOnInit(){
+		this.getExamples();
+	}
+
 	getExamples(){
 		this._examplesService.getExamples().then(examples => this.examples = examples);
+	}
 
-		console.log(this.examples)
+	onSelect(example){
+		console.log('load example');
+		console.log(example);
 	}
 }

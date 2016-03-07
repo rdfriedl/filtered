@@ -17,6 +17,6 @@ export default class EditorComponent{
 	}
 
 	ngOnInit(){
-
+		console.info('stared editor')
 	}
 }

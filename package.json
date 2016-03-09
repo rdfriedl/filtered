@@ -1,9 +1,9 @@
 {
-  "name": "Filtered",
+  "name": "filtered",
   "version": "2.0.0",
   "scripts": {
-  	"build": "gulp build",
-  	"start": "gulp dev"
+    "build": "gulp build",
+    "start": "gulp dev"
   },
   "devDependencies": {
     "babel-loader": "^6.2.3",
@@ -23,7 +23,7 @@
     "base64-font-loader": "0.0.3",
     "css-loader": "^0.23.1",
     "file-loader": "^0.8.5",
-    "gulp": "gulpjs/gulp#4.0",
+    "gulp": "github:gulpjs/gulp#4.0",
     "gulp-babel": "^6.1.2",
     "gulp-clean": "^0.3.1",
     "gulp-concat": "^2.6.0",
@@ -43,23 +43,32 @@
     "style-loader": "^0.13.0"
   },
   "dependencies": {
-    "angular2": "^2.0.0-beta.7",
+    "angular2": "^2.0.0-beta.8",
     "bootstrap": "^3.3.6",
     "bootswatch": "^3.3.6",
     "clipboard": "^1.5.8",
     "dexie": "^1.2.0",
+    "es6-shim": "0.33.3",
     "font-awesome": "^4.5.0",
     "jquery": "^2.2.1",
     "jquery.mousewheel": "^3.1.9",
     "jquery.transit": "^0.9.12",
     "jsplumb": "1.7.9",
     "knockout": "^3.4.0",
-    "reflect-metadata": "^0.1.3",
+    "reflect-metadata": "0.1.2",
     "rxjs": "^5.0.0-beta.2",
     "svg.filter.js": "^2.0.0",
     "svg.js": "^2.2.5",
     "svg.select.js": "^2.0.1",
-    "zone.js": "^0.5.15",
-    "es6-shim": "^0.35.0"
-  }
+    "zone.js": "^0.5.15"
+  },
+  "description": "Simple Svg Filter builder",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/rdfriedl/filtered.git"
+  },
+  "author": "rdfriedl",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/rdfriedl/filtered#readme"
 }

@@ -49,13 +49,13 @@ gulp.task('serve', () => {
 })
 
 gulp.task('watch',() => {
-	gulp.watch('src/**/*.html',gulp.parallel('html'));
+	gulp.watch('src/**/*.html',['html']);
 })
 
-gulp.task('dev',gulp.parallel('webpack-watch','watch','serve'));
+gulp.task('dev',['webpack-watch','watch','serve']);
 
-gulp.task('build',gulp.series([
+gulp.task('build',[
 	'webpack',
 
 	'html'
-]));
+]);

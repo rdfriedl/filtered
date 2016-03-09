@@ -2,8 +2,8 @@
   "name": "filtered",
   "version": "2.0.0",
   "scripts": {
-    "build": "gulp build",
-    "start": "gulp dev",
+    "build": "gulp mode-prod && gulp build",
+    "start": "gulp mode-dev && gulp dev",
     "clean": "gulp clean"
   },
   "devDependencies": {
@@ -31,7 +31,6 @@
     "gulp-concat": "^2.6.0",
     "gulp-replace": "^0.5.4",
     "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglify": "^1.4.2",
     "gulp-util": "^3.0.7",
     "gulp-webpack": "^1.5.0",
     "gulp-webserver": "^0.9.1",

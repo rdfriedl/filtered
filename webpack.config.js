@@ -1,12 +1,15 @@
 const path = require('path');
 const webpack = require("webpack");
 
+const production = process.env['GULP_BUILD_MODE'] == 'prod' || process.env['GULP_BUILD_MODE'] == 'production';
+
 module.exports = {
     entry: {
         index: './src/index.js',
         vendor: [
             // lib
             'knockout',
+            'jquery',
             'script!jquery',
             'script!jquery.mousewheel',
             'script!jquery.transit',
@@ -42,9 +45,21 @@ module.exports = {
     output: {
         filename: "[name].js"
     },
-    plugins: [
-        new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js")
-    ],
+    plugins: (function(){
+        var plugins = [
+            new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js")
+        ];
+
+        if(production) plugins.push(new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            },
+            sourceMap: true,
+            exclude: [/(node_modules|web_modules)/]
+        }));
+
+        return plugins;
+    }()),
     module: {
         loaders: [
             {
@@ -68,8 +83,12 @@ module.exports = {
             },
             {
                 test: /\.html$/,
-                exclude: /(node_modules|web_modules)/,
+                exclude: [/(node_modules|web_modules)/,/\.template\.html/],
                 loader: 'html'
+            },
+            {
+                test: /\.template\.html$/,
+                loader: 'raw'
             },
             {
                 test: /\.md$/,
@@ -100,5 +119,5 @@ module.exports = {
     		path.resolve('./node_modules/')
     	]
     },
-    devtool: "source-map"
+    devtool: production? undefined : "source-map"
 }

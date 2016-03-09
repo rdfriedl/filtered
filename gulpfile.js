@@ -1,7 +1,6 @@
 const gulp = require('gulp');
 const webserver = require('gulp-webserver');
 const clean = require('gulp-clean');
-const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
 const sourcemaps = require('gulp-sourcemaps');
 const replace = require('gulp-replace');
@@ -13,7 +12,6 @@ const gutil = require('gulp-util');
 gulp.task('webpack',() => {
 	return gulp.src('src/index.js')
 		.pipe(webpack(require('./webpack.config.js')))
-		// .pipe(uglify())
 		.pipe(gulp.dest('dist/'))
 });
 
@@ -22,7 +20,6 @@ gulp.task('webpack-watch', () => {
 	config.watch = true;
 	return gulp.src('src/index.js')
 		.pipe(webpack(config))
-		// .pipe(uglify())
 		.pipe(gulp.dest('dist/'))
 })
 
@@ -48,6 +45,14 @@ gulp.task('serve', () => {
 		}));
 })
 
+gulp.task('mode-prod',() => {
+	process.env["GULP_BUILD_MODE"] = 'prod';
+});
+
+gulp.task('mode-dev',() => {
+	process.env["GULP_BUILD_MODE"] = 'dev';
+});
+
 gulp.task('watch',() => {
 	gulp.watch('src/**/*.html',['html']);
 })
@@ -59,3 +64,6 @@ gulp.task('build',[
 
 	'html'
 ]);
+
+gulp.task('build-prod',['mode-prod','build']);
+gulp.task('build-dev',['mode-dev','build']);

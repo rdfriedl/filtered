@@ -3,7 +3,8 @@
   "version": "2.0.0",
   "scripts": {
     "build": "gulp build",
-    "start": "gulp dev"
+    "start": "gulp dev",
+    "clean": "gulp clean"
   },
   "devDependencies": {
     "babel-loader": "^6.2.3",
@@ -26,6 +27,7 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-clean": "^0.3.1",
+    "gulp-cli": "^1.2.1",
     "gulp-concat": "^2.6.0",
     "gulp-replace": "^0.5.4",
     "gulp-sourcemaps": "^1.6.0",

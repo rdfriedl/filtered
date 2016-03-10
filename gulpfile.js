@@ -8,15 +8,24 @@ const webpack = require('gulp-webpack');
 const merge2 = require('merge2');
 const babel = require('gulp-babel');
 const gutil = require('gulp-util');
+const BUILD_MODE = (process.env.BUILD_MODE || 'dev').trim();
 
 gulp.task('webpack',() => {
+
+	gutil.log('system var BUILD_MODE='+BUILD_MODE);
+	gutil.log((BUILD_MODE == 'prod')? 'Running in production mode' : 'Running in development mode');
+
 	return gulp.src('src/index.js')
 		.pipe(webpack(require('./webpack.config.js')))
 		.pipe(gulp.dest('dist/'))
 });
 
 gulp.task('webpack-watch', () => {
-	var config = require('./webpack.config.js')
+
+	gutil.log('system var BUILD_MODE='+BUILD_MODE);
+	gutil.log((BUILD_MODE == 'prod')? 'Running in production mode' : 'Running in development mode');
+
+	var config = require('./webpack.config.js');
 	config.watch = true;
 	return gulp.src('src/index.js')
 		.pipe(webpack(config))
@@ -45,14 +54,6 @@ gulp.task('serve', () => {
 		}));
 })
 
-gulp.task('mode-prod',() => {
-	process.env["GULP_BUILD_MODE"] = 'prod';
-});
-
-gulp.task('mode-dev',() => {
-	process.env["GULP_BUILD_MODE"] = 'dev';
-});
-
 gulp.task('watch',() => {
 	gulp.watch('src/**/*.html',['html']);
 })
@@ -64,6 +65,3 @@ gulp.task('build',[
 
 	'html'
 ]);
-
-gulp.task('build-prod',['mode-prod','build']);
-gulp.task('build-dev',['mode-dev','build']);

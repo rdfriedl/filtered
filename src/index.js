@@ -19,7 +19,6 @@ import AppComponent from './js/components/app.component.js';
 //start
 enableProdMode();
 bootstrap(AppComponent);
-
 //css
 import 'jsplumb/dist/css/jsplumb.css';
 import 'bootstrap/dist/css/bootstrap.css';

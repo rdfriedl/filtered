@@ -1,7 +1,8 @@
 const path = require('path');
 const webpack = require("webpack");
 
-const production = process.env['GULP_BUILD_MODE'] == 'prod' || process.env['GULP_BUILD_MODE'] == 'production';
+const BUILD_MODE = (process.env.BUILD_MODE || 'dev').trim();
+const production = BUILD_MODE == 'prod';
 
 module.exports = {
     entry: {

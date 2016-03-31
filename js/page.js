@@ -55,6 +55,21 @@ var page = {
 				title: 'HueRotate',
 				desc: '',
 				effect: HueRotateEffect
+			},
+			{
+				title: 'Contrast',
+				desc: '',
+				effect: ContrastEffect
+			},
+			{
+				title: 'Gamma',
+				desc: '',
+				effect: GammaEffect
+			},
+			{
+				title: 'Brightness',
+				desc: '',
+				effect: BrightnessEffect
 			}
 		]),
 		baseEffects: observable([

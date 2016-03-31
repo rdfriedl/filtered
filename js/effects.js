@@ -708,3 +708,117 @@ HueRotateEffect.prototype = {
 };
 HueRotateEffect.prototype.constructor = HueRotateEffect;
 HueRotateEffect.prototype.__proto__ = MultiEffect.prototype;
+
+//Contrast
+function ContrastEffect(){
+    MultiEffect.apply(this,arguments);
+
+    this.addInput('in',EffectInput);
+    this.addInput('amount',NumberInput,{
+        min: 0,
+        max: 4,
+        step: 0.01,
+        value: 1
+    });
+    this.addOutput('result',EffectOutput);
+
+    this.filter = {};
+    this.filter.contrast = new SVG.ComponentTransferEffect({
+        rgb: { type: 'linear', slope: 1, intercept: -(0.3 * 1) + 0.3 }
+    });
+
+    this.render();
+    this.update();
+    this.updateEndpoints();
+    this.updatePostion();
+}
+ContrastEffect.prototype = {
+    options: {
+        title: 'Contrast'
+    },
+    update: function(){
+        var a = this.inputs['amount'].getValue();
+        this.filter.contrast.r.attr('slope',a);
+        this.filter.contrast.g.attr('slope',a);
+        this.filter.contrast.b.attr('slope',a);
+        this.filter.contrast.r.attr('intercept',1-((0.5*a)+0.5));
+        this.filter.contrast.g.attr('intercept',1-((0.5*a)+0.5));
+        this.filter.contrast.b.attr('intercept',1-((0.5*a)+0.5));
+    }
+};
+ContrastEffect.prototype.constructor = ContrastEffect;
+ContrastEffect.prototype.__proto__ = MultiEffect.prototype;
+
+//Gamma
+function GammaEffect(){
+    MultiEffect.apply(this,arguments);
+
+    this.addInput('in',EffectInput);
+    this.addInput('amount',NumberInput,{
+        min: 0.1,
+        max: 2,
+        step: 0.1,
+        value: 1
+    });
+    this.addOutput('result',EffectOutput);
+
+    this.filter = {};
+    this.filter.gamma = new SVG.ComponentTransferEffect({
+        rgb: { type: 'gamma', amplitude: 1, exponent: 1 }
+    });
+
+    this.render();
+    this.update();
+    this.updateEndpoints();
+    this.updatePostion();
+}
+GammaEffect.prototype = {
+    options: {
+        title: 'Gamma'
+    },
+    update: function(){
+        var a = 1/this.inputs['amount'].getValue();
+        this.filter.gamma.r.attr('exponent',a);
+        this.filter.gamma.g.attr('exponent',a);
+        this.filter.gamma.b.attr('exponent',a);
+    }
+};
+GammaEffect.prototype.constructor = GammaEffect;
+GammaEffect.prototype.__proto__ = MultiEffect.prototype;
+
+//Brightness
+function BrightnessEffect(){
+    MultiEffect.apply(this,arguments);
+
+    this.addInput('in',EffectInput);
+    this.addInput('amount',NumberInput,{
+        min: 0,
+        max: 10,
+        step: 0.1,
+        value: 1
+    });
+    this.addOutput('result',EffectOutput);
+
+    this.filter = {};
+    this.filter.brightness = new SVG.ComponentTransferEffect({
+        rgb: { type: 'linear', slope: 1, intercept: 0 }
+    });
+
+    this.render();
+    this.update();
+    this.updateEndpoints();
+    this.updatePostion();
+}
+BrightnessEffect.prototype = {
+    options: {
+        title: 'Brightness'
+    },
+    update: function(){
+        var a = this.inputs['amount'].getValue();
+        this.filter.brightness.r.attr('slope',a);
+        this.filter.brightness.g.attr('slope',a);
+        this.filter.brightness.b.attr('slope',a);
+    }
+};
+BrightnessEffect.prototype.constructor = BrightnessEffect;
+BrightnessEffect.prototype.__proto__ = MultiEffect.prototype;

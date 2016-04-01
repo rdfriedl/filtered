@@ -1,19 +1,14 @@
-import {Component, View, ElementRef} from 'angular2/core';
+import {Component, ElementRef} from 'angular2/core';
 import SVG from 'svg.js';
-import 'svg.filter.js';
 
 @Component({
-	selector: 'preview'
-})
-@View({
+	selector: 'preview',
 	template: require('../templates/preview.template.html'),
 	styles: [require('../styles/preview.styles.css')]
 })
 export default class PreviewComponent{
-	constructor(_element: ElementRef){
-		this.$element = $(_element.nativeElement);
-
-		this.mode = this.MODE_TEXT;
+	constructor(private _elementRef: ElementRef){
+		this.$element = $(_elementRef.nativeElement);
 	}
 
 	ngOnInit(){
@@ -68,13 +63,21 @@ export default class PreviewComponent{
 	imageURL = '';
 	imageURLTmp = '';
 
-	MODE_TEXT = 'text';
-	MODE_IMAGE = 'image';
+	private $element;
+	private mode = PreviewComponent.MODE_TEXT;
+	private svg: svgjs.Doc;
+	private group: svgjs.G;
+	private text: svgjs.Text;
+
+	static MODE_TEXT = 'text';
+	static MODE_IMAGE = 'image';
 
 	_createSVG(){
-	    this.svg = new SVG(this.$element.find('.preview-svg')[0]);
+	    this.svg = new SVG.Doc($(this._elementRef.nativeElement).find('.preview-svg')[0]);
 		this.group = this.svg.group();
 		this.text = this.group.text('').attr('paint-order', 'stroke');
+
+		new SVG.PathArray('string');
 
 		this.updatePreview();
 	}
@@ -85,7 +88,7 @@ export default class PreviewComponent{
 	updatePreview(){
 		var decoration = [];
 		if(this.textFontUnderline) decoration.push('underline');
-		if(this.textFontStrikethrough) decoration.push('line-through');
+		if(this.textFontLineThrough) decoration.push('line-through');
 
 		this.text.font({
 			family: this.textFontFamily,

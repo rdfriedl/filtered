@@ -5,6 +5,12 @@ const BUILD_MODE = (process.env.BUILD_MODE || 'dev').trim();
 const production = BUILD_MODE == 'prod';
 
 module.exports = {
+    resolve: {
+        extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
+    	root: [
+    		path.resolve('./node_modules/')
+    	]
+    },
     entry: {
         index: './src/index.js',
         vendor: [
@@ -33,8 +39,8 @@ module.exports = {
             'clipboard',
 
             // svg
-            'svg.js',
-            'svg.filter.js',
+            'script!svg.js',
+            'script!svg.filter.js',
 
             // css
             'jsplumb/dist/css/jsplumb.css',
@@ -64,10 +70,9 @@ module.exports = {
     module: {
         loaders: [
             {
-                test: /.*src.*\.js$/,
+                test: /.*src.*\.ts$/,
                 exclude: /(node_modules|web_modules)/,
-                loader: 'babel',
-                query: require('./babel.config.js')
+                loader: 'ts-loader'
             },
             {
                 test: /\.css$/,
@@ -114,11 +119,6 @@ module.exports = {
                 loader: 'html?root=.!markdown'
             }
         ]
-    },
-    resolve: {
-    	root: [
-    		path.resolve('./node_modules/')
-    	]
     },
     devtool: production? undefined : "source-map"
 }

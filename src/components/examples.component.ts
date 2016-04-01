@@ -1,16 +1,12 @@
-import {Component, View} from 'angular2/core';
-import ExamplesService from '../services/examples.service.js';
+import {Component} from 'angular2/core';
+import ExamplesService from '../services/examples.service';
 
 @Component({
-	selector: 'examples'
-})
-@View({
+	selector: 'examples',
 	template: require('../templates/examples.template.html')
 })
 export default class ExamplesComponent{
-	constructor(_examplesService: ExamplesService){
-		this._examplesService = _examplesService;
-	}
+	constructor(private _examplesService: ExamplesService){}
 
 	examples = []
 

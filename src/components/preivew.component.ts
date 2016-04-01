@@ -1,5 +1,4 @@
 import {Component, ElementRef} from 'angular2/core';
-import SVG from 'svg.js';
 
 @Component({
 	selector: 'preview',
@@ -64,13 +63,13 @@ export default class PreviewComponent{
 	imageURLTmp = '';
 
 	private $element;
-	private mode = PreviewComponent.MODE_TEXT;
+	private mode: string = this.MODE_TEXT;
 	private svg: svgjs.Doc;
 	private group: svgjs.G;
 	private text: svgjs.Text;
 
-	static MODE_TEXT = 'text';
-	static MODE_IMAGE = 'image';
+	private MODE_TEXT = 'text';
+	private MODE_IMAGE = 'image';
 
 	_createSVG(){
 	    this.svg = new SVG.Doc($(this._elementRef.nativeElement).find('.preview-svg')[0]);
@@ -83,7 +82,10 @@ export default class PreviewComponent{
 	}
 
 	centerContent(){
-		if(this.svg.node.ownerDocument) this.group.move(this.svg.node.getClientRects()[0].width/2,this.svg.node.getClientRects()[0].height/2);
+		if(this.svg.node.ownerDocument) this.group.transform({
+			x: this.svg.node.getClientRects()[0].width/2,
+			y: this.svg.node.getClientRects()[0].height/2
+		});
 	}
 	updatePreview(){
 		var decoration = [];

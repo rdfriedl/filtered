@@ -12,7 +12,7 @@ export default class ExamplesService{
 var _examples = [];
 for(let i = 1; i <= 15; i++){
 	_examples.push({
-		data: require('../../examples/json/'+i+'.json'),
-		src: require('../../examples/screenshots/'+i+'.png')
+		data: require('../examples/json/'+i+'.json'),
+		src: require('../examples/screenshots/'+i+'.png')
 	});
 }

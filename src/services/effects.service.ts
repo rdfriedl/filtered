@@ -1,9 +1,9 @@
 import {Injectable} from 'angular2/core';
 
-import Effect from '../effects/effect.js';
-import MultiEffect from '../effects/multiEffect.js';
-import InputEffect from '../effects/inputEffect.js';
-import OutputEffect from '../effects/outputEffect.js';
+import Effect from '../effects/effect';
+import MultiEffect from '../effects/multiEffect';
+import InputEffect from '../effects/inputEffect';
+import OutputEffect from '../effects/outputEffect';
 
 @Injectable()
 export default class EffectsService{
@@ -69,31 +69,31 @@ export default class EffectsService{
 var Effects = [];
 
 //base effects
-Effects.push(require('../effects/base/blend.js').default);
-Effects.push(require('../effects/base/colorMatrix.js').default);
-Effects.push(require('../effects/base/componentTransfer.js').default);
-Effects.push(require('../effects/base/composite.js').default);
-Effects.push(require('../effects/base/convolveMatrix.js').default);
-Effects.push(require('../effects/base/deffuseLighting.js').default);
-Effects.push(require('../effects/base/displacementMap.js').default);
-Effects.push(require('../effects/base/flood.js').default);
-Effects.push(require('../effects/base/gaussianBlur.js').default);
-Effects.push(require('../effects/base/image.js').default);
-Effects.push(require('../effects/base/merge.js').default);
-Effects.push(require('../effects/base/morphology.js').default);
-Effects.push(require('../effects/base/offset.js').default);
-Effects.push(require('../effects/base/specularLighting.js').default);
-Effects.push(require('../effects/base/tile.js').default);
-Effects.push(require('../effects/base/turbulence.js').default);
+// Effects.push(require('../effects/base/blend').default);
+// Effects.push(require('../effects/base/colorMatrix').default);
+// Effects.push(require('../effects/base/componentTransfer').default);
+// Effects.push(require('../effects/base/composite').default);
+// Effects.push(require('../effects/base/convolveMatrix').default);
+// Effects.push(require('../effects/base/deffuseLighting').default);
+// Effects.push(require('../effects/base/displacementMap').default);
+// Effects.push(require('../effects/base/flood').default);
+// Effects.push(require('../effects/base/gaussianBlur').default);
+// Effects.push(require('../effects/base/image').default);
+// Effects.push(require('../effects/base/merge').default);
+// Effects.push(require('../effects/base/morphology').default);
+// Effects.push(require('../effects/base/offset').default);
+// Effects.push(require('../effects/base/specularLighting').default);
+// Effects.push(require('../effects/base/tile').default);
+// Effects.push(require('../effects/base/turbulence').default);
 
 //prebuilt effects
-Effects.push(require('../effects/prebuilt/bump.js').default);
-Effects.push(require('../effects/prebuilt/greyScale.js').default);
-Effects.push(require('../effects/prebuilt/hueRotate.js').default);
-Effects.push(require('../effects/prebuilt/recolor.js').default);
-Effects.push(require('../effects/prebuilt/sepiatone.js').default);
-Effects.push(require('../effects/prebuilt/shadow.js').default);
-Effects.push(require('../effects/prebuilt/stroke.js').default);
+// Effects.push(require('../effects/prebuilt/bump').default);
+// Effects.push(require('../effects/prebuilt/greyScale').default);
+// Effects.push(require('../effects/prebuilt/hueRotate').default);
+// Effects.push(require('../effects/prebuilt/recolor').default);
+// Effects.push(require('../effects/prebuilt/sepiatone').default);
+// Effects.push(require('../effects/prebuilt/shadow').default);
+// Effects.push(require('../effects/prebuilt/stroke').default);
 
 export {InputEffect};
 export {OutputEffect};

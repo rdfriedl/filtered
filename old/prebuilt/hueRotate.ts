@@ -1,6 +1,6 @@
-import MultiEffect from '../multiEffect.js';
-import * as inputs from '../inputs.js';
-import * as outputs from '../outputs.js';
+import MultiEffect from '../multiEffect';
+import * as inputs from '../inputs';
+import * as outputs from '../outputs';
 
 //HueRotate
 export default class HueRotateEffect extends MultiEffect{

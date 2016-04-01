@@ -1,11 +1,11 @@
-import Effect from './effect.js';
-import * as inputs from './inputs.js';
-import * as outputs from './outputs.js';
+import Effect from './effect';
+import * as inputs from './inputs';
+import * as outputs from './outputs';
 
 //output
 export default class OutputEffect extends Effect{
 	constructor(){
-        super(...arguments);
+        super();
 
 		this.addInput('in',inputs.EffectInput,{
 			title: "out"
@@ -26,7 +26,7 @@ export default class OutputEffect extends Effect{
 	toggleButton = false
 	update(){
 		this.filter.attr({
-			in: previewFilter || this.inputs.in.getValue() || 'SourceGraphic',
+			// in: previewFilter || this.inputs.in.getValue() || 'SourceGraphic',
 			result: 'output'
 		});
 

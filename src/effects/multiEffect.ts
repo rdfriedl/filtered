@@ -1,11 +1,11 @@
-import Effect from './effect.js';
-import * as inputs from './inputs.js';
-import * as outputs from './outputs.js';
+import Effect from './effect';
+import * as inputs from './inputs';
+import * as outputs from './outputs';
 
 //multi filter
 export default class MultiEffect extends Effect{
     constructor(){
-        super(...arguments);
+        super();
 
         for(var i = 0; i < this.menu.length; i++){
             if(this.menu[i].title == 'Help'){
@@ -15,6 +15,7 @@ export default class MultiEffect extends Effect{
         }
         this.updateMenu();
     }
+    private filters:Map<string, svgjs.Filter>;
 	options = {
 		title: 'Multi'
 	}
@@ -29,7 +30,7 @@ export default class MultiEffect extends Effect{
 	}
 	show(){
 		for(var i in this.filter){
-			filter.put(this.filter[i]);
+			// filter.put(this.filter[i]);
 		}
 	}
 	arange(){
@@ -51,9 +52,9 @@ export default class MultiEffect extends Effect{
         $(this.element).addClass('selected');
 
     	var a = Object.keys(this.filter);
-    	previewFilter = this.filter[a[a.length-1]];
-        page.outputEffect.update();
-        page.editor.arange();
+    	// previewFilter = this.filter[a[a.length-1]];
+        // page.outputEffect.update();
+        // page.editor.arange();
     }
     updatePostion(){
     	for(var i in this.filter){

@@ -1,11 +1,11 @@
-import Effect from './effect.js';
-import * as inputs from './inputs.js';
-import * as outputs from './outputs.js';
+import Effect from './effect';
+import * as inputs from './inputs';
+import * as outputs from './outputs';
 
 //inputs
 export default class InputEffect extends Effect{
 	constructor(){
-        super(...arguments);
+        super();
 
 		this.addOutput('BackgroundImage',outputs.EffectOutput,{
 			title: 'BackgroundImage'
@@ -68,9 +68,9 @@ export default class InputEffect extends Effect{
 	]
 	toggleButton = false
 	updatePostion(){ //use filter and not this.filter
-        if(this.position.hasOwnProperty('x')){ filter.x(this.position.x + '%') } else { filter.attr('x',null) }
-        if(this.position.hasOwnProperty('y')){ filter.y(this.position.y + '%') } else { filter.attr('y',null) }
-        if(this.position.hasOwnProperty('width')){ filter.width(this.position.width + '%') } else { filter.attr('width',null) }
-        if(this.position.hasOwnProperty('height')){ filter.height(this.position.height + '%') } else { filter.attr('height',null) }
+        // if(this.position.hasOwnProperty('x')){ filter.x(this.position.x + '%') } else { filter.attr('x',null) }
+        // if(this.position.hasOwnProperty('y')){ filter.y(this.position.y + '%') } else { filter.attr('y',null) }
+        // if(this.position.hasOwnProperty('width')){ filter.width(this.position.width + '%') } else { filter.attr('width',null) }
+        // if(this.position.hasOwnProperty('height')){ filter.height(this.position.height + '%') } else { filter.attr('height',null) }
 	}
 }

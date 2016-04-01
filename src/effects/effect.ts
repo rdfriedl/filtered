@@ -1,11 +1,12 @@
-import 'svg.js';
-import 'svg.filter.js';
-import * as inputs from './inputs.js';
-import * as outputs from './outputs.js';
+import * as inputs from './inputs';
+import * as outputs from './outputs';
 
 //Effect
+export interface EffectOptions{
+    title: string;
+}
 export default class Effect{
-    constructor(style){
+    constructor(){
         this.id = 'Effect-' + Math.round(Math.random() * 10000);
         this.inputs = {};
         this.outputs = {};
@@ -14,9 +15,6 @@ export default class Effect{
         this.options = Object.create(this.options);
 
         this.style = Object.create(this.style);
-        for(var i in style){
-            this.style[i] = style[i];
-        }
 
         this.initElement();
         this.initPlumb();
@@ -24,10 +22,13 @@ export default class Effect{
         this.updateMenu();
         this.updateElement();
     }
-    inputs = {} //array of inputs
-    outputs = {} //array of outputs
-    style = {}
-    options = {
+    id: string;
+    element: HTMLElement;
+    filter: svgjs.Filter;
+    inputs: any = {} //array of inputs
+    outputs: any = {} //array of outputs
+    style: any = {}
+    options: EffectOptions = {
         title: ''
     }
     menu = [
@@ -84,7 +85,7 @@ export default class Effect{
         }.bind(this));
     }
     initPlumb(){
-        editor.draggable(this.element);
+        // editor.draggable(this.element);
     }
     applyStyles(){
         //apply style
@@ -95,14 +96,14 @@ export default class Effect{
         return this.filter;
     }
 
-    addInput(name,inputType,opts,data){
+    addInput(name?:string,inputType?:Function,opts?:any,data?:any){
         opts = opts || {};
         data = data || {};
 
         data.id = data.id || name;
         opts.title = opts.title || name;
 
-        this.inputs[name] = new (inputType)(this,opts,data);
+        // this.inputs[name] = new (inputType)(this,opts,data);
         return this.inputs[name];
     }
     addOutput(name,outputType,opts,data){
@@ -131,15 +132,15 @@ export default class Effect{
 
     show(){
         if(!this.filter) return;
-        filter.put(this.filter);
+        // filter.put(this.filter);
     }
 
     remove(){
         //remove myself
-        jsPlumb.detachAllConnections(this.element);
-        editor.removeAllEndpoints(this.element);
-        jsPlumb.remove(this.element);
-        page.effects.removeEffect(this);
+        // jsPlumb.detachAllConnections(this.element);
+        // editor.removeAllEndpoints(this.element);
+        // jsPlumb.remove(this.element);
+        // page.effects.removeEffect(this);
         this.hide();
     }
 
@@ -168,16 +169,16 @@ export default class Effect{
         $('.effect').removeClass('selected');
         $(this.element).addClass('selected');
 
-        previewFilter = this.filter;
-        page.outputEffect.update();
-        page.editor.arange()
+        // previewFilter = this.filter;
+        // page.outputEffect.update();
+        // page.editor.arange()
     }
     deselect(){
         $('.effect').removeClass('selected');
 
-        previewFilter = undefined;
-        page.outputEffect.update();
-        page.editor.arange()
+        // previewFilter = undefined;
+        // page.outputEffect.update();
+        // page.editor.arange()
     }
 
     toJSON(){
@@ -246,7 +247,7 @@ export default class Effect{
         }
 
         //read position
-        var pos = {};
+        var pos: any = {};
         if(attrs.getNamedItem('x')) pos.x = parseFloat(attrs.getNamedItem('x').value);
         if(attrs.getNamedItem('y')) pos.y = parseFloat(attrs.getNamedItem('y').value);
         if(attrs.getNamedItem('width')) pos.width = parseFloat(attrs.getNamedItem('width').value);
@@ -260,7 +261,7 @@ export default class Effect{
         height: 100
     }
     editPosition(){
-        editPosition.editEffect(this);
+        // editPosition.editEffect(this);
     }
     setPosition(data){
         data = data || {};
@@ -272,17 +273,17 @@ export default class Effect{
         this.updatePostion();
     }
     resetPosition(){
-        this.position = Object.create(this.__proto__.position);
+        this.position = Object.create(this.constructor.prototype.position);
         this.updatePostion();
     }
     getPosition(){
         return this.position;
     }
     updatePostion(){
-        if(this.position.hasOwnProperty('x')){ this.filter.x(this.position.x + '%') } else { this.filter.attr('x',null) }
-        if(this.position.hasOwnProperty('y')){ this.filter.y(this.position.y + '%') } else { this.filter.attr('y',null) }
-        if(this.position.hasOwnProperty('width')){ this.filter.width(this.position.width + '%') } else { this.filter.attr('width',null) }
-        if(this.position.hasOwnProperty('height')){ this.filter.height(this.position.height + '%') } else { this.filter.attr('height',null) }
+        // if(this.position.hasOwnProperty('x')){ this.filter.x(this.position.x + '%') } else { this.filter.attr('x',null) }
+        // if(this.position.hasOwnProperty('y')){ this.filter.y(this.position.y + '%') } else { this.filter.attr('y',null) }
+        // if(this.position.hasOwnProperty('width')){ this.filter.width(this.position.width + '%') } else { this.filter.attr('width',null) }
+        // if(this.position.hasOwnProperty('height')){ this.filter.height(this.position.height + '%') } else { this.filter.attr('height',null) }
     }
 
     render(){
@@ -316,7 +317,7 @@ export default class Effect{
         for (var k in this.outputs) {
             if(this.outputs[k] instanceof inputs.EffectInput || this.outputs[k] instanceof outputs.EffectOutput) this.outputs[k].updateEndpointPosition();
         }
-        editor.repaintEverything();
+        // editor.repaintEverything();
     }
     updateMenu(){
         var $item = $('<li><a href="#"><i class="fa"></i> <span></span></a></li>');

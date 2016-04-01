@@ -12,6 +12,7 @@ import 'script!jquery.mousewheel';
 import 'script!jquery.transit';
 import 'script!svg.js';
 import 'script!svg.filter.js';
+// import 'script!clipboard';
 import 'imports?this=>window!bootstrap';
 import 'imports?this=>window!script!jsplumb/dist/js/jsPlumb-1.7.9.js';
 import {enableProdMode} from 'angular2/core';

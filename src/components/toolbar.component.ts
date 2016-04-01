@@ -1,15 +1,13 @@
-import {Component, View, ElementRef} from 'angular2/core';
+import {Component, ElementRef} from 'angular2/core';
 
-import WelcomeComponent from './welcome.component.js';
-import ExamplesComponent from './examples.component.js';
-import ExportComponent from './export.component.js';
-import LoadFilterComponent from './loadFilter.component.js';
-import EffectsService from '../services/effects.service.js';
+import WelcomeComponent from './welcome.component';
+import ExamplesComponent from './examples.component';
+import ExportComponent from './export.component';
+import LoadFilterComponent from './loadFilter.component';
+import EffectsService from '../services/effects.service';
 
 @Component({
-	selector: 'toolbar'
-})
-@View({
+	selector: 'toolbar',
 	directives: [
 		WelcomeComponent,
 		ExamplesComponent,
@@ -19,14 +17,11 @@ import EffectsService from '../services/effects.service.js';
 	template: require('../templates/toolbar.template.html')
 })
 export default class ToolbarComponent{
-	constructor(_effectsService: EffectsService, _elementRef: ElementRef){
-		this._effectsService = _effectsService;
-		this._elementRef = _elementRef;
-	}
+	constructor(private _effectsService: EffectsService, private _elementRef: ElementRef){}
 
 	title = 'Filtered';
-	baseEffects = [];
-	prebuiltEffects = [];
+	baseEffects:any[] = [];
+	prebuiltEffects:any[] = [];
 	createEffect(effect){
 		console.log('create: '+effect.name);
 		this.title = effect.name;

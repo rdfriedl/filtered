@@ -1,4 +1,4 @@
-import * as styles from '../jsplumbStyles.js';
+import * as styles from '../ts/jsplumbStyles';
 
 //Input
 export class Input{
@@ -68,14 +68,14 @@ export class Input{
         $(this.inputElement).val(this.getValue());
     }
     _remove(){
-        editor.deleteEndpoint(this.endpoint);
+        // editor.deleteEndpoint(this.endpoint);
     }
 };
 
 //EffectInput
 export class EffectInput extends Input{
-    constructor(){
-        super(...arguments);
+    constructor(effect,opts,data){
+        super(effect,opts,data);
 
         var $el = $('#temp .effect-input').clone();
 
@@ -85,15 +85,16 @@ export class EffectInput extends Input{
 
         this.initEndpoint();
     }
+    public uuid:string;
     endpoint = undefined
     connection = undefined
     getValue(){
         return (this.connection)? this.connection.getValue() : null;
     }
-    setValue(output,dontChange){
+    setValue(output?:any,dontChange?:any){
         this.connectionEvent(output,dontChange);
 
-        editor.connect({uuids:[output.uuid,this.uuid],editable: true});
+        // editor.connect({uuids:[output.uuid,this.uuid],editable: true});
     }
 
     toJSON(){
@@ -103,35 +104,35 @@ export class EffectInput extends Input{
     }
     fromJSON(data){
         //find the element and the output and connect to it
-        var effect;
-        for(var i in page.effects._effects){
-            effect = page.effects._effects[i];
-            if(effect.id == data[0]){
-                if(effect.outputs[data[1]]){
-                    this.setValue(effect.outputs[data[1]],true);
-                }
-            }
-        }
-        if(data[0] == page.inputEffect.id){
-            effect = page.inputEffect;
-            if(effect.outputs[data[1]]){
-                this.setValue(effect.outputs[data[1]],true);
-            }
-        }
-        if(data[0] == page.outputEffect.id){
-            effect = page.outputEffect;
-            if(effect.outputs[data[1]]){
-                this.setValue(effect.outputs[data[1]],true);
-            }
-        }
+        // var effect;
+        // for(var i in page.effects._effects){
+        //     effect = page.effects._effects[i];
+        //     if(effect.id == data[0]){
+        //         if(effect.outputs[data[1]]){
+        //             this.setValue(effect.outputs[data[1]],true);
+        //         }
+        //     }
+        // }
+        // if(data[0] == page.inputEffect.id){
+        //     effect = page.inputEffect;
+        //     if(effect.outputs[data[1]]){
+        //         this.setValue(effect.outputs[data[1]],true);
+        //     }
+        // }
+        // if(data[0] == page.outputEffect.id){
+        //     effect = page.outputEffect;
+        //     if(effect.outputs[data[1]]){
+        //         this.setValue(effect.outputs[data[1]],true);
+        //     }
+        // }
     }
 
     initEndpoint(){
         this.uuid = this.effect.id+'-'+this.id;
-        this.endpoint = editor.addEndpoint(this.effect.id,styles.inputEndPoint,{
-            uuid: this.uuid
-        });
-        this.endpoint.setParameter('this',this);
+        // this.endpoint = editor.addEndpoint(this.effect.id,styles.inputEndPoint,{
+        //     uuid: this.uuid
+        // });
+        // this.endpoint.setParameter('this',this);
     }
     connectionEvent(output,dontChange){
         this.connection = output;
@@ -429,7 +430,8 @@ MatrixInput.prototype = {
                 var $input = $('<input>').val((this.matrix[index] !== undefined)? this.matrix[index] : this.options.value).on('change, input',function(){
                     this.change();
                 }.bind(this)).on('focus, mouseup',function(event){
-                    event.target.setSelectionRange(0,event.target.value.length);
+                    let el:HTMLInputElement = <HTMLInputElement>event.target;
+                    el.setSelectionRange(0,el.value.length);
                 }).change(function(){
                     if(isNaN(parseFloat($(this).val()))){
                         $(this).val(0);
@@ -699,7 +701,8 @@ FuncRGBAInput.prototype = {
                         this.updateBackground();
                     }.bind(this))
                     .on('focus, mouseup',function(event){
-                        event.target.setSelectionRange(0,event.target.value.length);
+                        let el:HTMLInputElement = <HTMLInputElement>event.target;
+                        el.setSelectionRange(0,el.value.length);
                     })
                     .on('update-background',function(event){
                         var $this = $(event.target);

@@ -12,7 +12,7 @@ module.exports = {
     	]
     },
     entry: {
-        index: './src/index.js',
+        index: './src/index.ts',
         vendor: [
             // lib
             'knockout',
@@ -36,7 +36,7 @@ module.exports = {
             'angular2/http',
             'angular2/platform/browser',
 
-            'clipboard',
+            // 'script!clipboard',
 
             // svg
             'script!svg.js',

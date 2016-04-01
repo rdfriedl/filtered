@@ -1,4 +1,4 @@
-import * as styles from '../jsplumbStyles.js';
+import * as styles from '../ts/jsplumbStyles';
 
 //Output
 export class Output{
@@ -15,8 +15,10 @@ export class Output{
         }
     }
     id = ''
+    public uuid: string;
     effect = undefined
-    value = ''
+    value: any|Function = '';
+    element: HTMLElement;
     options = {
         title: 'output'
     }
@@ -46,29 +48,29 @@ export class Output{
 
     }
     _remove(){
-        editor.deleteEndpoint(this.endpoint);
+        // editor.deleteEndpoint(this.endpoint);
     }
 };
 
 //EffectOutput
 export class EffectOutput extends Output{
-    constructor(){
-        super(...arguments);
+    constructor(effect,opts,data){
+        super(effect,opts,data);
 
         this.element = $('#temp .effect-output').clone().get(0);
 
         this.initEndpoint();
     }
     endpoint = undefined
-    value(){
+    value = function(){
         return this.effect.getValue();
     }
 
     initEndpoint(){
         this.uuid = this.effect.id+'-'+this.id;
-        this.endpoint = editor.addEndpoint(this.effect.id,styles.outputEndPoint,{
-            uuid: this.uuid
-        });
+        // this.endpoint = editor.addEndpoint(this.effect.id,styles.outputEndPoint,{
+        //     uuid: this.uuid
+        // });
         this.endpoint.setParameter('this',this);
     }
     updateEndpointPosition(){

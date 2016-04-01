@@ -1,11 +1,11 @@
-import MultiEffect from '../multiEffect.js';
-import * as inputs from '../inputs.js';
-import * as outputs from '../outputs.js';
+import MultiEffect from '../multiEffect';
+import * as inputs from '../inputs';
+import * as outputs from '../outputs';
 
 //Bump
 export default class BumpEffect extends MultiEffect{
-	constructor(){
-		super(...arguments);
+	constructor(..args){
+		super(...args);
 
 		this.addInput('in',inputs.EffectInput);
 		this.addInput('amount',inputs.NumberInput,{

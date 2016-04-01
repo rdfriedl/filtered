@@ -1,11 +1,11 @@
-import Effect from '../effect.js';
-import * as inputs from '../inputs.js';
-import * as outputs from '../outputs.js';
+import Effect from '../effect';
+import * as inputs from '../inputs';
+import * as outputs from '../outputs';
 
 //blend
 export default class BlendEffect extends Effect{
-	constructor(){
-        super(...arguments);
+	constructor(...args){
+        super(...args);
 
 		this.addInput('mode',inputs.SelectInput,{
 			value: 'normal',

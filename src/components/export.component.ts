@@ -1,5 +1,4 @@
 import {Component, ElementRef} from 'angular2/core';
-import Clipboard from 'clipboard';
 
 @Component({
 	selector: 'export',
@@ -8,9 +7,9 @@ import Clipboard from 'clipboard';
 export default class ExportComponent{
 	constructor(private _elementRef: ElementRef){}
 
-	private clipboard: Clipboard;
+	// private clipboard: any;
 	ngOnInit(){
-		this.clipboard = new Clipboard(this._elementRef.nativeElement.querySelectorAll('.copy'));
+		// this.clipboard = new Clipboard(this._elementRef.nativeElement.querySelectorAll('.copy'));
 	}
 
 	xml = "<filter></filter>";

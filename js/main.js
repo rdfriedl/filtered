@@ -56,6 +56,7 @@ var connectorPaintStyle = {
     };
 
 window.onPickerApiLoad = function() {
+    console.info('google image picker loaded');
     pickerApiLoaded = true;
 
     picker = new google.picker.PickerBuilder().
@@ -65,6 +66,7 @@ window.onPickerApiLoad = function() {
 };
 
 window.onApiLoad = function() {
+    console.info('google api loaded');
     gapi.load('picker', {'callback': window.onPickerApiLoad});
 };
 
@@ -385,7 +387,7 @@ $(document).ready(function(){
     });
 
     $(document).on('click','input[type="image"]',function(){
-        pickerCallbackFunction = function(url){
+        window.pickerCallbackFunction = function(url){
             $(this).val(url).trigger('change');
         }.bind(this);
         if(window.pickerApiLoaded) picker.setVisible(true);

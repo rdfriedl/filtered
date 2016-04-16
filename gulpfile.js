@@ -12,6 +12,7 @@ var gulpIgnore = require('gulp-ignore');
 var order = require("gulp-order");
 var wrap = require("gulp-wrap");
 var closureCompiler = require('google-closure-compiler').gulp();
+var webserver = require('gulp-webserver');
 
 var pkg = require('./package.json');
 var banner = ['/**',
@@ -72,7 +73,7 @@ gulp.task('compile-js',function(){
 				global_defs   : {}     // global definitions
     		}
     	}))
-		.pipe(wrap('(function(){<%= contents %>})()'))
+		// .pipe(wrap('(function(){<%= contents %>})()'))
 		/*.pipe(closureCompiler({
 			compilation_level: 'ADVANCED',
 			warning_level: 'QUIET',
@@ -164,3 +165,36 @@ gulp.task('build-css',['compile-css','compile-lib-css']);
 gulp.task('build-html',['compile-html']);
 gulp.task('build-js',['compile-js','compile-lib-js']);
 gulp.task('build',['build-js','build-css','build-html','compile-data']);
+
+gulp.task('watch',function(){
+    gulp.watch('js/*.js',['compile-js']);
+    gulp.watch('css/*.css',['compile-css']);
+    gulp.watch('./*.html',['compile-html']);
+
+	gulp.watch([
+        'examples/*',
+        'examples/screenshots/*',
+        'examples/json/*',
+        'fonts/*',
+        'help/*',
+        'help/help_files/*'
+    ],['compile-data']);
+})
+
+gulp.task('serve', function(){
+	return gulp.src('./')
+		.pipe(webserver({
+			livereload: true,
+			open: true
+	    }));
+})
+
+gulp.task('serve-dist', function(){
+	return gulp.src('./dist/')
+		.pipe(webserver({
+			livereload: true,
+			open: true
+	    }));
+})
+
+gulp.task('default',['watch','serve-dist']);

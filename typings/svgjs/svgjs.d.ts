@@ -16,6 +16,7 @@ declare namespace svgjs{
         extend(parent:Object, obj:Object):void;
         invent(config:Object):any;
         atopt(node:HTMLElement):Element;
+        prepare(element:HTMLElement):void;
     }
     interface LinkedHTMLElement extends HTMLElement {
         instance: Element;
@@ -209,7 +210,7 @@ declare namespace svgjs{
         width():number;
         height(height:number):this;
         height():number;
-        size(w:number, h:number, anchor?:boolean):this;
+        size(w:number|string, h:number|string, anchor?:boolean):this;
 
         clone():Element;
         remove():this;

@@ -1,18 +1,16 @@
-import {Component, ElementRef} from 'angular2/core';
+import {Component, ElementRef, DoCheck, OnInit} from 'angular2/core';
 
 @Component({
 	selector: 'preview',
 	template: require('../templates/preview.template.html'),
 	styles: [require('../styles/preview.styles.css')]
 })
-export default class PreviewComponent{
-	constructor(private _elementRef: ElementRef){
-		this.$element = $(_elementRef.nativeElement);
-	}
+export default class PreviewComponent implements DoCheck, OnInit{
+	constructor(private _elementRef: ElementRef){}
 
 	ngOnInit(){
 		//make it so the panel headers collapse the panels
-		this.$element.find('.panel-heading a[data-toggle="collapse"]').parent().parent().click(function(){
+		$(this._elementRef.nativeElement).find('.panel-heading a[data-toggle="collapse"]').parent().parent().click(function(){
 	        $($(this).find('a[data-toggle="collapse"]').attr('href')).collapse('toggle');
 	    });
 
@@ -23,13 +21,22 @@ export default class PreviewComponent{
 	    this.centerContent();
 	}
 
-	ngDoCheck(){ //use instead of chnage
+	ngDoCheck(){ //use instead of change
 		this.updatePreview();
 	}
 
-	textColor = '#000000';
-	textValue = 'Text';
-	textFontFamilies = [
+	private svg: svgjs.Doc;
+	private group: svgjs.G;
+	private text: svgjs.Text;
+	private image: svgjs.Image;
+
+	private mode: string = 'text';
+	private MODE_TEXT:string = 'text';
+	private MODE_IMAGE:string = 'image';
+
+	textColor: string = '#000000';
+	textValue: string = 'Text';
+	textFontFamilies: string[] = [
 		"Georgia, serif",
 		'"Palatino Linotype", "Book Antiqua", Palatino, serif',
 		'"Times New Roman", Times, serif',
@@ -44,54 +51,80 @@ export default class PreviewComponent{
 		'"Courier New", Courier, monospace',
 		'"Lucida Console", Monaco, monospace'
 	];
-	textFontFamily = "Impact, Charcoal, sans-serif";
-	textFontBold = false;
-	textFontItalic = false;
-	textFontLineThrough = false;
-	textFontUnderline = false;
+	textFontFamily: string = "Impact, Charcoal, sans-serif";
+	textFontBold: boolean = false;
+	textFontItalic: boolean = false;
+	textFontLineThrough: boolean = false;
+	textFontUnderline: boolean = false;
 
-	textSize = 100;
-	textSizeMin = 30;
-	textSizeMax = 200;
+	textSize: number = 100;
+	textSizeMin: number = 30;
+	textSizeMax: number = 200;
 
-	textStrokeColor = '#880000';
-	textStrokeSize = 5;
-	textStrokeSizeMin = 0;
-	textStrokeSizeMax = 50;
+	textStrokeColor: string = '#880000';
+	textStrokeSize: number = 5;
+	textStrokeSizeMin: number = 0;
+	textStrokeSizeMax: number = 50;
 
-	imageURL = '';
-	imageURLTmp = '';
-
-	private $element;
-	private mode: string = this.MODE_TEXT;
-	private svg: svgjs.Doc;
-	private group: svgjs.G;
-	private text: svgjs.Text;
-
-	private MODE_TEXT = 'text';
-	private MODE_IMAGE = 'image';
+	imageURL: string = '';
+	private imageURLTmp: string = '';
 
 	_createSVG(){
 	    this.svg = new SVG.Doc($(this._elementRef.nativeElement).find('.preview-svg')[0]);
+		this.svg.viewbox({
+			x: 0,
+			y: 0,
+			width: 1000,
+			height: 500
+		}).size(1000,500).style({
+			width: '100%',
+			height: 'auto'
+		});
 		this.group = this.svg.group();
 		this.text = this.group.text('').attr('paint-order', 'stroke');
-
-		new SVG.PathArray('string');
+		this.image = this.group.image();
+		this.image.loaded(() => {
+			this.image.center(0,0);
+		})
 
 		this.updatePreview();
 	}
 
 	centerContent(){
 		if(this.svg.node.ownerDocument) this.group.transform({
-			x: this.svg.node.getClientRects()[0].width/2,
-			y: this.svg.node.getClientRects()[0].height/2
+			x: this.svg.width()/2,
+			y: this.svg.height()/2
 		});
 	}
 	updatePreview(){
+		switch(this.mode){
+			case this.MODE_TEXT:
+				this.image.hide();
+				this.text.show();
+
+				// this.svg.size('100%','100%');
+				break;
+			case this.MODE_IMAGE:
+				this.image.show();
+				this.text.hide();
+
+				// if(this.image.width() > 0 && this.image.height() > 0)
+				// 	this.svg.viewbox({
+				// 		x: 0,
+				// 		y: 0,
+				// 		width: this.image.width()*1.5,
+				// 		height: this.image.height()*1.5
+				// 	});
+				// else
+				// 	this.svg.size('100%','100%');
+				break;
+		}
+
 		var decoration = [];
 		if(this.textFontUnderline) decoration.push('underline');
 		if(this.textFontLineThrough) decoration.push('line-through');
 
+		//update text
 		this.text.font({
 			family: this.textFontFamily,
 			size: this.textSize,
@@ -103,6 +136,12 @@ export default class PreviewComponent{
 			color: this.textStrokeColor,
 			width: this.textStrokeSize
 		}).text(this.textValue).fill(this.textColor).center(0,0);
+
+		//update image
+		if(this.image.attr('href') != this.imageURL){
+			this.image.load(this.imageURL);
+		}
+		this.image.center(0,0);
 	}
 
 	showGoogleImages(){

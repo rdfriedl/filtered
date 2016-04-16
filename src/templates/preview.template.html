@@ -16,7 +16,7 @@
             <div [hidden]="mode != MODE_TEXT">
                 <div class="form-group">
                     <label>Text</label>
-                    <input type="text" class="form-control yes-select" [(ngModel)]="textValue">
+                    <textarea type="text" class="form-control yes-select" [(ngModel)]="textValue"></textarea>
                 </div>
                 <div class="form-group">
                     <label>Color</label>
@@ -94,7 +94,7 @@
                     </span> -->
                     <input type="url" class="form-control" [(ngModel)]="imageURLTmp">
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-info" (click)="imageURL = imageURLTmp">Set</button>
+                        <button type="button" class="btn btn-info" (click)="imageURL = imageURLTmp">Load</button>
                     </span>
                 </div>
             </div>

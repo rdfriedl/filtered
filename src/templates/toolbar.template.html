@@ -25,6 +25,7 @@
                     <li><a data-toggle="modal" href="#export" data-bind="click: exportFilter.export"><i class="fa fa-check"></i> Export</a></li>
                     <li><a data-toggle="modal" href="#examples"><i class="fa fa-flask"></i> Examples</a></li>
                     <li><a data-toggle="modal" href="#help"><i class="fa fa-question"></i> Help</a></li>
+                    <li><a data-toggle="modal" href="#about-modal"><i class="fa fa-info-circle"></i> About</a></li>
                 </ul>
             </li>
 
@@ -107,10 +108,30 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
+                <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
                 <h4 class="modal-title">Load</h4>
             </div>
             <div class="modal-body">
                 <load-filter></load-filter>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- about modal -->
+<div class="modal fade" id="about-modal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</a>
+                <h4 class="modal-title"><i class="fa fa-info-circle"></i> About</h4>
+            </div>
+            <div class="modal-body text-center">
+                <h3 class="no-margin">Filtered</h3><br/>
+                <h5>Description: </h5>
+                <small><i>Simple Svg Filter builder</i></small><br/>
+                <h5>Version: </h5>
+                <small><i>v2.0.0</i></small>
             </div>
         </div>
     </div>

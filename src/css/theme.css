@@ -22,3 +22,6 @@ a{
 *:focus{
     outline: none !important;
 }
+.modal-header .btn{
+    color: white;
+}

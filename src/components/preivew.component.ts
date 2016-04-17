@@ -54,17 +54,17 @@ export default class PreviewComponent implements DoCheck, OnInit{
 	textFontFamily: string = "Impact, Charcoal, sans-serif";
 	textFontBold: boolean = false;
 	textFontItalic: boolean = false;
-	textFontLineThrough: boolean = false;
+	textFontStrikethrough: boolean = false;
 	textFontUnderline: boolean = false;
 
-	textSize: number = 100;
-	textSizeMin: number = 30;
-	textSizeMax: number = 200;
+	textSize: number = 200;
+	textSizeMin: number = 100;
+	textSizeMax: number = 500;
 
 	textStrokeColor: string = '#880000';
-	textStrokeSize: number = 5;
+	textStrokeSize: number = 20;
 	textStrokeSizeMin: number = 0;
-	textStrokeSizeMax: number = 50;
+	textStrokeSizeMax: number = 80;
 
 	imageURL: string = '';
 	private imageURLTmp: string = '';
@@ -101,28 +101,16 @@ export default class PreviewComponent implements DoCheck, OnInit{
 			case this.MODE_TEXT:
 				this.image.hide();
 				this.text.show();
-
-				// this.svg.size('100%','100%');
 				break;
 			case this.MODE_IMAGE:
 				this.image.show();
 				this.text.hide();
-
-				// if(this.image.width() > 0 && this.image.height() > 0)
-				// 	this.svg.viewbox({
-				// 		x: 0,
-				// 		y: 0,
-				// 		width: this.image.width()*1.5,
-				// 		height: this.image.height()*1.5
-				// 	});
-				// else
-				// 	this.svg.size('100%','100%');
 				break;
 		}
 
 		var decoration = [];
 		if(this.textFontUnderline) decoration.push('underline');
-		if(this.textFontLineThrough) decoration.push('line-through');
+		if(this.textFontStrikethrough) decoration.push('line-through');
 
 		//update text
 		this.text.font({

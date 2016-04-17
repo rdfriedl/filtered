@@ -1,104 +1,101 @@
 <div class="panel panel-default">
-    <div class="panel-heading">
+    <!-- <div class="panel-heading">
         <a class="btn btn-info btn-xs pull-right" href="http://rdfriedl.github.io/" target="_blank">Created by Rdfriedl</a>
         <h4 class="panel-title"><a data-toggle="collapse" href="#preview-collapse">Preview</a></h4>
-    </div>
-    <div id="preview-collapse" class="panel-collapse collapse in">
-        <div class="panel-body">
-            <svg class="preview-svg"></svg>
+    </div> -->
+    <div class="panel-body" style="overflow: auto">
+        <svg class="preview-svg"></svg>
 
-            <div class="btn-group btn-group-justified">
-                <a class="btn btn-default" (click)="mode = MODE_TEXT" [class.active]="mode == MODE_TEXT">Text</a>
-                <a class="btn btn-default" (click)="mode = MODE_IMAGE" [class.active]="mode == MODE_IMAGE">Image</a>
+        <div class="btn-group btn-group-justified">
+            <a class="btn btn-default" (click)="mode = MODE_TEXT" [class.active]="mode == MODE_TEXT">Text</a>
+            <a class="btn btn-default" (click)="mode = MODE_IMAGE" [class.active]="mode == MODE_IMAGE">Image</a>
+        </div>
+
+        <!-- text -->
+        <div [hidden]="mode != MODE_TEXT">
+            <div class="form-group">
+                <label>Text</label>
+                <textarea type="text" class="form-control yes-select" [(ngModel)]="textValue"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Color</label>
+                <input type="color" class="form-control" [(ngModel)]="textColor">
             </div>
 
-            <!-- text -->
-            <div [hidden]="mode != MODE_TEXT">
-                <div class="form-group">
-                    <label>Text</label>
-                    <textarea type="text" class="form-control yes-select" [(ngModel)]="textValue"></textarea>
+            <!-- font -->
+            <div class="panel panel-default" data-bind="with: font">
+                <div class="panel-heading" id="headingOne">
+                    <h4 class="panel-title">
+                        <i class="fa fa-minus pull-right"></i>
+                        <a data-toggle="collapse" href="#font-collapse">Font</a>
+                    </h4>
                 </div>
-                <div class="form-group">
-                    <label>Color</label>
-                    <input type="color" class="form-control" [(ngModel)]="textColor">
-                </div>
-
-                <!-- font -->
-                <div class="panel panel-default" data-bind="with: font">
-                    <div class="panel-heading" id="headingOne">
-                        <h4 class="panel-title">
-                            <i class="fa fa-minus pull-right"></i>
-                            <a data-toggle="collapse" href="#font-collapse">Font</a>
-                        </h4>
-                    </div>
-                    <div id="font-collapse" class="panel-collapse collapse in">
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <label>Font</label>
-                                <select class="form-control" [(ngModel)]="textFontFamily">
-                                    <option *ngFor="#font of textFontFamilies" [value]="font">{{ font }}</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Styles</label>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default" (click)="textFontBold = !textFontBold" [class.active]="textFontBold"><i class="fa fa-bold"></i></button>
-                                    <button type="button" class="btn btn-default" (click)="textFontItalic = !textFontItalic" [class.active]="textFontItalic"><i class="fa fa-italic"></i></button>
-                                    <button type="button" class="btn btn-default" (click)="textFontUnderline = !textFontUnderline" [class.active]="textFontUnderline"><i class="fa fa-underline"></i></button>
-                                    <button type="button" class="btn btn-default" (click)="textFontStrikethrough = !textFontStrikethrough" [class.active]="textFontStrikethrough"><i class="fa fa-strikethrough"></i></button>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Size</label>
-                                <div class="input-group">
-                                    <input type="range" class="form-control" [min]="textSizeMin" [max]="textSizeMax" [(ngModel)]="textSize">
-                                    <div class="input-group-addon">{{ textSize }}</div>
-                                </div>
+                <div id="font-collapse" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label>Font</label>
+                            <select class="form-control" [(ngModel)]="textFontFamily">
+                                <option *ngFor="#font of textFontFamilies" [value]="font">{{ font }}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Styles</label>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default" (click)="textFontBold = !textFontBold" [class.active]="textFontBold"><i class="fa fa-bold"></i></button>
+                                <button type="button" class="btn btn-default" (click)="textFontItalic = !textFontItalic" [class.active]="textFontItalic"><i class="fa fa-italic"></i></button>
+                                <button type="button" class="btn btn-default" (click)="textFontUnderline = !textFontUnderline" [class.active]="textFontUnderline"><i class="fa fa-underline"></i></button>
+                                <button type="button" class="btn btn-default" (click)="textFontStrikethrough = !textFontStrikethrough" [class.active]="textFontStrikethrough"><i class="fa fa-strikethrough"></i></button>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- stroke -->
-                <div class="panel panel-default" data-bind="with: stroke">
-                    <div class="panel-heading" id="headingOne">
-                        <h4 class="panel-title">
-                            <i class="fa fa-minus pull-right"></i>
-                            <a data-toggle="collapse" href="#stroke-collapse">Stroke</a>
-                        </h4>
-                    </div>
-                    <div id="stroke-collapse" class="panel-collapse collapse in">
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <label>Color</label>
-                                <input type="color" class="form-control" [(ngModel)]="textStrokeColor">
-                            </div>
-                            <div class="form-group">
-                                <label>Size</label>
-                                <div class="input-group">
-                                    <input type="range" class="form-control" [min]="textStrokeSizeMin" [max]="textStrokeSizeMax" [(ngModel)]="textStrokeSize">
-                                    <div class="input-group-addon">{{ textStrokeSize }}</div>
-                                </div>
+                        <div class="form-group">
+                            <label>Size</label>
+                            <div class="input-group">
+                                <input type="range" class="form-control" [min]="textSizeMin" [max]="textSizeMax" [(ngModel)]="textSize">
+                                <div class="input-group-addon">{{ textSize }}</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- image -->
-            <div [hidden]="mode != MODE_IMAGE">
-                <label>Image Url</label>
-                <div class="input-group">
-                    <!-- <span class="input-group-btn">
-                        <button type="button" class="btn btn-primary" (click)="showGoogleImages()">Google Images</button>
-                    </span> -->
-                    <input type="url" class="form-control" [(ngModel)]="imageURLTmp">
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-info" (click)="imageURL = imageURLTmp">Load</button>
-                    </span>
+            <!-- stroke -->
+            <div class="panel panel-default" data-bind="with: stroke">
+                <div class="panel-heading" id="headingOne">
+                    <h4 class="panel-title">
+                        <i class="fa fa-minus pull-right"></i>
+                        <a data-toggle="collapse" href="#stroke-collapse">Stroke</a>
+                    </h4>
+                </div>
+                <div id="stroke-collapse" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label>Color</label>
+                            <input type="color" class="form-control" [(ngModel)]="textStrokeColor">
+                        </div>
+                        <div class="form-group">
+                            <label>Size</label>
+                            <div class="input-group">
+                                <input type="range" class="form-control" [min]="textStrokeSizeMin" [max]="textStrokeSizeMax" [(ngModel)]="textStrokeSize">
+                                <div class="input-group-addon">{{ textStrokeSize }}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- image -->
+        <div [hidden]="mode != MODE_IMAGE">
+            <label>Image Url</label>
+            <div class="input-group">
+                <!-- <span class="input-group-btn">
+                    <button type="button" class="btn btn-primary" (click)="showGoogleImages()">Google Images</button>
+                </span> -->
+                <input type="url" class="form-control" [(ngModel)]="imageURLTmp">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-info" (click)="imageURL = imageURLTmp">Load</button>
+                </span>
+            </div>
+        </div>
     </div>
-    <button id="toggle-button" class="btn btn-default" data-toggle="collapse" data-target="#preview-collapse"><i class="fa fa-angle-double-up"></i></button>
 </div>

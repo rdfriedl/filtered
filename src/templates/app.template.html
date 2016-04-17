@@ -1,30 +1,28 @@
 <div class="root no-select">
-
-    <editor></editor>
-
-    <!-- header -->
-    <div id="top-left" style="padding-right: 0;">
+    <div class="col-xs-8 full-height" style="padding: 0;">
         <toolbar></toolbar>
-    </div>
-    <div id="top-right" style="padding-left: 0;">
-        <preview></preview>
-    </div>
+        <editor></editor>
 
-    <!-- footer -->
-    <nav id="footer" class="navbar navbar-default" role="navigation">
-        <ul class="nav navbar-nav">
-            <li data-bind="click: $root.toggle(gooEnabled), css: {active: gooEnabled}"><a href="#">Goo Effect</a></li>
-            <li><a id="center-view" href="#"><i class="fa fa-plus-square-o"></i> Center View</a></li>
-        </ul>
-        <!-- <div class="navbar-form navbar-right">
-            <div class="form-group">
-                <div class="input-group" style="margin: 3px;">
-                    <span class="input-group-addon">Zoom</span>
-                    <input type="number" class="form-control" step="0.01" data-bind="value: editor.zoom.zoomLevel, valueUpdate: 'input'">
+        <!-- footer -->
+        <!-- <nav id="footer" class="navbar navbar-default" role="navigation">
+            <ul class="nav navbar-nav">
+                <li data-bind="click: $root.toggle(gooEnabled), css: {active: gooEnabled}"><a href="#">Goo Effect</a></li>
+                <li><a id="center-view" href="#"><i class="fa fa-plus-square-o"></i> Center View</a></li>
+            </ul>
+
+            <div class="navbar-form navbar-right">
+                <div class="form-group">
+                    <div class="input-group" style="margin: 3px;">
+                        <span class="input-group-addon">Zoom</span>
+                        <input type="number" class="form-control" step="0.01" data-bind="value: editor.zoom.zoomLevel, valueUpdate: 'input'">
+                    </div>
                 </div>
             </div>
-        </div> -->
-    </nav>
+        </nav> -->
+    </div>
+    <div class="col-xs-4 full-height" style="padding: 0;">
+        <preview></preview>
+    </div>
 
     <div class="modal fade" id="import" data-bind="with: importFilter">
         <div class="modal-dialog modal-lg">

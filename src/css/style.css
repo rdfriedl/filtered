@@ -1,5 +1,6 @@
-html,body,.full-height{
+html,body{
     height: 100%;
+    width: 100%;
     overflow: hidden;
 }
 .no-margin{
@@ -213,19 +214,19 @@ path, ._jsPlumb_endpoint {
     line-height: 0;
 }
 
-.funcrgba-input .input-table input[type=text]::-webkit-inner-spin-button,
-.funcrgba-input .input-table input[type=text]::-webkit-outer-spin-button {
+.funcrgba-input .input-table input[type="text"]::-webkit-inner-spin-button,
+.funcrgba-input .input-table input[type="text"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-.funcrgba-input .input-table input[type=text]{
+.funcrgba-input .input-table input[type="text"]{
     margin: 0px;
     padding: 0px 0px 0px 5px;
     height: 24px;
     border: none;
     text-align: center;
 }
-.funcrgba-input .input-table input[type=text].invert{
+.funcrgba-input .input-table input[type="text"].invert{
     -webkit-filter: invert(100%);
     filter: invert(100%);
 }

@@ -2,7 +2,7 @@
   "name": "filtered",
   "version": "0.1.0",
   "private": true,
-  "devDependencies": {
+  "optionalDependencies": {
     "autoprefixer": "6.4.0",
     "babel-core": "6.14.0",
     "babel-eslint": "6.1.2",
@@ -50,7 +50,8 @@
     "svg.js": "^2.3.4"
   },
   "scripts": {
-    "start": "npm i --only=dev && npm run build && node server/server.js",
+    "install": "webpack --config=config/webpack.config.prod.js",
+    "start": "node server/server.js",
     "build": "webpack --config=config/webpack.config.prod.js",
     "build-dev": "webpack --config=config/webpack.config.dev.js"
   },

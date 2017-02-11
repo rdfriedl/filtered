@@ -1,0 +1,45 @@
+{
+	"presets": [
+		"babel-preset-latest",
+		"babel-preset-react"
+	],
+	"env": {
+		"dev": {
+			"plugins": [
+				["react-transform", {
+					"transforms": [{
+						"transform": "react-transform-hmr",
+						"imports": ["react"],
+						"locals": ["module"]
+					}]
+				}],
+				"babel-plugin-transform-class-properties",
+				"babel-plugin-transform-decorators-legacy",
+				"babel-plugin-transform-object-rest-spread",
+				["babel-plugin-transform-regenerator", {
+					"async": false
+				}],
+				["babel-plugin-transform-runtime", {
+					"helpers": false,
+					"polyfill": false,
+					"regenerator": true
+				}]
+			]
+		},
+		"production": {
+			"plugins": [
+				"babel-plugin-transform-class-properties",
+				"babel-plugin-transform-decorators-legacy",
+				"babel-plugin-transform-object-rest-spread",
+				["babel-plugin-transform-regenerator", {
+					"async": false
+				}],
+				["babel-plugin-transform-runtime", {
+					"helpers": false,
+					"polyfill": false,
+					"regenerator": true
+				}]
+			]
+		}
+	}
+}

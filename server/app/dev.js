@@ -3,7 +3,7 @@ var express = require('express');
 var webpack = require('webpack');
 var webpackDevMiddleware = require('webpack-dev-middleware');
 var webpackHotMiddleware = require('webpack-hot-middleware');
-var webpackConfig = require('../../config/webpack.config.dev.js');
+var webpackConfig = require('../../config/webpack.dev.config.js');
 
 // create the app
 var router = express.Router();

@@ -4,14 +4,11 @@ import Output from './Output';
 import uuid from 'uuid/v4';
 
 export default class Node{
-	@observable outputs = [];
-	@observable outputs = [];
-
 	/** @type {String} the id of this Node */
 	id = uuid();
 
-	/** @type {NodeManager} the manager that this node belongs to */
-	manager = undefined;
+	@observable.shallow inputs = [];
+	@observable.shallow outputs = [];
 
 	/** returns a keymap of all the inputs with the keys being the inputs name */
 	@computed get ins(){

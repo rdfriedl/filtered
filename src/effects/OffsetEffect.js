@@ -1,7 +1,7 @@
 import React from 'react';
-import EffectNode from 'core/nodeTypes/EffectNode';
-import NumberInput from 'core/inputTypes/NumberInput';
-import EffectInput from 'core/inputTypes/EffectInput';
+import EffectNode from 'core/nodes/EffectNode';
+import NumberInput from 'core/inputs/NumberInput';
+import EffectInput from 'core/inputs/EffectInput';
 
 export default class OffsetEffect extends EffectNode{
 	constructor(...args){

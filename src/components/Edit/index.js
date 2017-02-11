@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import pkg from '../../../package.json';
+import React, {Component} from 'react';
 
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
@@ -9,16 +8,21 @@ import MenuItem from 'material-ui/MenuItem';
 // import DropDownMenu from 'material-ui/DropDownMenu';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
-import {Link} from 'react-router';
 
-class App extends Component {
+import pkg from '../../../package.json';
+
+import MathEffect from 'core/nodes/MathNode';
+
+export default class Edit extends Component{
+	node = new MathEffect();
+
 	state = {
 		value: 3
 	};
 
   	handleChange = (event, index, value) => this.setState({value});
 
-	render() {
+	render(){
 		return (
 			<div is layout="column top-stretch" style={{height: '100vh'}}>
 				<Toolbar>
@@ -29,7 +33,7 @@ class App extends Component {
 						<ToolbarTitle text="Options" />
 						<FontIcon className="fa fa-plus" />
 						<ToolbarSeparator />
-						<Link to="/edit"><RaisedButton label="Create Broadcast" primary={true} /></Link>
+						<RaisedButton label="Create Broadcast" primary={true} />
 						<IconMenu
 							iconButtonElement={
 								<IconButton touch={true}>
@@ -47,7 +51,7 @@ class App extends Component {
 						left
 					</div>
 					<div is self="size-x1">
-						Home
+						Edit
 					</div>
 					<div>
 						right
@@ -57,5 +61,3 @@ class App extends Component {
 		);
 	}
 }
-
-export default App;

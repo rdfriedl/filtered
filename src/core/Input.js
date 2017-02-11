@@ -6,7 +6,10 @@ import uuid from 'uuid/v4';
  * @class the base class for a Node input
  */
 export default class Input{
-	constructor(name = 'input', defaultValue) {
+	constructor(name, defaultValue) {
+		if(!name)
+			throw new Error('a name is required for an output');
+
 		this.name = name;
 		this.defaultValue = defaultValue;
 	}
@@ -15,10 +18,10 @@ export default class Input{
 	id = uuid();
 
 	/** @type {Node} the Node this input is connected to */
-	@observable node = undefined;
+	@observable.ref node = undefined;
 
 	/** @type {Connection} the connection that connects this input to an {@link Output} */
-	@observable connection = undefined;
+	@observable.ref connection = undefined;
 
 	/** @type {String} the name of the input */
 	@observable name = '';

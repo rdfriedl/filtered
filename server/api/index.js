@@ -7,8 +7,15 @@ var router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });
+router.get('/message', function(req, res) {
+    res.json({message: 'hooray! welcome to our api!'});
 });
+
+router.get('*', function(req, res){
+	res.json({
+		error: true,
+		message: 'no route '+req.path
+	})
+})
 
 module.exports = router;

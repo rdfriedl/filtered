@@ -1,7 +1,7 @@
 import {autorun, observable} from 'mobx';
 import Node from '../Node';
-import NumberInput from '../inputTypes/NumberInput';
-import NumberOutput from '../outputTypes/NumberOutput';
+import NumberInput from '../inputs/NumberInput';
+import NumberOutput from '../outputs/NumberOutput';
 
 export default class MathNode extends Node{
 	constructor(...args){

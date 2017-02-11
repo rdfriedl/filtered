@@ -3,8 +3,8 @@ var express = require('express');
 var app = express();
 
 // add the api
-app.use('/', require('./app/index.js'));
 app.use('/api', require('./api/index.js'));
+app.use(require('./app/index.js'));
 
 // openshift health report
 app.get('/health', function(req, res){

@@ -6,14 +6,22 @@ import uuid from 'uuid/v4';
  * @class the base class for a Node output
  */
 export default class Output{
+	constructor(name, defaultValue) {
+		if(!name)
+			throw new Error('a name is required for an output');
+
+		this.name = name;
+		this.defaultValue = defaultValue;
+	}
+
 	/** @type {String} the id of this Node */
 	id = uuid();
 
 	/** @type {Node} the Node this input is connected to */
-	@observable node = undefined;
+	@observable.ref node = undefined;
 
 	/** @type {Connection} the connection that connects this input to an {@link Output} */
-	@observable connection = undefined;
+	@observable.ref connection = undefined;
 
 	/** @type {String} the name of the output */
 	@observable name = '';

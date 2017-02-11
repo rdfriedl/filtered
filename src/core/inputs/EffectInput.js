@@ -1,5 +1,5 @@
 import Input from '../Input.js';
-import EffectOutput from '../outputTypes/EffectOutput';
+import EffectOutput from '../outputs/EffectOutput';
 
 export default class EffectInput extends Input{
 	acceptConnection(output){

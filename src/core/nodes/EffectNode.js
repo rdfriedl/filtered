@@ -1,5 +1,5 @@
 import Node from '../Node';
-import EffectOutput from '../outputTypes/EffectOutput';
+import EffectOutput from '../outputs/EffectOutput';
 
 export default class EffectNode extends Node{
 	constructor(...args){

@@ -1,5 +1,5 @@
 import Input from '../Input.js';
-import NumberOutput from '../outputTypes/NumberOutput'
+import NumberOutput from '../outputs/NumberOutput'
 
 export default class NumberInput extends Input{
 	defaultValue = 0;

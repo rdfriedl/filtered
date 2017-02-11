@@ -43,5 +43,19 @@ module.exports = merge.smart(base, {
 	// We don't use source maps here because they can be confusing:
 	// https://github.com/facebookincubator/create-react-app/issues/343#issuecomment-237241875
 	// You may want 'cheap-module-source-map' instead if you prefer source maps.
-	devtool: 'source-map'
+	devtool: 'source-map',
+	devServer: {
+		contentBase: path.join(__dirname, '../dist'),
+		stats: {colors: true},
+		watchOptions: {
+			ignored: /node_modules/
+		},
+		compress: true,
+		hot: true,
+		historyApiFallback: true,
+		port: 8080,
+		proxy: {
+			"/api": "http://localhost:3000/api"
+		}
+	}
 });

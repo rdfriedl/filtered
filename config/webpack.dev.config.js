@@ -52,6 +52,7 @@ module.exports = merge.smart(base, {
 		},
 		compress: true,
 		hot: true,
+		inline: true,
 		historyApiFallback: true,
 		port: 8080,
 		proxy: {

@@ -23,8 +23,7 @@ module.exports = {
 		extensions: ['.js', '.json', '.jsx'],
 		alias: {
 			src: path.resolve(__dirname, '../src'),
-			core: path.resolve(__dirname, '../src/core'),
-			effects: path.resolve(__dirname, '../src/effects')
+			core: path.resolve(__dirname, '../src/core')
 		}
 	},
 	plugins: [

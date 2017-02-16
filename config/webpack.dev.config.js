@@ -21,7 +21,6 @@ module.exports = merge.smart(base, {
 		// to the events received by the client above, and applies updates (such as
 		// new CSS) to the running application.
 		'webpack/hot/only-dev-server',
-    	'webpack-hot-middleware/client',
 		// We ship a few polyfills by default.
 		// require.resolve('./polyfills'),
 		// Finally, this is your app's code:

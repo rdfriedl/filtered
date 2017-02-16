@@ -13,6 +13,8 @@ export default class OffsetEffect extends EffectNode{
 		this.addInput(new NumberInput('y'));
 	}
 
+	title = "Offset";
+
 	render(){
 		return (
 			<feOffset in={this.ins.in} dx={this.ins.x} dy={this.ins.y} result={this.outs.out}></feOffset>

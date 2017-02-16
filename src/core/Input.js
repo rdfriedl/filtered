@@ -37,6 +37,10 @@ export default class Input{
 		return this.parseValue(this.connection ? this.connection.value : this.defaultValue);
 	}
 
+	@computed get manager(){
+		return this.node && this.node.manager;
+	}
+
 	/**
 	 * makes sure the value matches the inputs type
 	 * @private

@@ -16,6 +16,9 @@ export default class MathNode extends Node{
 
 	@observable operation = 'add';
 
+	// options
+	title = 'Math Node'
+
 	updateOutput(){
 		let {in1, in2} = this.ins;
 		let {out} = this.outs;

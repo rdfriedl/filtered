@@ -10,6 +10,8 @@ export default class Node{
 	@observable.shallow inputs = [];
 	@observable.shallow outputs = [];
 
+	@observable.ref manager = undefined;
+
 	/** returns a keymap of all the inputs with the keys being the inputs name */
 	@computed get ins(){
 		let ins = {};

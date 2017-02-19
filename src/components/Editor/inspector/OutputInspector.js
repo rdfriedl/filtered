@@ -1,9 +1,11 @@
 import React, {Component, PropTypes} from 'react';
+import {observer} from 'mobx-react';
 import inspectorTypes from './inspectorTypes';
 import Output from 'core/Output';
 import Point from '../connections/Point';
 import InputWrapper from './InputWrapper';
 
+@observer
 export default class OutputInspector extends Component{
 	static PropTypes = {
 		output: PropTypes.instanceOf(Output).isRequired

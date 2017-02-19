@@ -32,6 +32,7 @@ export default class NodeManager{
 	removeNode(id){
 		let node = this.getNode(id);
 		if(node){
+			node.dispose();
 			this.nodes.splice(this.nodes.indexOf(node), 1);
 			node.manager = undefined;
 		}

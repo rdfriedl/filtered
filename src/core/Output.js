@@ -33,6 +33,13 @@ export default class Output{
 		return this.node && this.node.manager;
 	}
 
+	dispose(){
+		if(this.connection)
+			this.connection.disconnect();
+
+		return this;
+	}
+
 	/**
 	 * connects to an input
 	 * @param  {Input} input

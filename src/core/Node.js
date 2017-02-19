@@ -1,4 +1,4 @@
-import {observable, runInAction, computed} from 'mobx';
+import {observable, runInAction, computed, action} from 'mobx';
 import Input from './Input';
 import Output from './Output';
 import uuid from 'uuid/v4';
@@ -63,12 +63,14 @@ export default class Node{
 	 * @param  {String|Number|Input} id - the id or the input to remove
 	 * @return {this}
 	 */
+	@action
 	removeInput(id){
 		let input = this.getInput(id);
-		runInAction(() => {
-			this.inputs.splice(this.inputs.indexOf(input), 1);
-			input.node = undefined;
-		});
+
+		input.dispose();
+		this.inputs.splice(this.inputs.indexOf(input), 1);
+		input.node = undefined;
+
 		return this;
 	}
 
@@ -110,12 +112,27 @@ export default class Node{
 	 * @param  {String|Number|Output} id - the id or the output to remove
 	 * @return {this}
 	 */
+	@action
 	removeOutput(id){
 		let output = this.getOutput(id);
-		runInAction(() => {
-			this.outputs.splice(this.outputs.indexOf(output), 1);
-			output.node = undefined;
-		});
+
+		output.dispose();
+		this.outputs.splice(this.outputs.indexOf(output), 1);
+		output.node = undefined;
+
+		return this;
+	}
+
+	dispose(){
+		this.inputs.forEach(input => input.dispose());
+		this.outputs.forEach(output => output.dispose());
+		return this;
+	}
+
+	remove(){
+		if(this.manager)
+			this.manager.removeNode(this);
+
 		return this;
 	}
 }

@@ -14,8 +14,8 @@ class NodeInspector extends Component{
 				{node.inputs.filter(input => inspectorTypes.has(input.constructor)).map(input => (
 					<InputInspector input={input} key={input.id}/>
 				))}
-				{node.outputs.filter(output => inspectorTypes.has(output.constructor)).map(output => (
-					<OutputInspector key={output.id} output={output}/>
+				{node.outputs.filter(output => inspectorTypes.has(output.constructor)).map((output, i, a) => (
+					<OutputInspector key={output.id} output={output} isLast={i === a.length-1} isFirst={i === 0}/>
 				))}
 			</div>
 		)

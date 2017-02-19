@@ -41,6 +41,13 @@ export default class Input{
 		return this.node && this.node.manager;
 	}
 
+	dispose(){
+		if(this.connection)
+			this.connection.disconnect();
+
+		return this;
+	}
+
 	/**
 	 * makes sure the value matches the inputs type
 	 * @private

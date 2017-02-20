@@ -5,15 +5,16 @@ before_script:
 
 stages:
   - test
+  - build
   - clean_up
 
 test_job:
-  statge: test
+  stage: test
   script:
     - npm run test
 
 build_job:
-  statge: build
+  stage: build
   script:
     - npm run build
 

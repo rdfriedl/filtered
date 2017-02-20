@@ -3,9 +3,7 @@ var base = require('./webpack.base.config.js');
 var merge = require('webpack-merge');
 
 module.exports = merge(base, {
-	entry: [
-		path.resolve(__dirname, '../test/index.js')
-	],
+	entry: path.resolve(__dirname, '../test/index.js'),
 	output: {
 		filename: '[name].test.js'
 	},

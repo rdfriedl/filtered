@@ -31,10 +31,7 @@ module.exports = merge.smart(base, {
 	],
 	plugins: [
 		// Generates an `index.html` file with the <script> injected.
-		new HtmlWebpackPlugin({
-			inject: true,
-			template: path.resolve(__dirname, '../src/index.html'),
-		}),
+		new HtmlWebpackPlugin(),
 		// This is necessary to emit hot updates
 		new webpack.HotModuleReplacementPlugin()
 	],

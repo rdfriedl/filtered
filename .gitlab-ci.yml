@@ -1,0 +1,25 @@
+image: node:latest
+
+before_script:
+  - npm install
+
+stages:
+  - test
+  - clean_up
+
+test_job:
+  statge: test
+  script:
+    - npm run test
+
+build_job:
+  statge: build
+  script:
+    - npm run build
+
+clean_up_job:
+  stage: clean_up
+  script:
+    - rm -rf node_modules
+    - rm -rf ~/.node-gyp
+  when: on_failure

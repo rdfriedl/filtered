@@ -40,6 +40,13 @@ export default class NodeManager{
 		return this;
 	}
 
+	@action
+	clearNodes(){
+		let nodes = Array.from(this.nodes);
+		nodes.forEach(node => this.removeNode(node));
+		return this;
+	}
+
 	hasInput(input){
 		for (var i = 0; i < this.nodes.length; i++) {
 			if(this.nodes[i].hasInput(input))
@@ -98,6 +105,13 @@ export default class NodeManager{
 			connection.disconnect();
 			this.connections.splice(this.connections.indexOf(connection), 1);
 		}
+		return this;
+	}
+
+	@action
+	clearConnections(){
+		let connections = Array.from(this.connections);
+		connections.forEach(connection => this.removeConnection(connection));
 		return this;
 	}
 }

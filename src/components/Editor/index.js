@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 
-import Navbar from '../Navbar';
 import InspectorCard from './inspector/InspectorCard';
 
 import NodeManager from 'core/NodeManager';
@@ -11,7 +10,7 @@ import MathNode from 'core/nodes/MathNode';
 import OffsetEffect from 'core/nodes/effects/OffsetEffect';
 
 @observer
-export default class Edit extends Component{
+export default class Editor extends Component{
 	constructor(props) {
 		super(props);
 		let math = new MathNode(), math2 = new MathNode(), offset = new OffsetEffect();
@@ -70,24 +69,24 @@ export default class Edit extends Component{
 		let viewportStyles = {
 			position: 'absolute',
 			cursor: this.state.dragging? 'move' : 'initial'
-		}
+		};
 		let contentStyles = {
 			position: 'absolute',
 			transform: `translate(${this.state.x}px, ${this.state.y}px) scale(${this.state.zoom})`,
 			left: '50%',
 			top: '50%'
-		}
+		};
 
 		let onNodeMove = () => {
-			// make the component rerender
+			// make the component re-render
 			this.setState({});
-		}
+		};
 
 		let zoomEvent = (e) => {
 			this.setState({
 				zoom: Math.min(Math.max(this.state.zoom * (Math.sign(-e.deltaY)*0.1 + 1), 0.2), 5)
 			})
-		}
+		};
 
 		return (
 			<div className="d-flex flex-column h-100">
@@ -98,7 +97,6 @@ export default class Edit extends Component{
 						))}</div>
 					</ConnectionManager>
 				</div>
-				<Navbar/>
 				<div className="row flex-grow">
 					<div className="col-2">
 						<div className="card h-100">

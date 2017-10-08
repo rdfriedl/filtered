@@ -1,4 +1,4 @@
-var webpackConfig = require('./webpack.test.config.js');
+const webpackConfig = require('./webpack.test.config.js');
 delete webpackConfig.entry;
 
 module.exports = function(config) {
@@ -8,13 +8,11 @@ module.exports = function(config) {
 			'karma-chrome-launcher',
 
 			'karma-mocha',
-			'karma-mocha-reporter',
 			'karma-sinon-chai',
 			'karma-sourcemap-loader',
 			'karma-webpack',
-			'karma-coverage'
+			'karma-mocha-reporter'
 		],
-		reporters: ['mocha', 'coverage'],
 		// this is the entry file for all our tests.
 		files: [
 			'../test/index.js'
@@ -31,13 +29,10 @@ module.exports = function(config) {
 			noInfo: true
 		},
 		singleRun: false,
+
+		reporters: ['mocha'],
 		mochaReporter: {
 			output: 'autowatch'
-		},
-		coverageReporter: {
-			type: 'html', // produces a html document after code is run
-			dir: '../coverage/',
-			subdir: '.'
 		}
 	})
 };

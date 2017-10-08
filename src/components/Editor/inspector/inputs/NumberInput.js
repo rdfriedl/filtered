@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {observer} from 'mobx-react';
 import InputType from 'core/inputs/NumberInput';
 
@@ -19,7 +20,7 @@ const NumberInput = observer(({input}) => (
 ));
 
 NumberInput.PropTypes = {
-	input: React.PropTypes.instanceOf(InputType).isRequired
-}
+	input: PropTypes.instanceOf(InputType).isRequired
+};
 
 export {NumberInput as default};

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {observer} from 'mobx-react';
 import OutputType from 'core/outputs/EffectOutput';
 
@@ -7,7 +8,7 @@ const EffectOutput = observer(({output}) => (
 ));
 
 EffectOutput.PropTypes = {
-	output: React.PropTypes.instanceOf(OutputType).isRequired
-}
+	output: PropTypes.instanceOf(OutputType).isRequired
+};
 
 export {EffectOutput as default};

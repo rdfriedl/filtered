@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import Node from 'core/Node';
 import NodeInspector from './NodeInspector';
 import inspectorTypes from './inspectorTypes';
@@ -51,7 +52,7 @@ export default class InspectorCard extends Component{
 				x: this.dragStartPosition.x + (event.screenX - this.cursorStart.x) / this.containerScale,
 				y: this.dragStartPosition.y + (event.screenY - this.cursorStart.y) / this.containerScale
 			}
-		})
+		});
 
 		if(this.props.onDrag)
 			this.props.onDrag();
@@ -82,7 +83,7 @@ export default class InspectorCard extends Component{
 			top: this.state.position.y,
 			minWidth: 250,
 			userSelect: 'none'
-		}
+		};
 		let InspectorType = inspectorTypes.get(node.constructor) || NodeInspector;
 
 		this.containerScale = containerScale;

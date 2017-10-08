@@ -3,24 +3,24 @@ image: node:latest
 before_script:
   - npm install
 
+cache:
+  paths:
+  - node_modules
+
 stages:
   - test
   - build
-  - clean_up
 
 test_job:
   stage: test
   script:
-    - npm run test
+    - npm test
+  cache:
+    policy: pull
 
 build_job:
   stage: build
   script:
     - npm run build
-
-clean_up_job:
-  stage: clean_up
-  script:
-    - rm -rf node_modules
-    - rm -rf ~/.node-gyp
-  when: on_failure
+  cache:
+    policy: pull

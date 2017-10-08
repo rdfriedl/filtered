@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {observer} from 'mobx-react';
 import inspectorTypes from './inspectorTypes';
 import Input from 'core/Input';
@@ -9,7 +10,7 @@ import InputWrapper from './InputWrapper';
 export default class InputInspector extends Component{
 	static PropTypes = {
 		input: PropTypes.instanceOf(Input).isRequired
-	}
+	};
 
 	render(){
 		let {input, children, ...props} = this.props;
@@ -20,7 +21,7 @@ export default class InputInspector extends Component{
 			left: "0",
 			top: "50%",
 			display: "block"
-		}
+		};
 
 		return (
 			<InputWrapper {...props}>

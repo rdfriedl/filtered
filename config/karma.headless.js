@@ -1,4 +1,4 @@
-var webpackConfig = require('./webpack.dev.config.js');
+const webpackConfig = require('./webpack.dev.config.js');
 delete webpackConfig.entry;
 webpackConfig.devtool = 'inline-source-map';
 webpackConfig.bail = true;
@@ -11,10 +11,10 @@ module.exports = function(config) {
 			'karma-phantomjs-shim',
 
 			'karma-mocha',
-			'karma-mocha-reporter',
 			'karma-sinon-chai',
 			'karma-sourcemap-loader',
-			'karma-webpack'
+			'karma-webpack',
+			'karma-mocha-reporter'
 		],
 		browsers: ['PhantomJS'],
 		// this is the entry file for all our tests.

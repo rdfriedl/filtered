@@ -1,8 +1,8 @@
-var path = require('path');
-var webpack = require('webpack');
-var base = require('./webpack.base.config.js');
-var merge = require('webpack-merge');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const base = require('./webpack.base.config.js');
+const merge = require('webpack-merge');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 // var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = merge(base, {
@@ -12,15 +12,15 @@ module.exports = merge(base, {
 	entry: {
 		main: path.resolve(__dirname, '../src/index.js')
 	},
-	externals: {
-		jquery: '$',
-		tether: 'Tether',
-		bootstrap: true,
-		react: 'React',
-		'react-dom': 'ReactDOM',
-		mobx: 'mobx',
-		'mobx-react': 'mobxReact'
-	},
+	// externals: {
+	// 	'jquery': '$',
+	// 	'tether': 'Tether',
+	// 	'bootstrap': true,
+	// 	'react': 'React',
+	// 	'react-dom': 'ReactDOM',
+	// 	'mobx': 'mobx',
+	// 	'mobx-react': 'mobxReact'
+	// },
 	plugins: [
 		// Generates an `index.html` file with the <script> injected.
 		new HtmlWebpackPlugin({

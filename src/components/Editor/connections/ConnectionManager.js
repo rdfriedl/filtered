@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {observer} from 'mobx-react';
 
 @observer
@@ -39,7 +40,7 @@ export default class ConnectionManager extends Component{
 			left: 0,
 			top: 0,
 			pointerEvents: 'none'
-		}
+		};
 
 		return (
 			<div {...props}>
@@ -55,7 +56,7 @@ export default class ConnectionManager extends Component{
 						let handleOffset = 100 * scale;
 						let path = `M ${start.x},${start.y} C ${start.x + handleOffset},${start.y} ${end.x - handleOffset},${end.y} ${end.x},${end.y}`;
 						return (
-							<path fill="none" stroke="black" strokeWidth={2*scale} d={path} key={connection.id}></path>
+							<path fill="none" stroke="black" strokeWidth={2 * scale} d={path} key={connection.id}/>
 						);
 					})}</g>
 				</svg>

@@ -1,4 +1,4 @@
-var webpackConfig = require('./webpack.test.config.js');
+const webpackConfig = require('./webpack.test.config.js');
 delete webpackConfig.entry;
 
 module.exports = function(config) {
@@ -17,14 +17,13 @@ module.exports = function(config) {
 
 			'karma-detect-browsers',
 			'karma-mocha',
-			'karma-mocha-reporter',
 			'karma-sinon-chai',
 			'karma-sourcemap-loader',
 			'karma-webpack',
 			'karma-coverage',
+			'karma-mocha-reporter',
 			'karma-coverage-html-index-reporter'
 		],
-		reporters: ['mocha', 'coverage', 'coverage-html-index'],
 		// this is the entry file for all our tests.
 		files: [
 			'../test/index.js'
@@ -43,6 +42,7 @@ module.exports = function(config) {
 		detectBrowsers: {
 			usePhantomJS: true
 		},
+		reporters: ['mocha', 'coverage', 'coverage-html-index'],
 		coverageReporter: {
 			type: 'html',
 			dir: '../coverage/'

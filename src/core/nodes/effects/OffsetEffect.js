@@ -5,7 +5,7 @@ import EffectInput from 'core/inputs/EffectInput';
 
 export default class OffsetEffect extends EffectNode{
 	constructor(...args){
-		super(...args)
+		super(...args);
 
 		// add inputs
 		this.addInput(new EffectInput('in'));
@@ -17,7 +17,7 @@ export default class OffsetEffect extends EffectNode{
 
 	render(){
 		return (
-			<feOffset in={this.ins.in} dx={this.ins.x} dy={this.ins.y} result={this.outs.out}></feOffset>
+			<feOffset in={this.ins.in} dx={this.ins.x} dy={this.ins.y} result={this.outs.out}/>
 		)
 	}
 }

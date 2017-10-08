@@ -13,7 +13,7 @@ module.exports = {
 	parser: 'babel-eslint',
 
 	// import plugin is temporarily disabled, scroll below to see why
-	plugins: [/*'import', */'flowtype', 'jsx-a11y', 'react'],
+	plugins: [/*'import', */'jsx-a11y', 'react'],
 
 	env: {
 		browser: true,
@@ -51,7 +51,7 @@ module.exports = {
 		'array-callback-return': 'warn',
 		'default-case': ['warn', { commentPattern: '^no default$' }],
 		'dot-location': ['warn', 'property'],
-		eqeqeq: ['warn', 'allow-null'],
+		'eqeqeq': ['warn', 'allow-null'],
 		'guard-for-in': 'warn',
 		'new-parens': 'warn',
 		'no-array-constructor': 'warn',
@@ -184,13 +184,7 @@ module.exports = {
 
 		// https://github.com/evcohen/eslint-plugin-jsx-a11y/tree/master/docs/rules
 		'jsx-a11y/aria-role': 'warn',
-		'jsx-a11y/img-has-alt': 'warn',
 		'jsx-a11y/img-redundant-alt': 'warn',
-		'jsx-a11y/no-access-key': 'warn',
-
-		// https://github.com/gajus/eslint-plugin-flowtype
-		'flowtype/define-flow-type': 'warn',
-		'flowtype/require-valid-file-annotation': 'warn',
-		'flowtype/use-flow-type': 'warn'
+		'jsx-a11y/no-access-key': 'warn'
 	}
 };

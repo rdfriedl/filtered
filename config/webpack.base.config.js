@@ -1,8 +1,8 @@
-var path = require('path');
-var autoprefixer = require('autoprefixer');
-var webpack = require('webpack');
-var CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-var env = require('./env');
+const path = require('path');
+const autoprefixer = require('autoprefixer');
+const webpack = require('webpack');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const env = require('./env');
 
 module.exports = {
 	output: {
@@ -11,7 +11,7 @@ module.exports = {
 		// This does not produce a real file. It's just the virtual path that is
 		// served by WebpackDevServer in development. This is the JS bundle
 		// containing code from all our entry points, and the Webpack runtime.
-		filename: 'static/js/[name].[hash:8].js',
+		filename: 'js/[name].[hash:8].js',
 		// In development, we always serve from the root. This makes config easier.
 		publicPath: '/'
 	},
@@ -94,7 +94,7 @@ module.exports = {
 				exclude: /\/favicon.ico$/,
 				loader: 'file-loader',
 				options: {
-					name: 'static/media/[name].[hash:8].[ext]'
+					name: 'media/[name].[hash:8].[ext]'
 				}
 			},
 			// A special case for favicon.ico to place it into build root directory.
@@ -113,7 +113,7 @@ module.exports = {
 				loader: 'url-loader',
 				options: {
 					limit: 10000,
-					name: 'static/media/[name].[hash:8].[ext]'
+					name: 'media/[name].[hash:8].[ext]'
 				}
 			},
 			// "html" loader is used to process template page (index.html) to resolve

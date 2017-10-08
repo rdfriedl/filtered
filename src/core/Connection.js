@@ -32,7 +32,7 @@ export default class Connection{
 		return this.output? this.output.value : undefined;
 	}
 
-	/** diconnects the connection and remove it from the manager */
+	/** disconnects the connection and remove it from the manager */
 	@action
 	remove(){
 		if(!this.manager) return this;

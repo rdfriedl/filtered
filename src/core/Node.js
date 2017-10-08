@@ -47,7 +47,16 @@ export default class Node{
 	 * @return {Input}
 	 */
 	getInput(id){
-		return this.inputs.find((input, i) => input.id === id || input.name === id || input === id || id === i);
+		return this.inputs.find((input, i) => (
+			input.id === id ||
+			input.name === id ||
+			(typeof id === 'function' && (
+				id === input.constructor ||
+				id.isPrototypeOf(input.constructor))
+			) ||
+			input === id ||
+			id === i
+		));
 	}
 
 	/**
@@ -96,7 +105,16 @@ export default class Node{
 	 * @return {Output}
 	 */
 	getOutput(id){
-		return this.outputs.find((output, i) => output.id === id || output.name === id || output === id || id === i);
+		return this.outputs.find((output, i) => (
+			output.id === id ||
+			output.name === id ||
+			(typeof id === 'function' && (
+					id === output.constructor ||
+					id.isPrototypeOf(output.constructor))
+			) ||
+			output === id ||
+			id === i
+		));
 	}
 
 	/**

@@ -1,6 +1,6 @@
-var path = require('path');
-var base = require('./webpack.base.config.js');
-var merge = require('webpack-merge');
+const path = require('path');
+const base = require('./webpack.base.config.js');
+const merge = require('webpack-merge');
 
 module.exports = merge(base, {
 	entry: path.resolve(__dirname, '../test/index.js'),

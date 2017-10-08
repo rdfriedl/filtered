@@ -47,15 +47,24 @@ export default class NodeManager{
 		return this;
 	}
 
+	/**
+	 * @param {Output|string|number} input
+	 * @return {boolean}
+	 */
 	hasInput(input){
-		for (var i = 0; i < this.nodes.length; i++) {
+		for (let i = 0; i < this.nodes.length; i++) {
 			if(this.nodes[i].hasInput(input))
 				return true;
 		}
 		return false;
 	}
+
+	/**
+	 * @param {Output|string|number} output
+	 * @return {boolean}
+	 */
 	hasOutput(output){
-		for (var i = 0; i < this.nodes.length; i++) {
+		for (let i = 0; i < this.nodes.length; i++) {
 			if(this.nodes[i].hasOutput(output))
 				return true;
 		}

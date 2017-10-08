@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {observer} from 'mobx-react';
 import MathNode from 'core/nodes/MathNode';
 
@@ -6,7 +7,7 @@ import InputInspector from '../InputInspector';
 import OutputInspector from '../OutputInspector';
 import InputWrapper from '../InputWrapper';
 
-var MathNodeInspector = observer(({node}) => (
+let MathNodeInspector = observer(({node}) => (
 	<div>
 		<InputInspector input={node.ins.in1} />
 		<InputInspector input={node.ins.in2} />
@@ -27,6 +28,6 @@ var MathNodeInspector = observer(({node}) => (
 
 MathNodeInspector.PropTypes = {
 	node: PropTypes.instanceOf(MathNode).isRequired
-}
+};
 
 export {MathNodeInspector as default};

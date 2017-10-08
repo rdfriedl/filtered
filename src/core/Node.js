@@ -28,7 +28,7 @@ export default class Node{
 	/**
 	 * adds an input to this node
 	 * @param {Input} input
-	 * @returns {this}
+	 * @returns {Node} - returns this
 	 */
 	addInput(input){
 		if(input instanceof Input){
@@ -61,7 +61,7 @@ export default class Node{
 
 	/**
 	 * @param  {String|Number|Input} id - the name, id, or index
-	 * @return {Input}
+	 * @return {boolean}
 	 */
 	hasInput(id){
 		return !!this.getInput(id);
@@ -70,7 +70,7 @@ export default class Node{
 	/**
 	 * removes an input
 	 * @param  {String|Number|Input} id - the id or the input to remove
-	 * @return {this}
+	 * @return {Node} - returns this
 	 */
 	@action
 	removeInput(id){
@@ -86,7 +86,7 @@ export default class Node{
 	/**
 	 * adds an output to this node
 	 * @param {Output} output
-	 * @returns {this}
+	 * @returns {Node} - returns this
 	 */
 	addOutput(output){
 		if(output instanceof Output){
@@ -119,7 +119,7 @@ export default class Node{
 
 	/**
 	 * @param  {String|Number|Output} id - the name, id, or index
-	 * @return {Output}
+	 * @return {boolean}
 	 */
 	hasOutput(id){
 		return !!this.getOutput(id);
@@ -128,7 +128,7 @@ export default class Node{
 	/**
 	 * removes an output
 	 * @param  {String|Number|Output} id - the id or the output to remove
-	 * @return {this}
+	 * @return {Node} - returns this
 	 */
 	@action
 	removeOutput(id){

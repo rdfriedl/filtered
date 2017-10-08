@@ -1,4 +1,4 @@
-import {observable, computed, action} from 'mobx';
+import { observable, computed, action } from 'mobx';
 import Connection from './Connection';
 import uuid from 'uuid/v4';
 
@@ -29,6 +29,9 @@ export default class Output{
 	/** the value of the output */
 	@observable value = undefined;
 
+	/**
+	 * @return {NodeManager}
+	 */
 	@computed get manager(){
 		return this.node && this.node.manager;
 	}
@@ -43,12 +46,12 @@ export default class Output{
 	/**
 	 * connects to an input
 	 * @param  {Input} input
-	 * @return {this}
+	 * @return {Output} - returns the output
 	 */
 	@action
 	connectTo(input){
-		if(input.approveConnection(this)){
-			this.connection = new Connection(this, input);
+		if(input.acceptConnection(this)){
+			this.connection = new Connection(this, input, this.manager);
 		}
 		return this;
 	}

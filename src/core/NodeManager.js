@@ -1,4 +1,4 @@
-import {observable, action} from 'mobx'
+import { observable, action } from 'mobx'
 import Node from './Node';
 import Connection from './Connection';
 
@@ -48,7 +48,7 @@ export default class NodeManager{
 	}
 
 	/**
-	 * @param {Output|string|number} input
+	 * @param {Input|string|number} input
 	 * @return {boolean}
 	 */
 	hasInput(input){
@@ -75,7 +75,7 @@ export default class NodeManager{
 	 * creates and adds a new {@link Connection}
 	 * @param  {Output} output
 	 * @param  {Input} input
-	 * @return {this}
+	 * @return {NodeManager}
 	 */
 	@action
 	createConnection(output, input){
@@ -105,7 +105,7 @@ export default class NodeManager{
 	/**
 	 * disconnects and removes a connection
 	 * @param  {String|Connection|Input|Output} id
-	 * @return {this}
+	 * @return {NodeManager}
 	 */
 	@action
 	removeConnection(id){

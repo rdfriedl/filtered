@@ -59,7 +59,7 @@ export default class Input{
 	}
 
 	/**
-	 * @param  {Outpu} output
+	 * @param  {Output} output
 	 * @return {boolean}
 	 */
 	acceptConnection(output){

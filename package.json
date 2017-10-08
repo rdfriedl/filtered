@@ -1,20 +1,27 @@
 {
-  "name": "Filtered",
+  "name": "filtered",
   "version": "0.1.1",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rdfriedl/filtered.git"
+  },
+  "private": true,
   "devDependencies": {
-    "google-closure-compiler": "^20151216.2.0",
-    "gulp": "^3.9.0",
-    "gulp-concat": "^2.6.0",
-    "gulp-header": "^1.7.1",
-    "gulp-htmlmin": "^1.2.0",
-    "gulp-ignore": "^2.0.1",
-    "gulp-minify-html": "^1.0.4",
+    "gulp": "^3.9.1",
+    "gulp-cli": "^1.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-header": "^1.8.9",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-ignore": "^2.0.2",
+    "gulp-minify-html": "^1.0.6",
     "gulp-order": "^1.1.1",
-    "gulp-replace": "^0.5.4",
-    "gulp-uglify": "^1.4.2",
-    "gulp-uglifycss": "^1.0.4",
-    "gulp-uglifyjs": "^0.6.2",
-    "gulp-webserver": "^0.9.1",
-    "gulp-wrap": "^0.11.0"
+    "gulp-replace": "^0.6.1",
+    "gulp-uglify": "^3.0.0",
+    "gulp-uglifycss": "^1.0.8",
+    "gulp-webserver": "^0.9.1"
+  },
+  "scripts": {
+    "build": "gulp build"
   }
 }

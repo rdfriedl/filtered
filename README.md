@@ -1,4 +1,4 @@
-# [Filtered](http://filtered.rdfriedl.com) · [![CircleCI](https://circleci.com/gh/rdfriedl/filtered/tree/dev.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/rdfriedl/filteredgoogle.com)
+# [Filtered](http://filtered.rdfriedl.com) · [![CircleCI](https://circleci.com/gh/rdfriedl/filtered/tree/dev.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/rdfriedl/filtered)
 
 Simple Svg Filter builder
 

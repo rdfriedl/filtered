@@ -1,4 +1,4 @@
-# [Filtered](http://filtered.rdfriedl.com) · [![Netlify Status](https://api.netlify.com/api/v1/badges/8d126599-f8ab-467b-9c31-c0bca511a754/deploy-status)](https://app.netlify.com/sites/rdfriedl-filtered/deploys)
+# [Filtered](https://rdfriedl-filtered.netlify.app) · [![Netlify Status](https://api.netlify.com/api/v1/badges/8d126599-f8ab-467b-9c31-c0bca511a754/deploy-status)](https://app.netlify.com/sites/rdfriedl-filtered/deploys)
 
 Simple Svg Filter builder
 
